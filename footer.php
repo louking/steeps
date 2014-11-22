@@ -12,9 +12,18 @@
 
 	<footer id="colophon" class="site-footer" role="contentinfo">
 		<div class="site-info">
-			<a href="<?php echo esc_url( __( 'http://wordpress.org/', 'steeps' ) ); ?>"><?php printf( __( 'Proudly powered by %s', 'steeps' ), 'WordPress' ); ?></a>
-			<span class="sep"> | </span>
-			<?php printf( __( 'Theme: %1$s by %2$s.', 'steeps' ), 'steeps', '<a href="http://underscores.me/" rel="designer">Underscores.me</a>' ); ?>
+			<table>
+				<tr>
+					<td>Frederick Steeplechasers Running Club<br />
+					P.O. Box 681<br />
+					Frederick, MD 21705-0681
+					</td>
+					<td><a href="mailto:webmaster@steeplechasers.org">webmaster@steeplechasers.org</a></td>
+					<td>Terms of Use</td>
+					<td>Site Map</td>
+					<td><img src="http://steeplechasers.org/steepsv2/wp-content/uploads/2014/11/2010_RRCA_Logo_small-e1416593615235.jpg"></td>
+				</tr>
+			</table>
 		</div><!-- .site-info -->
 	</footer><!-- #colophon -->
 </div><!-- #page -->

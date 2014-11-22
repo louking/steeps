@@ -435,12 +435,14 @@ a:active {
 	display: block;
 	float: left;
 	width: 100%;
+	font-family: Impact, Charcoal, sans-serif;
+	background-color: rgb(224,224,224);
 }
 
 .main-navigation ul {
 	list-style: none;
 	margin: 0;
-	padding-left: 0;
+	padding-left:0;
 }
 
 .main-navigation li {
@@ -451,6 +453,7 @@ a:active {
 .main-navigation a {
 	display: block;
 	text-decoration: none;
+	color: black;
 }
 
 .main-navigation ul ul {
@@ -495,6 +498,10 @@ a:active {
 .main-navigation .current_page_item > a,
 .main-navigation .current-menu-item > a,
 .main-navigation .current_page_ancestor > a {
+}
+
+.main-navigation .menu-item > a {
+	padding-left: 2rem;
 }
 
 /* Small menu */
@@ -790,4 +797,40 @@ object {
 
 .gallery-caption {
 	display: block;
+}
+
+/*
+Theme Name: steeps
+Layout: Content-Sidebar
+*/
+
+.content-area {
+	float: left;
+	margin: 0 -25% 0 0;
+	width: 100%;
+}
+.site-main {
+	margin: 0 25% 0 0;
+}
+.site-content .widget-area {
+	float: right;
+	overflow: hidden;
+	width: 25%;
+}
+.site-footer {
+	clear: both;
+	width: 100%;
+}
+.site-footer table {
+	border: solid;
+	border-width: thin;
+}
+.site-footer td {
+	font-size: small;
+	line-height: 1em;
+	vertical-align: middle;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
 }
