@@ -39,6 +39,7 @@ and Blueprint http://www.blueprintcss.org/
 	10.1 Posts and pages
 	10.2 Asides
 	10.3 Comments
+	10.4 Layout
 11.0 Infinite scroll
 12.0 Media
 	12.1 Captions
@@ -299,6 +300,15 @@ th {
 	font-weight: bold;
 }
 
+h1 {
+	font-size: large;
+	font-weight: bold;
+}
+
+h2 {
+	font-weight: bold;
+}
+
 /*--------------------------------------------------------------
 4.0 Forms
 --------------------------------------------------------------*/
@@ -502,6 +512,8 @@ a:active {
 
 .main-navigation .menu-item > a {
 	padding-left: 2rem;
+	text-transform: uppercase;
+	color: gray;
 }
 
 /* Small menu */
@@ -696,6 +708,60 @@ a:active {
 }
 
 /*--------------------------------------------------------------
+10.4 Layout
+--------------------------------------------------------------*/
+
+.content-area {
+	float: left;
+	margin: 0 -25% 0 0;
+	width: 100%;
+}
+.site-main {
+	margin: 0 25% 0 0;
+}
+.site-content .widget-area {
+	float: right;
+	overflow: hidden;
+	width: 25%;
+}
+.content-area,
+.widget-area {
+	padding: 0.3em 0 0 0.4rem;
+}
+.site-footer {
+	clear: both;
+	width: 100%;
+}
+.site-footer table {
+	border: solid;
+	border-width: thin;
+}
+.site-footer td {
+	font-size: small;
+	line-height: 1em;
+	vertical-align: middle;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	padding-top: 0.2em;
+	padding-bottom: 0.2em;
+}
+
+.content-title,
+.widget-title {
+	background-color: silver;
+	font-weight: bold;
+}
+
+.excerpt-header .entry-title {
+	font-weight: bold;
+}
+
+.excerpt-content:before,
+.excerpt-content:after{
+	display: inline;
+}
+
+/*--------------------------------------------------------------
 11.0 Infinite scroll
 --------------------------------------------------------------*/
 /* Globally hidden elements when Infinite Scroll is supported and in use. */
@@ -799,38 +865,3 @@ object {
 	display: block;
 }
 
-/*
-Theme Name: steeps
-Layout: Content-Sidebar
-*/
-
-.content-area {
-	float: left;
-	margin: 0 -25% 0 0;
-	width: 100%;
-}
-.site-main {
-	margin: 0 25% 0 0;
-}
-.site-content .widget-area {
-	float: right;
-	overflow: hidden;
-	width: 25%;
-}
-.site-footer {
-	clear: both;
-	width: 100%;
-}
-.site-footer table {
-	border: solid;
-	border-width: thin;
-}
-.site-footer td {
-	font-size: small;
-	line-height: 1em;
-	vertical-align: middle;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-	padding-top: 0.2em;
-	padding-bottom: 0.2em;
-}
