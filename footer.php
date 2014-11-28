@@ -20,7 +20,7 @@
 					</td>
 					<td><a href="mailto:webmaster@steeplechasers.org">webmaster@steeplechasers.org</a></td>
 					<td><a href="about/terms-of-use">Terms of Use</a></td>
-					<td>Site Map</td>
+					<td><a href="about/site-map">Site Map</a></td>
 					<td><img src="http://steeplechasers.org/steepsv2/wp-content/uploads/2014/11/2010_RRCA_Logo_small-e1416593615235.jpg"></td>
 				</tr>
 			</table>
