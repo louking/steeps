@@ -888,3 +888,18 @@ object {
 	display: block;
 }
 
+/* clean up widgets */
+#cff .cff-item { padding: 0; }
+#cff .cff-author-img { display: none; }
+#cff .cff-author { margin: 0; }
+#cff .cff-author .cff-author-text { display: inline; padding: 0; }
+#cff .cff-author .cff-author-text .cff-author-date { display: inline; } /* not working */
+#cff .cff-author .cff-author-text .cff-date { display: inline; } /* not working */
+#cff .cff-author .cff-author-text span { display: inline; margin: 0; padding: 0; }
+#cff .cff-author .cff-author-text * { display: inline; margin: 0; padding: 0; }
+#cff .cff-post-text { display: inline; }
+#cff .cff-viewpost-facebook { padding: 0; }
+
+.tribe-events-list-widget ol li { margin-bottom: 4px; }
+.tribe-events-list-widget ol { margin: 0; }
+.tribe-events-widget-link { display: none; }
