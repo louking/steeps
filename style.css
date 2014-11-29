@@ -455,13 +455,24 @@ a:active {
 /*--------------------------------------------------------------
 5.2 Menus
 --------------------------------------------------------------*/
-.main-navigation {
+.navigation-area {
+	padding: 0.3em 0 0 0.4rem;	
+}
+
+.main-navigation,
+.breadcrumbs {
 	clear: both;
 	display: block;
 	float: left;
-	width: 100%;
+	width: 75%;
 	font-family: Impact, Charcoal, sans-serif;
 	background-color: rgb(224,224,224);
+}
+
+.navigation-breadcrumbs-separator {
+	padding-top: 1px;
+	float: left;
+	width: 75%;
 }
 
 .main-navigation ul {
@@ -527,7 +538,11 @@ a:active {
 }
 
 .main-navigation .menu-item > a {
-	padding-left: 2rem;
+	padding-right: 2rem;
+	text-transform: uppercase;
+	color: rgb(66,66,66);
+}
+.breadcrumbs {
 	text-transform: uppercase;
 	color: rgb(66,66,66);
 }
@@ -763,8 +778,13 @@ a:active {
 }
 
 .content-title,
-.widget-title {
+.widget-title
+{
 	background-color: silver;
+}
+
+.type-page .entry-title {
+	display: none;
 }
 
 .excerpt-header .entry-title {

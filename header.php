@@ -34,10 +34,24 @@
 		</a>
 		<?php endif; // End header image check. ?>
 
-		<nav id="site-navigation" class="main-navigation" role="navigation">
-			<button class="menu-toggle"><?php _e( 'Primary Menu', 'steeps' ); ?></button>
-			<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
-		</nav><!-- #site-navigation -->
+		<div class="navigation-area">
+			<div>
+			<nav id="site-navigation" class="main-navigation" role="navigation">
+				<button class="menu-toggle"><?php _e( 'Primary Menu', 'steeps' ); ?></button>
+				<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+			</nav><!-- #site-navigation -->
+			</div>
+			
+			<div class="navigation-breadcrumbs-separator">
+			</div><!-- #navigation-breadcrumbs-separator -->
+			
+			<div class="breadcrumbs">
+				<?php if(function_exists('bcn_display'))
+				{
+				    bcn_display();
+				}?>
+			</div><!-- #breadcrumbs -->
+		</div><!-- #navigation-area -->
 	</header><!-- #masthead -->
 
 	<div id="content" class="site-content">
