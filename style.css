@@ -910,6 +910,7 @@ object {
 
 /* clean up widgets */
 #cff p { line-height: 1.3em; }
+#cff.cff-fixed-height { padding-left: 0; padding-right: 10px; }
 #cff .cff-item { padding: 0; }
 #cff .cff-author-img { display: none; }
 #cff .cff-author { margin: 0; }
