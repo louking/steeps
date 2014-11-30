@@ -547,7 +547,7 @@ a:active {
 	color: rgb(66,66,66);
 }
 .breadcrumbs {
-	text-transform: uppercase;
+	text-transform: lowercase;
 	color: rgb(66,66,66);
 }
 
