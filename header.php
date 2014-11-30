@@ -19,6 +19,7 @@
 </head>
 
 <body <?php body_class(); ?>>
+
 <div id="page" class="hfeed site">
 	<a class="skip-link screen-reader-text" href="#content"><?php _e( 'Skip to content', 'steeps' ); ?></a>
 
@@ -35,12 +36,15 @@
 		<?php endif; // End header image check. ?>
 
 		<div class="navigation-area">
-			<div>
+			<div class="navigation-buttons">
+				<a href="https://www.facebook.com/groups/fredericksteeplechasers/" target="_blank"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/11/FB_FindUsOnFacebook-114-e1417379795693.jpg"></a>
+				<?php echo do_shortcode('[maxbutton name="join"]'); ?>
+			</div>
+
 			<nav id="site-navigation" class="main-navigation" role="navigation">
 				<button class="menu-toggle"><?php _e( 'Primary Menu', 'steeps' ); ?></button>
 				<?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
 			</nav><!-- #site-navigation -->
-			</div>
 			
 			<div class="navigation-breadcrumbs-separator">
 			</div><!-- #navigation-breadcrumbs-separator -->
