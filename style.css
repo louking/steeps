@@ -543,7 +543,7 @@ a:active {
 
 .main-navigation .menu-item > a {
 	padding-right: 2rem;
-	text-transform: uppercase;
+	text-transform: capitalize;
 	color: rgb(66,66,66);
 }
 .breadcrumbs {
