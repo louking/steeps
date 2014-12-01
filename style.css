@@ -456,7 +456,8 @@ a:active {
 5.2 Menus
 --------------------------------------------------------------*/
 .navigation-area {
-	padding: 0.3em 0 0 0.4rem;	
+	padding: 0.3em 0 0 0.4rem;
+	width: 100%;
 }
 
 .main-navigation,

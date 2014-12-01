@@ -32,3 +32,24 @@
 			container.className += ' toggled';
 	};
 } )();
+
+jQuery(document).ready(function($){
+	// from http://stackoverflow.com/questions/14499024/fix-menu-bar-at-top-of-page-once-header-has-been-scrolled-past
+        // Check the initial Position of the Sticky Header
+        var stickyHeaderTop = $('.navigation-area').offset().top;
+	var adminheight = 0;
+	
+	// check if wordpress admin bar is present, if so add its height
+	if ( $( "#wpadminbar" ).length ) {
+		adminheight = $( "#wpadminbar" ).height()
+		stickyHeaderTop += adminheight;
+	}
+
+        $(window).scroll(function(){
+                if( $(window).scrollTop() > stickyHeaderTop ) {
+                        $('.navigation-area').css({position: 'fixed', top: adminheight});
+                } else {
+                        $('.navigation-area').css({position: 'static', top: adminheight});
+                }
+        });
+  });
