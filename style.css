@@ -601,6 +601,16 @@ a:active {
 .sub-menu li a {
 	margin-left: +1rem;
 }
+
+.site-header table {
+		max-width: 760px;
+		margin: 0px; 
+}
+
+.banner-image th img {
+		max-height: 120px;
+}
+
 /*--------------------------------------------------------------
 6.0 Accessibility
 --------------------------------------------------------------*/
