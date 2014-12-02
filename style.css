@@ -263,9 +263,6 @@ ol {
 ul {
 	list-style: disc;
 }
-ul li {list-style-type:disc;}
-ul li ul li {list-style-type:circle;}
-
 
 ol {
 	list-style: decimal;
@@ -578,6 +575,10 @@ a:active {
 	margin: 0 0 1.5em;
 	overflow: hidden;
 }
+
+.site-main ul li {list-style-type:disc;}
+.site-main ul li ul li {list-style-type:circle;}
+
 
 .comment-navigation .nav-previous,
 .paging-navigation .nav-previous,
