@@ -46,6 +46,8 @@ jQuery(document).ready(function($){
 	}
 
         $(window).scroll(function(){
+		scrollAt = $(window).scrollTop()
+		// for some reason this doesn't work unless scrollTop is called twice
                 if( $(window).scrollTop() > stickyHeaderTop ) {
                         $('.navigation-area').css({position: 'fixed', top: adminheight});
                 } else {
