@@ -728,6 +728,10 @@ a:active {
 	margin: 0 0 1.5em;
 }
 
+.cat-links {
+	display: none;
+}
+
 /*.content-area,*/
 /*.widget-area {*/
 /*	font-family: Arial, Helvetica, sans-serif;*/
