@@ -26,11 +26,11 @@
 		menu.className += ' nav-menu';
 
 	button.onclick = function() {
-		if ( -1 !== container.className.indexOf( 'toggled' ) )
-			container.className = container.className.replace( ' toggled', '' );
-		else
-			container.className += ' toggled';
-	};
+        if ( -1 !== container.className.indexOf( 'toggled' ) )
+            container.className = container.className.replace( ' toggled', '' );
+        else
+            container.className += ' toggled';
+    };
 } )();
 
 jQuery(document).ready(function($){
@@ -45,13 +45,37 @@ jQuery(document).ready(function($){
 		stickyHeaderTop += adminheight;
 	}
 
-        $(window).scroll(function(){
-		scrollAt = $(window).scrollTop()
-		// for some reason this doesn't work unless scrollTop is called twice
-                if( $(window).scrollTop() > stickyHeaderTop ) {
-                        $('.navigation-area').css({position: 'fixed', top: adminheight});
-                } else {
-                        $('.navigation-area').css({position: 'static', top: adminheight});
-                }
-        });
-  });
+    $(window).scroll(function(){
+    scrollAt = $(window).scrollTop()
+    // for some reason this doesn't work unless scrollTop is called twice
+    if( $(window).scrollTop() > stickyHeaderTop ) {
+            $('.navigation-area').css({position: 'fixed', top: adminheight});
+    } else {
+            $('.navigation-area').css({position: 'static', top: adminheight});
+    }
+    });
+});
+
+//// The function actually applying the offset
+//function offsetAnchor(delta) {
+//    if(location.hash.length !== 0) {
+//		//console.log('found hash ' + window.scrollX + ',' + window.scrollY);
+//        var thisScrollY = window.scrollY - 100 + delta;
+//
+//        window.scrollTo(window.scrollX, thisScrollY);
+//    }
+//}
+//
+//// This will capture hash changes while on the page
+//jQuery(window).on("hashchange", function () {
+//    //console.log('hashchange');
+//    offsetAnchor(0);
+//});
+//
+//// This is here so that when you enter the page with a hash,
+//// it can provide the offset in that case too. Having a timeout
+//// seems necessary to allow the browser to jump to the anchor first.
+//window.setTimeout(function() {
+//    //console.log('timeout')
+//    offsetAnchor(-36);
+//}, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
