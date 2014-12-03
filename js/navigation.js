@@ -94,31 +94,36 @@ jQuery(document).ready(function($){
     
     // initialize choosePic
     choosePic(0);
-});
 
-// The function actually applying the offset
-function offsetAnchor(delta) {
-    if(location.hash.length !== 0) {
-		//console.log('found hash ' + window.scrollX + ',' + window.scrollY);
-        addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + (jQuery('#wpadminbar').height() | 0) + 10 + delta;
-        console.log('addlscroll = ' + addlscroll);
-        var thisScrollY = jQuery(window).scrollTop() - addlscroll;
-        //var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
-
-        jQuery(window).scrollTop(thisScrollY);
+    // The function actually applying the offset
+    function offsetAnchor(delta) {
+        if(location.hash.length !== 0) {
+            //console.log('found hash ' + window.scrollX + ',' + window.scrollY);
+            adminheight = 0;
+            if ( jQuery('#wpadminbar').length ) {
+                adminheight = jQuery('#wpadminbar').height();
+            }
+            addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + adminheight + 10 + delta;
+            //console.log('addlscroll = ' + addlscroll);
+            var thisScrollY = jQuery(window).scrollTop() - addlscroll;
+            //var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
+    
+            jQuery(window).scrollTop(thisScrollY);
+        }
     }
-}
-
-// This will capture hash changes while on the page
-jQuery(window).on("hashchange", function () {
-    //console.log('hashchange');
-    offsetAnchor(0);
+    
+    // This will capture hash changes while on the page
+    jQuery(window).on("hashchange", function () {
+        //console.log('hashchange');
+        offsetAnchor(0);
+    });
+    
+    // This is here so that when you enter the page with a hash,
+    // it can provide the offset in that case too. Having a timeout
+    // seems necessary to allow the browser to jump to the anchor first.
+    window.setTimeout(function() {
+        //console.log('timeout')
+        offsetAnchor(50);
+    }, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
 });
 
-// This is here so that when you enter the page with a hash,
-// it can provide the offset in that case too. Having a timeout
-// seems necessary to allow the browser to jump to the anchor first.
-window.setTimeout(function() {
-    //console.log('timeout')
-    offsetAnchor(50);
-}, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
