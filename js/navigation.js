@@ -100,7 +100,10 @@ jQuery(document).ready(function($){
 function offsetAnchor(delta) {
     if(location.hash.length !== 0) {
 		//console.log('found hash ' + window.scrollX + ',' + window.scrollY);
-        var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
+        addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + (jQuery('#wpadminbar').height() | 0) + 10 + delta;
+        console.log('addlscroll = ' + addlscroll);
+        var thisScrollY = jQuery(window).scrollTop() - addlscroll;
+        //var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
 
         jQuery(window).scrollTop(thisScrollY);
     }
@@ -117,5 +120,5 @@ jQuery(window).on("hashchange", function () {
 // seems necessary to allow the browser to jump to the anchor first.
 window.setTimeout(function() {
     //console.log('timeout')
-    offsetAnchor(-36);
+    offsetAnchor(50);
 }, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
