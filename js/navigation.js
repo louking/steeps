@@ -96,27 +96,26 @@ jQuery(document).ready(function($){
     choosePic(0);
 });
 
-// this looks awful on internet explorer, like the units of scrollY are different than those in ch
-//// The function actually applying the offset
-//function offsetAnchor(delta) {
-//    if(location.hash.length !== 0) {
-//		//console.log('found hash ' + window.scrollX + ',' + window.scrollY);
-//        var thisScrollY = window.scrollY - 100 + delta;
-//
-//        window.scrollTo(window.scrollX, thisScrollY);
-//    }
-//}
-//
-//// This will capture hash changes while on the page
-//jQuery(window).on("hashchange", function () {
-//    //console.log('hashchange');
-//    offsetAnchor(0);
-//});
-//
-//// This is here so that when you enter the page with a hash,
-//// it can provide the offset in that case too. Having a timeout
-//// seems necessary to allow the browser to jump to the anchor first.
-//window.setTimeout(function() {
-//    //console.log('timeout')
-//    offsetAnchor(-36);
-//}, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
+// The function actually applying the offset
+function offsetAnchor(delta) {
+    if(location.hash.length !== 0) {
+		//console.log('found hash ' + window.scrollX + ',' + window.scrollY);
+        var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
+
+        jQuery(window).scrollTop(thisScrollY);
+    }
+}
+
+// This will capture hash changes while on the page
+jQuery(window).on("hashchange", function () {
+    //console.log('hashchange');
+    offsetAnchor(0);
+});
+
+// This is here so that when you enter the page with a hash,
+// it can provide the offset in that case too. Having a timeout
+// seems necessary to allow the browser to jump to the anchor first.
+window.setTimeout(function() {
+    //console.log('timeout')
+    offsetAnchor(-36);
+}, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
