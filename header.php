@@ -62,7 +62,7 @@
 			</nav><!-- #site-navigation -->
 			
 			<div class="navigation-breadcrumbs-separator">
-			</div><!-- #navigation-breadcrumbs-separator -->
+		    </div><!-- #navigation-breadcrumbs-separator -->
 			
 			<div class="breadcrumbs">
 				<?php if(function_exists('bcn_display'))
@@ -70,6 +70,11 @@
 				    bcn_display();
 				}?>
 			</div><!-- #breadcrumbs -->
+
+			<div class="breadcrumbs-buttons">
+				<?php echo do_shortcode('[maxbutton name="race results"]'); ?>
+			</div>
+
 		</div><!-- #navigation-area -->
 	</header><!-- #masthead -->
 

@@ -103,7 +103,7 @@ jQuery(document).ready(function($){
             if ( jQuery('#wpadminbar').length ) {
                 adminheight = jQuery('#wpadminbar').height();
             }
-            addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + adminheight + 10 + delta;
+            addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + adminheight + 30 + delta;
             //console.log('addlscroll = ' + addlscroll);
             var thisScrollY = jQuery(window).scrollTop() - addlscroll;
             //var thisScrollY = jQuery(window).scrollTop() - 100 + delta;

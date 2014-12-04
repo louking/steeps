@@ -439,17 +439,17 @@ textarea {
 5.1 Links
 --------------------------------------------------------------*/
 a {
-	color: royalblue;
+	color: rgb(0,102,204);
 }
 
 a:visited {
-	color: purple;
+	/*color: purple;*/
 }
 
 a:hover,
 a:focus,
 a:active {
-	color: midnightblue;
+	color: rgb(12,126,170);
 }
 
 /*--------------------------------------------------------------
@@ -470,6 +470,8 @@ a:active {
 	font-weight: bold;
 	background-color: rgb(224,224,224);
 	z-index: 100000;
+	padding-top: 6px;
+	padding-bottom: 6px;
 }
 
 .navigation-buttons {
@@ -481,6 +483,11 @@ a:active {
 	padding-top: 1px;
 	float: left;
 	width: 75%;
+}
+
+.breadcrumbs-buttons {
+	float: right;
+	vertical-align: middle;
 }
 
 .main-navigation ul {
