@@ -790,6 +790,16 @@ a:active {
 10.4 Layout
 --------------------------------------------------------------*/
 
+.background {
+    background-color: rgb(0,102,204);
+}
+
+.site {
+    margin: 0 10% 0 10%;
+    padding: 0 3px 0 3px;
+    background-color: white;
+}
+
 .content-area {
 	float: left;
 	margin: 0 -25% 0 0;
