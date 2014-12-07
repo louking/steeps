@@ -55,33 +55,34 @@
         
         <div class="header-images">
             <img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/fsrc-logo-2014.jpg" alt="Banner"/>
-            <img class="banner-image" src="http://www.steeplechasers.org/images/HomePage1/Steeps1.jpg" alt="Click to change" name="titleImage" id="titleImage" style="cursor:hand; border:0" onclick="choosePic(1)"/>
-        </div>
+            <img class="banner-image" src="http://www.steeplechasers.org/images/HomePage1/Steeps1.jpg" align="middle" alt="Click to change" name="titleImage" id="titleImage" style="cursor:hand; border:0" onclick="choosePic(1)"/>
 
-        <div class="navigation-area">
-            <div class="navigation-button-area">
-                <div class="navigation-buttons">
-                        <a href="https://www.facebook.com/groups/fredericksteeplechasers/" target="_blank"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/11/FB_FindUsOnFacebook-114-e1417379795693.jpg"></a>
-                        <?php echo do_shortcode('[maxbutton name="join"]'); ?>
-                </div>
-                <div class="breadcrumbs-buttons">
-                    <?php echo do_shortcode('[maxbutton name="race results"]'); ?>
-                </div>
-            </div><!-- .navigation-buttons -->
+            <div class="navigation-area">
+                <div class="navigation-button-area">
+                    <div class="navigation-buttons">
+                            <a href="https://www.facebook.com/groups/fredericksteeplechasers/" target="_blank"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/11/FB_FindUsOnFacebook-114-e1417379795693.jpg"></a>
+                            <?php echo do_shortcode('[maxbutton name="join"]'); ?>
+                    </div>
+                    <div class="breadcrumbs-buttons">
+                        <?php echo do_shortcode('[maxbutton name="race results"]'); ?>
+                    </div>
+                </div><!-- .navigation-buttons -->
+    
+                <nav id="site-navigation" class="main-navigation" role="navigation">
+                    <button class="menu-toggle"><?php _e( 'Primary Menu', 'steeps' ); ?></button>
+                    <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+                </nav><!-- #site-navigation -->
+                
+                <div class="breadcrumbs">
+                    <?php if(function_exists('bcn_display'))
+                    {
+                        bcn_display();
+                    }?>
+                </div><!-- #breadcrumbs -->
+    
+            </div><!-- #navigation-area -->
+        </div><!-- .header-images -->
 
-            <nav id="site-navigation" class="main-navigation" role="navigation">
-                <button class="menu-toggle"><?php _e( 'Primary Menu', 'steeps' ); ?></button>
-                <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
-            </nav><!-- #site-navigation -->
-            
-            <div class="breadcrumbs">
-                <?php if(function_exists('bcn_display'))
-                {
-                    bcn_display();
-                }?>
-            </div><!-- #breadcrumbs -->
-
-        </div><!-- #navigation-area -->
     </header><!-- #masthead -->
 
     <div id="content" class="site-content">

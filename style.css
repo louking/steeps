@@ -456,8 +456,8 @@ a:active {
 5.2 Menus
 --------------------------------------------------------------*/
 .navigation-area {
-    position: relative;
-    top: 200px;
+    position: absolute;
+    bottom: 15%;
 	padding: 0.3em 0 0 0.4rem;
 	width: 100%;
 	z-index: 99999;
@@ -804,24 +804,26 @@ a:active {
 
 .header-images {
     position: relative;
+    overflow: auto;
 }
 
 .banner-logo {
     position: absolute;
     top: 0;
-    left: 100px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-right: 100px;
+    left: 50%;
+    margin-left: -245px;
     height: 120px;
+    border: 1px solid black;
+    padding: 2px;
+    background-color: white;
     z-index: 1;
 }
 
 .banner-image {
-    position: absolute;
+    position: relative;
     top: 0;
-    margin-left: auto;
-    margin-right: auto;
+    left: 50%;
+    margin-left: -225px;
     margin-top: 20px;
     height: 300px;
 }

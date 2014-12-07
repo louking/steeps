@@ -68,11 +68,11 @@ function choosePic(PicNo) {
       }
   }
 
-setInterval('choosePic(0)',5000);
+setInterval('choosePic(1)',5000);
 
 jQuery(document).ready(function($){
     // initialize choosePic after page ready
-    choosePic(0);
+    choosePic(1);
 
 // commented to remove menu stickiness -- this looks bad on a smartphone currently
 //	// from http://stackoverflow.com/questions/14499024/fix-menu-bar-at-top-of-page-once-header-has-been-scrolled-past
