@@ -71,59 +71,61 @@ function choosePic(PicNo) {
 setInterval('choosePic(0)',5000);
 
 jQuery(document).ready(function($){
-	// from http://stackoverflow.com/questions/14499024/fix-menu-bar-at-top-of-page-once-header-has-been-scrolled-past
-    // Check the initial Position of the Sticky Header
-    var stickyHeaderTop = $('.navigation-area').offset().top;
-	var adminheight = 0;
-	
-	// check if wordpress admin bar is present, if so add its height
-	if ( $( "#wpadminbar" ).length ) {
-		adminheight = $( "#wpadminbar" ).height()
-		stickyHeaderTop += adminheight;
-	}
-
-    $(window).scroll(function(){
-    scrollAt = $(window).scrollTop()
-    // for some reason this doesn't work unless scrollTop is called twice
-    if( $(window).scrollTop() > stickyHeaderTop ) {
-            $('.navigation-area').css({position: 'fixed', top: adminheight});
-    } else {
-            $('.navigation-area').css({position: 'static', top: adminheight});
-    }
-    });
-    
-    // initialize choosePic
+    // initialize choosePic after page ready
     choosePic(0);
 
-    // The function actually applying the offset
-    function offsetAnchor(delta) {
-        if(location.hash.length !== 0) {
-            //console.log('found hash ' + window.scrollX + ',' + window.scrollY);
-            adminheight = 0;
-            if ( jQuery('#wpadminbar').length ) {
-                adminheight = jQuery('#wpadminbar').height();
-            }
-            addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + adminheight + 30 + delta;
-            //console.log('addlscroll = ' + addlscroll);
-            var thisScrollY = jQuery(window).scrollTop() - addlscroll;
-            //var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
+// commented to remove menu stickiness -- this looks bad on a smartphone currently
+//	// from http://stackoverflow.com/questions/14499024/fix-menu-bar-at-top-of-page-once-header-has-been-scrolled-past
+//    // Check the initial Position of the Sticky Header
+//    var stickyHeaderTop = $('.navigation-area').offset().top;
+//    var adminheight = 0;
+//	
+//	// check if wordpress admin bar is present, if so add its height
+//	if ( $( "#wpadminbar" ).length ) {
+//		adminheight = $( "#wpadminbar" ).height()
+//		stickyHeaderTop += adminheight;
+//	}
+//
+//    $(window).scroll(function(){
+//    scrollAt = $(window).scrollTop()
+//    // for some reason this doesn't work unless scrollTop is called twice
+//    if( $(window).scrollTop() > stickyHeaderTop ) {
+//            $('.navigation-area').css({position: 'fixed', top: adminheight});
+//    } else {
+//            $('.navigation-area').css({position: 'static', top: adminheight});
+//    }
+//    });
     
-            jQuery(window).scrollTop(thisScrollY);
-        }
-    }
-    
-    // This will capture hash changes while on the page
-    jQuery(window).on("hashchange", function () {
-        //console.log('hashchange');
-        offsetAnchor(0);
-    });
-    
-    // This is here so that when you enter the page with a hash,
-    // it can provide the offset in that case too. Having a timeout
-    // seems necessary to allow the browser to jump to the anchor first.
-    window.setTimeout(function() {
-        //console.log('timeout')
-        offsetAnchor(50);
-    }, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
+    // *** this block of code supports navigation to an anchor, with sticky menu
+    //// The function actually applying the offset
+    //function offsetAnchor(delta) {
+    //    if(location.hash.length !== 0) {
+    //        //console.log('found hash ' + window.scrollX + ',' + window.scrollY);
+    //        adminheight = 0;
+    //        if ( jQuery('#wpadminbar').length ) {
+    //            adminheight = jQuery('#wpadminbar').height();
+    //        }
+    //        addlscroll = jQuery('#site-navigation').height() + jQuery('.breadcrumbs').height() + adminheight + 30 + delta;
+    //        //console.log('addlscroll = ' + addlscroll);
+    //        var thisScrollY = jQuery(window).scrollTop() - addlscroll;
+    //        //var thisScrollY = jQuery(window).scrollTop() - 100 + delta;
+    //
+    //        jQuery(window).scrollTop(thisScrollY);
+    //    }
+    //}
+    //
+    //// This will capture hash changes while on the page
+    //jQuery(window).on("hashchange", function () {
+    //    //console.log('hashchange');
+    //    offsetAnchor(0);
+    //});
+    //
+    //// This is here so that when you enter the page with a hash,
+    //// it can provide the offset in that case too. Having a timeout
+    //// seems necessary to allow the browser to jump to the anchor first.
+    //window.setTimeout(function() {
+    //    //console.log('timeout')
+    //    offsetAnchor(50);
+    //}, 30); // The delay of 1 is arbitrary and may not always work right (although it did in my testing).
 });
 
