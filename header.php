@@ -54,7 +54,7 @@
         */?>
         
         <div class="header-images">
-            <img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/fsrc-logo-2014.jpg" alt="Banner"/>
+            <a href="http://www.steeplechasers.org/steepsv2/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/fsrc-logo-2014.jpg" alt="Banner"/></a>
             <img class="banner-image" src="http://www.steeplechasers.org/images/HomePage1/Steeps1.jpg" align="middle" alt="Click to change" name="titleImage" id="titleImage" style="cursor:hand; border:0" onclick="choosePic(1)"/>
 
             <div class="navigation-area">
