@@ -880,6 +880,11 @@ a:active {
     padding-bottom: 0.2em;
 }
 
+.site-footer img {
+    height: 50px;
+    margin: 2px;
+}
+
 .content-title,
 .widget-title
 {
