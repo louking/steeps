@@ -73,16 +73,16 @@
                     <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
                 </nav><!-- #site-navigation -->
                 
-                <div class="breadcrumbs">
-                    <?php if(function_exists('bcn_display'))
-                    {
-                        bcn_display();
-                    }?>
-                </div><!-- #breadcrumbs -->
-    
             </div><!-- #navigation-area -->
         </div><!-- .header-images -->
 
+        <div class="breadcrumbs">
+            <?php if(function_exists('bcn_display'))
+            {
+                bcn_display();
+            }?>
+        </div><!-- #breadcrumbs -->
+    
     </header><!-- #masthead -->
 
     <div id="content" class="site-content">
