@@ -809,7 +809,8 @@ a:active {
 --------------------------------------------------------------*/
 
 .background {
-    background-color: #0e76bd; /* logo steeple color */
+    /*background-color: #0e76bd; /* logo steeple color */
+    /*background-image: "http://steeplechasers.org/steepsv2/wp-content/uploads/2014/12/frederick-map.jpg"*/
 }
 
 .site {
@@ -866,10 +867,13 @@ a:active {
     clear: both;
     width: 100%;
 }
+
 .site-footer table {
     border: solid;
     border-width: thin;
+    background-color: #0e76bd; /* logo steeple color */
 }
+
 .site-footer td {
     font-size: small;
     line-height: 1em;
@@ -878,6 +882,11 @@ a:active {
     padding-right: 0.5rem;
     padding-top: 0.2em;
     padding-bottom: 0.2em;
+    color: white;
+}
+
+.site-footer td a {
+    color: white;
 }
 
 .site-footer img {
