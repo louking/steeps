@@ -537,26 +537,31 @@ a:active {
 .main-navigation ul ul li {
 }
 
-.main-navigation li:hover > a {
+/* support three levels of menu -- add more of these for more levels */
+.main-navigation li:hover > a,
+.main-navigation li:hover ul li > a,
+.main-navigation li:hover ul ul li > a
+{
     background-color: #ceebf1; /* logo flag color */
     color: rgb(66,66,66);
 }
 
-.main-navigation ul ul :hover > a {
-    background-color: #ceebf1; /* logo flag color */
-    color: rgb(66,66,66);
+.main-navigation ul a:hover,
+.main-navigation ul ul a:hover,
+.main-navigation ul ul li a:hover,
+.main-navigation ul ul ul li a:hover
+{
+    color: #0e76bd; /* logo steeple color */
 }
 
-.main-navigation ul ul a:hover {
-    color: rgb(66,66,66);
-}
-
+/* pull up 1st level submenu */
 .main-navigation ul li:hover > ul {
     left: auto;
     background-color: #ceebf1; /* logo flag color */
     color: rgb(66,66,66);
 }
 
+/* pull up 2nd level submenu */
 .main-navigation ul ul li:hover > ul {
     left: 100%;
     background-color: #ceebf1; /* logo flag color */
