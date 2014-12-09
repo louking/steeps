@@ -18,6 +18,10 @@
 					P.O. Box 681<br />
 					Frederick, MD 21705-0681
 					</td>
+					<td>FSRC is a 501(c)3 non-profit member club<br>
+					of the Road Runner Clubs of America,<br>
+					supporting the running community<br>
+					of Frederick, Maryland since 1975.</td>
 					<td><a href="<?php echo get_site_url(); ?>/about/contact-us/">Contact Us</a></td>
 					<td><a href="about/terms-of-use">Terms of Use</a></td>
 					<td><a href="about/site-map">Site Map</a></td>
