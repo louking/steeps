@@ -790,6 +790,23 @@ a:active {
 /*    letter-spacing: normal;*/
 /*}*/
 
+#steeps-factoid {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
+    font-weight: bold;
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: #122B5F;  /* logo steeple color (darker) */
+    color: #ceebf1; /* logo flag color */
+    padding: 5px 15px;
+}
+
+#steeps-factoid-base {
+    font-size: 140%;
+}
+
+#steeps-factoid-temp {
+    display: none;
+}
 /*--------------------------------------------------------------
 10.2 Asides
 --------------------------------------------------------------*/

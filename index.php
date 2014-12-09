@@ -13,6 +13,11 @@
 
 get_header(); ?>
 
+	<div id="steeps-factoid">
+		<span id="steeps-factoid-base">The Steeps </span><span id="steeps-factoid-fact"></span>
+		<span id="steeps-factoid-temp"></span>
+	</div>
+	
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 
@@ -20,7 +25,12 @@ get_header(); ?>
 			<h1><a href="index.php?page_id=55">Announcements</a></h1>
 		</div>
 
-		<?php if ( have_posts() ) : ?>
+		<?php
+		/* no Steeps Factoids (cat=7) */
+		if ( is_home() ) {
+			query_posts( 'cat=-7' );	
+		}
+		if ( have_posts() ) : ?>
 
 			<?php /* Start the Loop */ ?>
 			<?php while ( have_posts() ) : the_post(); ?>
