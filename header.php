@@ -42,20 +42,19 @@
             <h2 class="site-description"><?php bloginfo( 'description' ); ?></h2>
         </div>
 
-        <?php /*
-        <table border="0" cellspacing="0" cellpadding="0">
-          <tr class="banner-image">
-            <th colspan="1" scope="col" style="border:0px; padding: 2px"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/fsrc-logo-2014.jpg" alt="Banner" height="120"/></th>
-            <th colspan="1" scope="col"><img src="http://www.steeplechasers.org/images/HomePage1/Steeps1.jpg" alt="Click to change" name="titleImage" height="120" id="titleImage" style="cursor:hand; border:0" onclick="choosePic(1)"/></th>
-            <th colspan="1" scope="col"><img src="http://www.steeplechasers.org/images/HomePage1/Steeps2.jpg" alt="Click to change" name="titleImage2" height="120" id="titleImage2" style="cursor:hand; border:0" onclick="choosePic(2)"/></th>
-            <th colspan="1" scope="col"><img src="http://www.steeplechasers.org/images/HomePage1/Steeps3.jpg" alt="Click to change" name="titleImage3" height="120" id="titleImage3" style="cursor:hand; border:0" onclick="choosePic(3)"/></th>
-          </tr>
-        </table>
-        */?>
-        
         <div class="header-images">
             <a href="http://www.steeplechasers.org/steepsv2/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/fsrc-logo-2014.jpg" alt="Banner"/></a>
-            <img class="banner-image" src="http://www.steeplechasers.org/images/HomePage1/Steeps1.jpg" align="middle" alt="Click to change" name="titleImage" id="titleImage" style="cursor:hand; border:0" onclick="choosePic(1)"/>
+            <?php 
+            slideshow(true, null, false, array('layout' => 'responsive',
+                                            'resheight' => '250',
+                                            'resheighttype' => 'px',
+                                            'auto' => 'true',
+                                            'gallery_id' => '1',
+                                            'showthumbs' => 'false',
+                                            //'shownav' => 'false',   // needed for navigation to actually work
+                                            'autospeed' => '10',
+                                            'showinfo' => 'false'));
+            ?>
 
             <div class="navigation-area">
                 <div class="navigation-button-area">

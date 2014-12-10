@@ -33,46 +33,7 @@
     };
 } )();
 
-// randomly choose picture for banner
-titlePic = new Array("http://www.steeplechasers.org/images/HomePage1/img001.jpg","http://www.steeplechasers.org/images/HomePage1/img002.jpg","http://www.steeplechasers.org/images/HomePage1/img003.jpg","http://www.steeplechasers.org/images/HomePage1/img004.jpg","http://www.steeplechasers.org/images/HomePage1/img005.jpg","http://www.steeplechasers.org/images/HomePage1/img006.jpg")
-titlePic2 = new Array("http://www.steeplechasers.org/images/HomePage1/img007.jpg","http://www.steeplechasers.org/images/HomePage1/img008.jpg","http://www.steeplechasers.org/images/HomePage1/img009.jpg","http://www.steeplechasers.org/images/HomePage1/img010.jpg","http://www.steeplechasers.org/images/HomePage1/img011.jpg","http://www.steeplechasers.org/images/HomePage1/img012.jpg")
-titlePic3 = new Array("http://www.steeplechasers.org/images/HomePage1/img013.jpg","http://www.steeplechasers.org/images/HomePage1/img014.jpg","http://www.steeplechasers.org/images/HomePage1/img015.jpg","http://www.steeplechasers.org/images/HomePage1/img016.jpg","http://www.steeplechasers.org/images/HomePage1/img017.jpg","http://www.steeplechasers.org/images/HomePage1/img018.jpg")
-
-imgCt = titlePic.length
-imgCt2 = titlePic2.length
-imgCt3 = titlePic3.length
-
-function choosePic(PicNo) {
-      switch(PicNo){
-        case 0:
-          randomNum = Math.floor((Math.random() * imgCt));
-          document.getElementById("titleImage").src = titlePic[randomNum];
-          randomNum = Math.floor((Math.random() * imgCt2));
-          document.getElementById("titleImage2").src = titlePic2[randomNum];
-          randomNum = Math.floor((Math.random() * imgCt3));
-          document.getElementById("titleImage3").src = titlePic3[randomNum];
-          break;
-        case 1:
-          randomNum = Math.floor((Math.random() * imgCt));
-          document.getElementById("titleImage").src = titlePic[randomNum];
-          break;
-        case 2:
-          randomNum = Math.floor((Math.random() * imgCt2));
-          document.getElementById("titleImage2").src = titlePic2[randomNum];
-          break;
-        case 3:
-          randomNum = Math.floor((Math.random() * imgCt3));
-          document.getElementById("titleImage3").src = titlePic3[randomNum];
-          break;
-        default:break;
-      }
-  }
-
-setInterval('choosePic(1)',5000);
-
 jQuery(document).ready(function($){
-    // initialize choosePic after page ready
-    choosePic(1);
 
 // commented to remove menu stickiness -- this looks bad on a smartphone currently
 //	// from http://stackoverflow.com/questions/14499024/fix-menu-bar-at-top-of-page-once-header-has-been-scrolled-past
