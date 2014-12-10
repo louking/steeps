@@ -57,6 +57,7 @@
             ?>
 
             <div class="navigation-area">
+                <?php /* moved to Sidebar-1 and Subpage Buttons Sidebar 
                 <div class="navigation-button-area">
                     <div class="navigation-buttons">
                             <a href="https://www.facebook.com/groups/fredericksteeplechasers/" target="_blank"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/11/FB_FindUsOnFacebook-114-e1417379795693.jpg"></a>
@@ -66,6 +67,7 @@
                         <?php echo do_shortcode('[maxbutton name="race results"]'); ?>
                     </div>
                 </div><!-- .navigation-buttons -->
+                */ ?>
     
                 <nav id="site-navigation" class="main-navigation" role="navigation">
                     <button class="menu-toggle"><?php _e( 'Primary Menu', 'steeps' ); ?></button>
@@ -75,12 +77,14 @@
             </div><!-- #navigation-area -->
         </div><!-- .header-images -->
 
-        <div class="breadcrumbs">
-            <?php if(function_exists('bcn_display'))
-            {
-                bcn_display();
-            }?>
-        </div><!-- #breadcrumbs -->
+        <?php if (!is_home()) { ?>
+            <div class="breadcrumbs">
+                <?php if(function_exists('bcn_display'))
+                {
+                    bcn_display();
+                }?>
+            </div><!-- #breadcrumbs -->
+        <?php } ?>
     
     </header><!-- #masthead -->
 

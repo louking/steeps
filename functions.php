@@ -79,16 +79,25 @@ function steeps_widgets_init() {
 	register_sidebar( array(
 		'name'          => __( 'Sidebar', 'steeps' ),
 		'id'            => 'sidebar-1',
-		'description'   => '',
+		'description'   => 'Sidebar for home page',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h1 class="widget-title">',
 		'after_title'   => '</h1>',
 	) );
 	register_sidebar( array(
-		'name'          => __( 'Sidebar-2', 'steeps' ),
+		'name'          => __( 'Newsletters Sidebar', 'steeps' ),
 		'id'            => 'sidebar-2',
-		'description'   => '',
+		'description'   => 'Sidebar for newsletters page',
+		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+		'after_widget'  => '</aside>',
+		'before_title'  => '<h1 class="widget-title">',
+		'after_title'   => '</h1>',
+	) );
+	register_sidebar( array(
+		'name'          => __( 'Subpage Buttons Sidebar', 'steeps' ),
+		'id'            => 'sidebar-3',
+		'description'   => 'Sidebar for pages other than home and newsletters pages',
 		'before_widget' => '<aside id="%1$s" class="widget %2$s">',
 		'after_widget'  => '</aside>',
 		'before_title'  => '<h1 class="widget-title">',

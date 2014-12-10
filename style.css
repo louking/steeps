@@ -457,7 +457,7 @@ a:active {
 --------------------------------------------------------------*/
 .navigation-area {
     position: absolute;
-    bottom: 12%;
+    bottom: 20%;
     padding: 0.3em 0 0 0.4rem;
     width: 100%;
     z-index: 99999;
@@ -487,14 +487,20 @@ a:active {
 
 .navigation-button-area {
     float: right;
+    margin-bottom: 15px;
+    direction: rtl;
 }
 
-.navigation-buttons {
+.navigation-button {
+    margin: 12px 0;
 }
 
-.breadcrumbs-buttons {
-    margin-top: 5px;
-    float: right;
+.race-buttons {
+    clear: right;
+}
+
+.race-buttons a img {
+    width: 32%;     /* three races, fit evenly */
 }
 
 .main-navigation ul {
@@ -794,7 +800,7 @@ a:active {
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
     font-weight: bold;
     margin-left: 5%;
-    margin-right: 5%;
+    margin-right: 0%;
     background-color: #122B5F;  /* logo steeple color (darker) */
     color: #ceebf1; /* logo flag color */
     padding: 5px 15px;
@@ -807,6 +813,34 @@ a:active {
 #steeps-factoid-temp {
     display: none;
 }
+
+#quick-link-buttons {
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
+#quick-link-buttons .qlb-text {
+    vertical-align: middle;
+}
+
+#quick-link-buttons .qlb-text::after {
+    content: ">";
+    color: rgb(66,66,66);
+}
+
+#quick-link-buttons a {
+    font-size: 30px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+#quick-link-buttons a img {
+    vertical-align: middle;
+    height: 50px;
+    padding: 0 5px 0 25px;
+}
+
+
 /*--------------------------------------------------------------
 10.2 Asides
 --------------------------------------------------------------*/
