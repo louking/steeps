@@ -24,6 +24,7 @@ and Blueprint http://www.blueprintcss.org/
 /*--------------------------------------------------------------
 >>> TABLE OF CONTENTS:
 ----------------------------------------------------------------
+0.0 Fonts
 1.0 Reset
 2.0 Typography
 3.0 Elements
@@ -47,8 +48,14 @@ and Blueprint http://www.blueprintcss.org/
 --------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
+0.0 Fonts
+--------------------------------------------------------------*/
+@import url(http://fonts.googleapis.com/css?family=Dosis);
+
+/*--------------------------------------------------------------
 1.0 Reset
 --------------------------------------------------------------*/
+
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -815,12 +822,14 @@ a:active {
 }
 
 #quick-link-buttons {
+    margin-left: 10%;
     margin-top: 20px;
     margin-bottom: 25px;
 }
 
 #quick-link-buttons .qlb-text {
     vertical-align: middle;
+    font-family: Dosis, Georgia, Palatino, Times New Roman, serif;
 }
 
 #quick-link-buttons .qlb-text::after {
@@ -957,6 +966,16 @@ a:active {
 {
     background-color: #ceebf1; /* logo flag color */
 }
+
+.content-title a,
+.widget-title a
+{
+    font-size: xx-large;
+    font-family: Dosis, Georgia, Palatino, Times New Roman, serif;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
 
 .type-page .entry-title {
     /*display: none;*/
