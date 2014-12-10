@@ -494,7 +494,7 @@ a:active {
 
 .navigation-button-area {
     float: right;
-    margin-bottom: 15px;
+    margin-bottom: 0px;
     direction: rtl;
 }
 
