@@ -506,8 +506,11 @@ a:active {
     clear: right;
 }
 
+.race-buttons a {
+    text-decoration: none;    
+}
 .race-buttons a img {
-    width: 32%;     /* three races, fit evenly */
+    width: 30%;     /* three races, fit evenly */
 }
 
 .main-navigation ul {
@@ -964,10 +967,18 @@ a:active {
     background-color: #ceebf1; /* logo flag color */
 }
 
+.widget-title h1 {
+    font-size: 160%;
+    font-family: Dosis, Georgia, Palatino, Times New Roman, serif;
+    text-decoration: none;
+    text-transform: uppercase;
+    color: rgb(12,126,170);
+}
+
 .content-title a,
 .widget-title a
 {
-    font-size: xx-large;
+    font-size: 160%;
     font-family: Dosis, Georgia, Palatino, Times New Roman, serif;
     text-decoration: none;
     text-transform: uppercase;
