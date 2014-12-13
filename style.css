@@ -840,17 +840,20 @@ a:active {
 }
 
 #quick-link-buttons a {
-    font-size: 30px;
+    font-size: 150%;
     text-decoration: none;
     text-transform: uppercase;
 }
 
 #quick-link-buttons a img {
     vertical-align: middle;
-    height: 50px;
+    width: 70px;    /* percentage looks funny */
     padding: 0 5px 0 25px;
 }
 
+#quick-link-buttons .quick-link-block {
+    display: inline-block;
+}
 
 /*--------------------------------------------------------------
 10.2 Asides
