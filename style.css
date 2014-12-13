@@ -903,8 +903,8 @@ a:active {
 .header-images #slideshow-wrappercustom {
     position: relative;
     top: 0;
-    left: 15%;
-    max-width: 1020px; /* .site {max-width:1200px} minus [this] {left:20%} */
+    left: 15%;          /* match .banner-logo {width} for no overlap */
+    max-width: 1020px;  /* .site {max-width:1200px} minus [this] {left:20%} */
 }
 
 .header-images #imagecustom {
