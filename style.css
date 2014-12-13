@@ -908,6 +908,7 @@ a:active {
     left: 10%;
     /*margin-left: -275px;*/
     margin-top: 10px;
+    max-width: 1080px; /* .site {max-width:1200px} minus [this] {left:10%} */
 }
 
 .header-images #imagecustom {
