@@ -894,9 +894,7 @@ a:active {
     position: absolute;
     top: 2px;
     left: 0;
-    /*margin-left: -400px;*/
-    height: 60%;
-    border: 1px solid black;
+    width: 15%;
     padding: 2px;
     background-color: white;
     z-index: 200;   /* make above slideshow elements */
@@ -905,10 +903,8 @@ a:active {
 .header-images #slideshow-wrappercustom {
     position: relative;
     top: 0;
-    left: 10%;
-    /*margin-left: -275px;*/
-    margin-top: 10px;
-    max-width: 1080px; /* .site {max-width:1200px} minus [this] {left:10%} */
+    left: 15%;
+    max-width: 1020px; /* .site {max-width:1200px} minus [this] {left:20%} */
 }
 
 .header-images #imagecustom {
