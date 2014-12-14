@@ -13,11 +13,6 @@
 
 get_header(); ?>
 
-	<div id="steeps-factoid">
-		<span id="steeps-factoid-base">The Steeps </span><span id="steeps-factoid-fact"></span>
-		<span id="steeps-factoid-temp"></span>
-	</div>
-	
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 

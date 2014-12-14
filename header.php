@@ -77,6 +77,11 @@
             </div><!-- #navigation-area -->
         </div><!-- .header-images -->
 
+    	<div id="steeps-factoid">
+            <span id="steeps-factoid-base">The Steeps </span><span id="steeps-factoid-fact"></span>
+            <span id="steeps-factoid-temp"></span>
+        </div>
+
         <?php if (!is_home()) { ?>
             <div class="breadcrumbs">
                 <?php if(function_exists('bcn_display'))
@@ -89,3 +94,5 @@
     </header><!-- #masthead -->
 
     <div id="content" class="site-content">
+
+	
