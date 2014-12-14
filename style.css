@@ -893,7 +893,7 @@ a:active {
 
 .header-images {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .banner-logo {
