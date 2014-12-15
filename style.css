@@ -910,7 +910,7 @@ a:active {
     position: relative;
     top: 0;
     left: 15%;          /* match .banner-logo {width} for no overlap */
-    max-width: 1016px;  /* .site {max-width:1200px} minus [this] {left:20%} minus 2 times.banner-logo{padding:2px} */
+    max-width: 85%;
 }
 
 .header-images #imagecustom {
