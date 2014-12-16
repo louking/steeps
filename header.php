@@ -46,13 +46,11 @@
             <a href="http://www.steeplechasers.org/steepsv2/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/fsrc-logo-2014.jpg" alt="Banner"/></a>
             <?php 
             slideshow(true, null, false, array('layout' => 'responsive',
-                                            'resheight' => '250',
-                                            'resheighttype' => 'px',
                                             'auto' => 'true',
                                             'gallery_id' => '1',
                                             'showthumbs' => 'false',
                                             //'shownav' => 'false',   // needed for navigation to actually work
-                                            'autospeed' => '10',
+                                            'autospeed' => '15',
                                             'showinfo' => 'false'));
             ?>
 
