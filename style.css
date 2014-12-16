@@ -464,7 +464,7 @@ a:active {
 --------------------------------------------------------------*/
 .navigation-area {
     position: absolute;
-    bottom: 20%;
+    bottom: 10%;
     padding: 0.3em 0 0 0.4rem;
     width: 100%;
     z-index: 99999;
@@ -607,14 +607,62 @@ a:active {
 }
 
 @media screen and (max-width: 600px) {
+    .navigation-area {
+        position: static;
+        display: inline-block;
+    }
+    
     .menu-toggle,
-    .main-navigation.toggled .nav-menu {
-    display: block;
+    .main-navigation.toggled .nav-menu,
+    .main-navigation.toggled ul,
+    .main-navigation.toggled ul ul,
+    .main-navigation.toggled ul ul ul
+    {
+        display: block;
+        float: none;
+        background: #0e76bd;  /* logo steeple color */
+        font-family: Verdana,Geneva,sans-serif;
+        font-weight: bold;    
+        padding-top: 6px;
+        padding-bottom: 6px;
+        color: white;
+        text-shadow: none;
+        box-shadow: none;
+        border: none;
+        text-transform: capitalize;
+        position: static;
+        font-size: 1.6rem;
     }
 
-    .main-navigation ul {
-    display: none;
+    .main-navigation {
+        width: 100%;
     }
+    
+    .main-navigation ul {
+        display: none;
+        position: static;
+    }
+    
+    .main-navigation ul ul,
+    .main-navigation ul ul ul
+    {
+        float: none;
+        left: auto;
+    }
+    
+    .main-navigation ul li
+    {
+        float: none;
+        display: list-item;
+        left: +1rem;
+        font-size: 1.6rem;
+    }
+
+    .navigation-button-area {
+            float: none;
+            direction: inherit;
+        }
+    
 }
 
 .site-main .comment-navigation,
@@ -813,6 +861,7 @@ a:active {
     background-color: #122B5F;  /* logo steeple color (darker) */
     color: #ceebf1; /* logo flag color */
     padding: 5px 15px;
+    display: block;
 }
 
 #steeps-factoid-base {
@@ -929,6 +978,28 @@ a:active {
     overflow: hidden;
     width: 33%;
 }
+
+@media screen and (max-width: 600px) {
+    .content-area {
+        width: 100%;
+    }
+    .site-main {
+        margin: 0 0 0 0;
+    }
+    .site-content .widget-area {
+        width: 100%;
+    }
+
+    #steeps-factoid {
+        position: static;
+        margin-left: 0;
+    }
+    
+    #quick-link-buttons {
+        margin-left: 0;
+    }
+}
+
 .content-area,
 .widget-area {
     padding: 0.3em 0 0 0.4rem;
