@@ -54,15 +54,14 @@
                                             'fadespeed' => '10',
                                             'showinfo' => 'false'));
             ?>
-
-            <div class="navigation-area">
-                <nav id="site-navigation" class="main-navigation" role="navigation">
-                    <button class="menu-toggle" aria-controls="menu" aria-expanded="false"><?php _e( 'Menu', 'steeps' ); ?></button>
-                    <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
-                </nav><!-- #site-navigation -->
-                
-            </div><!-- #navigation-area -->
         </div><!-- .header-images -->
+
+        <div class="navigation-area">
+            <nav id="site-navigation" class="main-navigation" role="navigation">
+                <button class="menu-toggle" aria-controls="menu" aria-expanded="false"><?php _e( 'Menu', 'steeps' ); ?></button>
+                <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+            </nav><!-- #site-navigation -->
+        </div><!-- #navigation-area -->
 
     	<div id="steeps-factoid">
             <span id="steeps-factoid-base">The Steeps </span><span id="steeps-factoid-fact"></span>

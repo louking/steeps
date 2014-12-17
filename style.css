@@ -463,20 +463,24 @@ a:active {
 5.2 Menus
 --------------------------------------------------------------*/
 .navigation-area {
-    position: absolute;
-    bottom: 0%;
-    padding: 0.3em 0 0 0.4rem;
+    padding-left: 0.4rem;
     width: 100%;
     z-index: 99999;
+    overflow: visible;
 }
 
-.main-navigation,
-.breadcrumbs {
+.main-navigation {
     display: block;
     float: left;
+    width: 100%;
     z-index: 100000;
     padding-top: 6px;
     padding-bottom: 6px;
+}
+
+
+.breadcrumbs {
+    clear: both;
 }
 
 .main-navigation {
@@ -860,12 +864,13 @@ a:active {
 #steeps-factoid {
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
     font-weight: bold;
-    margin-left: 5%;
+    margin-left: 0.4rem;    /* match .navigation-area {padding-left} */
     margin-right: 0%;
     background-color: #122B5F;  /* logo steeple color (darker) */
     color: #ceebf1; /* logo flag color */
     padding: 5px 15px;
     display: block;
+    clear: both
 }
 
 #steeps-factoid-base {
@@ -951,7 +956,7 @@ a:active {
 
 .banner-logo {
     position: absolute;
-    top: 2px;
+    top: 11%;
     left: 0;
     width: 15%;
     padding: 2px;
@@ -995,6 +1000,7 @@ a:active {
     }
 
     #steeps-factoid {
+        clear: both;
         position: static;
         margin-left: 0;
     }
