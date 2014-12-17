@@ -49,8 +49,9 @@
                                             'auto' => 'true',
                                             'gallery_id' => '1',
                                             'showthumbs' => 'false',
-                                            //'shownav' => 'false',   // needed for navigation to actually work
-                                            'autospeed' => '15',
+                                            'autospeed' => '6',
+                                            'orderby' => 'random',
+                                            'fadespeed' => '10',
                                             'showinfo' => 'false'));
             ?>
 
