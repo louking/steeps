@@ -570,14 +570,18 @@ a:active {
 }
 
 /* pull up 1st level submenu */
-.main-navigation ul li:hover > ul {
+.main-navigation ul li:hover > ul,
+.main-navigation ul li.focus > ul
+{
     left: auto;
     background-color: #ceebf1; /* logo flag color */
     color: rgb(66,66,66);
 }
 
 /* pull up 2nd level submenu */
-.main-navigation ul ul li:hover > ul {
+.main-navigation ul ul li:hover > ul,
+.main-navigation ul ul li.focus > ul
+{
     left: 100%;
     background-color: #ceebf1; /* logo flag color */
     color: rgb(66,66,66);
