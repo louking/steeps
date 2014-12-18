@@ -11,15 +11,16 @@
 
 get_header(); ?>
 
-        <?php 
-            $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
-            $args = array(
-              'posts_per_page' => 3,
-              'paged' => $paged
-            );
-            
-            query_posts($args);
-        ?>
+	<?php 
+		$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+		$args = array(
+		  'posts_per_page' => 5,
+		  'paged' => $paged,
+		  'cat'	=> -7	/* don't display Steeps Factoids (cat=7) */
+		);
+		
+		query_posts($args);
+	?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
@@ -49,5 +50,7 @@ get_header(); ?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->
+
+<?php get_sidebar('sidebar-3');  ?>
 
 <?php get_footer(); ?>
