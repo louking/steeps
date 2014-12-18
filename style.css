@@ -559,7 +559,9 @@ a:active {
 /* support three levels of menu -- add more of these for more levels */
 .main-navigation li:hover > a,
 .main-navigation li:hover ul li > a,
-.main-navigation li:hover ul ul li > a
+.main-navigation li.focus ul li > a,
+.main-navigation li:hover ul ul li > a,
+.main-navigation li.focus ul ul li > a
 {
     background-color: #ceebf1; /* logo flag color */
     color: rgb(66,66,66);
