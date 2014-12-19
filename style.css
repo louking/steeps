@@ -873,7 +873,7 @@ img.aligncenter { display: block; margin-left: auto; margin-right: auto; }
     font-weight: bold;
     margin-left: 0.4rem;    /* match .navigation-area {padding-left} */
     margin-right: 0%;
-    background-color: #122B5F;  /* logo steeple color (darker) */
+    background-color: #122B5F;  /* logo steeple color (darker) dark cobalt blue, or saturated volkswagen enzian blue (per  http://encycolorpedia.com/1a2e58 )*/
     color: #ceebf1; /* logo flag color */
     padding: 5px 15px;
     display: block;

@@ -43,7 +43,7 @@
         </div>
 
         <div class="header-images">
-            <a href="http://www.steeplechasers.org/steepsv2/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FSRC-Logo2012-FSRC-cornfl.jpg" alt="Banner"/></a>
+            <a href="http://www.steeplechasers.org/steepsv2/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FSRC-Logo2012-FSRC-dark-c.jpg" alt="Banner"/></a>
             <?php 
             slideshow(true, null, false, array('layout' => 'responsive',
                                             'auto' => 'true',
