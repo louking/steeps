@@ -750,6 +750,11 @@ a:active {
 /*--------------------------------------------------------------
 7.0 Alignments
 --------------------------------------------------------------*/
+/* from http://codex.wordpress.org/Wrapping_Text_Around_Images */
+img.alignright { float: right; margin: 0 0 1em 1em; }
+img.alignleft { float: left; margin: 0 1em 1em 0; }
+img.aligncenter { display: block; margin-left: auto; margin-right: auto; }
+
 .alignleft {
     display: inline;
     float: left;
@@ -988,6 +993,18 @@ a:active {
     float: right;
     overflow: hidden;
     width: 33%;
+}
+
+img.page-icon-15pc {
+    max-width: 15%;
+}
+
+img.page-icon-10pc {
+    max-width: 10%;
+}
+
+img.page-icon-20pc {
+    max-width: 20%;
 }
 
 @media screen and (max-width: 600px) {

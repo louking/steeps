@@ -18,16 +18,16 @@ get_header(); ?>
 
 			<div id="quick-link-buttons" class="quick-link-buttons">
 				<span class="quick-link-block">
-					<a href="training"><img src="wp-content/uploads/2014/12/silhouette-train.jpg"><span class="qlb-text">Train</span></a>
+					<a href="training"><img src="wp-content/uploads/2014/12/FRSC_training.png"><span class="qlb-text">Train</span></a>
 				</span>
 				<span class="quick-link-block">
-					<a href="competition"><img src="wp-content/uploads/2014/12/silhouette-race.jpg"><span class="qlb-text">Race</span></a>
+					<a href="competition"><img src="wp-content/uploads/2014/12/FRSC_runners.png"><span class="qlb-text">Race</span></a>
 				</span>
 				<span class="quick-link-block">
-					<a href="membership/join"><img src="wp-content/uploads/2014/12/silhouette-join.jpg"><span class="qlb-text">Join</span></a>
+					<a href="membership/join"><img src="wp-content/uploads/2014/12/FRSC_Join.png"><span class="qlb-text">Join</span></a>
 				</span>
 				<span class="quick-link-block">
-					<a href="volunteer"><img src="wp-content/uploads/2014/12/silhouette-volunteer.jpg"><span class="qlb-text">Volunteer</span></a>
+					<a href="volunteer"><img src="wp-content/uploads/2014/12/FRSC_volunteer.png"><span class="qlb-text">Volunteer</span></a>
 				</span>
 			</div>
 			
