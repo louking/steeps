@@ -121,6 +121,11 @@ function steeps_scripts() {
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );
 	}
+	
+	if ( is_callable ('get_browser_version') && is_ie() && get_browser_version() < 9) {
+		wp_enqueue_script ( 'selectivizr', get_template_directory_uri() . '/js/selectivizr-min.js', array(), '20141226', false);
+		wp_enqueue_script ( 'html5shiv', get_template_directory_uri() . '/js/html5shiv-printshiv.js', array(), '20141226', false);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'steeps_scripts' );
 

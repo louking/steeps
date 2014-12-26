@@ -463,7 +463,8 @@ a:active {
 5.2 Menus
 --------------------------------------------------------------*/
 .navigation-area {
-    padding-left: 0.4rem;
+    padding-left: 4px;      /* support older browsers */
+    padding-left: 0.4rem;   /* preferred */
     width: 100%;
     z-index: 99999;
     overflow: visible;
@@ -599,14 +600,17 @@ a:active {
 }
 
 .main-navigation .menu-item > a {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 10px; /* support older browsers */
+    padding-left: 1rem; /* preferred */
+    padding-left: 10px;
+    padding-right: 1rem;    
     text-transform: capitalize;
     color: white;
 }
 .breadcrumbs {
     text-transform: lowercase;
-    padding-left: 1rem;
+    padding-left: 10px; /* support older browsers */
+    padding-left: 1rem; /* preferred */
 }
 .breadcrumbs span a {
 }
@@ -641,7 +645,8 @@ a:active {
         border: none;
         text-transform: capitalize;
         position: static;
-        font-size: 1.6rem;
+        font-size: 16px;    /* support older browsers */
+        font-size: 1.6rem;  /* preferred */
     }
 
     .main-navigation {
@@ -664,7 +669,9 @@ a:active {
     {
         float: none;
         display: list-item;
-        left: +1rem;
+        left: +10px;     /* support older browsers */
+        left: +1rem;    /* preferred */
+        font-size: 16px; 
         font-size: 1.6rem;
     }
 
@@ -702,7 +709,8 @@ a:active {
 }
 
 .sub-menu li a {
-    margin-left: +1rem;
+    margin-left: +10px;     /* support older browsers */
+    margin-left: +1rem;     /* preferred */
 }
 
 .site-header table {
@@ -871,6 +879,7 @@ img.aligncenter { display: block; margin-left: auto; margin-right: auto; }
 #steeps-factoid {
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif
     font-weight: bold;
+    margin-left:  4px;  /* support older browsers */
     margin-left: 0.4rem;    /* match .navigation-area {padding-left} */
     margin-right: 0%;
     background-color: #122B5F;  /* logo steeple color (darker) dark cobalt blue, or saturated volkswagen enzian blue (per  http://encycolorpedia.com/1a2e58 )*/
@@ -1031,7 +1040,8 @@ img.page-icon-20pc {
 
 .content-area,
 .widget-area {
-    padding: 0.3em 0 0 0.4rem;
+    padding: 3px 0 0 4px;           /* support older browsers */
+    padding: 0.3rem 0 0 0.4rem;     /* preferred */
 }
 .site-footer {
     clear: both;
@@ -1048,7 +1058,9 @@ img.page-icon-20pc {
     font-size: x-small;
     line-height: 1em;
     vertical-align: middle;
-    padding-left: 0.5rem;
+    padding-left: 5px;      /* support older browsers */
+    padding-left: 0.5rem;   /* preferred */
+    padding-right: 5px;
     padding-right: 0.5rem;
     padding-top: 0.2em;
     padding-bottom: 0.2em;
