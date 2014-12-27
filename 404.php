@@ -16,7 +16,23 @@ get_header(); ?>
 				</header><!-- .page-header -->
 
 				<div class="page-content">
-					<p><?php _e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'steeps' ); ?></p>
+					
+					<?php if ($_SERVER["REQUEST_URI"] === '/racecalendar.html') { ?>
+						<p>Race calendar is now called Events, please click on <a href="<?php echo get_site_url(); ?>/events/"><?php echo get_site_url(); ?>/events/</a> and bookmark the new page.
+					
+					<?php } elseif ($_SERVER["REQUEST_URI"] === '/competition.html') { ?>
+						<p>Competition has moved, please click on <a href="<?php echo get_site_url(); ?>/competition/"><?php echo get_site_url(); ?>/competition/</a> and bookmark the new page.
+					
+					<?php } elseif ($_SERVER["REQUEST_URI"] === '/current_results.html') { ?>
+						<p>Current Results has moved, please click on <a href="<?php echo get_site_url(); ?>/competition/current-results/"><?php echo get_site_url(); ?>/competition/current-results/</a> and bookmark the new page.
+					
+					<?php } elseif ($_SERVER["REQUEST_URI"] === '/membership.html') { ?>
+						<p>Membership has moved, please click on <a href="<?php echo get_site_url(); ?>/membership/"><?php echo get_site_url(); ?>/membership/</a> and bookmark the new page.
+					
+					<?php } else  { ?>
+						<p><?php _e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'steeps' ); ?></p>
+					
+					<?php } ?>
 
 					<?php get_search_form(); ?>
 
