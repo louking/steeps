@@ -61,8 +61,8 @@
 
         <div class="navigation-area">
             <nav id="site-navigation" class="main-navigation" role="navigation">
-                <button class="menu-toggle" aria-controls="menu" aria-expanded="false"><?php _e( 'Menu', 'steeps' ); ?></button>
-                <?php wp_nav_menu( array( 'theme_location' => 'primary' ) ); ?>
+                <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><?php _e( 'Menu', 'steeps' ); ?></button>
+                <?php wp_nav_menu( array( 'theme_location' => 'primary', 'menu_id' => 'primary-menu' ) ); ?>
             </nav><!-- #site-navigation -->
         </div><!-- #navigation-area -->
 
