@@ -1120,6 +1120,12 @@ img.page-icon-20pc {
     font-weight: bold;
 }
 
+/* special layout for competition race-csv page */
+.events-race-csv p {
+    margin: 0;
+    padding: 0;
+}
+
 /*--------------------------------------------------------------
 11.0 Infinite scroll
 --------------------------------------------------------------*/
