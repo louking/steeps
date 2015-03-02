@@ -24,6 +24,9 @@ get_header(); ?>
 
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
+		    <br>
+		    <p>Newsletter content comes from the members. Please send proposed articles and photos to
+		    <a href="mailto:newsletter@steeplechasers.org" target="_blank">newsletter@steeplechasers.org</a>.</p>
 
 		<?php if ( have_posts() ) : ?>
 
