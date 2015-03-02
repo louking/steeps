@@ -18,16 +18,16 @@ get_header(); ?>
 
 			<div id="quick-link-buttons" class="quick-link-buttons">
 				<span class="quick-link-block">
-					<a href="<?php echo get_site_url(); ?>/training"><img src="wp-content/uploads/2014/12/FRSC_training.png"><span class="qlb-text">Train</span></a>
+					<a href="<?php echo get_site_url(); ?>/training"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FRSC_training.png"><span class="qlb-text">Train</span></a>
 				</span>
 				<span class="quick-link-block">
-					<a href="<?php echo get_site_url(); ?>/competition"><img src="wp-content/uploads/2014/12/FRSC_runners.png"><span class="qlb-text">Race</span></a>
+					<a href="<?php echo get_site_url(); ?>/competition"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FRSC_runners.png"><span class="qlb-text">Race</span></a>
 				</span>
 				<span class="quick-link-block">
-					<a href="<?php echo get_site_url(); ?>/membership/join"><img src="wp-content/uploads/2014/12/FRSC_Join.png"><span class="qlb-text">Join</span></a>
+					<a href="<?php echo get_site_url(); ?>/membership/join"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FRSC_Join.png"><span class="qlb-text">Join</span></a>
 				</span>
 				<span class="quick-link-block">
-					<a href="<?php echo get_site_url(); ?>/volunteer/upcoming-volunteer-needs/">"><img src="wp-content/uploads/2014/12/FRSC_volunteer.png"><span class="qlb-text">Volunteer</span></a>
+					<a href="<?php echo get_site_url(); ?>/volunteer/upcoming-volunteer-needs/"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FRSC_volunteer.png"><span class="qlb-text">Volunteer</span></a>
 				</span>
 			</div>
 			
