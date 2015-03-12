@@ -34,6 +34,12 @@
 </div><!-- #page -->
 </div><!-- #background -->
 
+<?php if (get_site_url() != "http://steeplechasers.org") { ?>
+    <style>
+        .site {background: gold;}
+    </style>
+<?php } ?>
+
 <?php wp_footer(); ?>
 
 </body>
