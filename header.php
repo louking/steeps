@@ -46,7 +46,7 @@
         </div>
 
         <div class="header-images">
-            <a href="<?php echo get_site_url(); ?>/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/FSRC-Logo2012-FSRC-dark-c.jpg" alt="Banner"/></a>
+            <a href="<?php echo get_site_url(); ?>/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2015/03/FSRC3-2015-03-18-small.png" alt="Banner"/></a>
             <?php 
             slideshow(true, null, false, array('layout' => 'responsive',
                                             'auto' => 'true',
