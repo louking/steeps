@@ -1082,12 +1082,19 @@ img.page-icon-20pc {
     background-color: #ceebf1; /* logo flag color */
 }
 
-.widget-title h1 {
+.widget_search .widget-title,
+.widget-title h1
+{
     font-size: 140%;
     font-family: Dosis, Georgia, Palatino, Times New Roman, serif;
     text-decoration: none;
     text-transform: uppercase;
     color: rgb(12,126,170);
+}
+
+.widget_search .widget-title
+{
+    font-size: 196%;    /* 1.4*1.4 to emulate .widget-title a below */
 }
 
 .content-title a,
