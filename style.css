@@ -691,6 +691,8 @@ a:active {
 
 .site-main ul li {list-style-type:disc;}
 .site-main ul li ul li {list-style-type:circle;}
+.site-main ol li {list-style-type:decimal;}
+.site-main ol li ol li {list-style-type:lower-alpha;}
 
 
 .comment-navigation .nav-previous,
