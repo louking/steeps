@@ -36,8 +36,13 @@ get_header(); ?>
 			</div><!-- .content-title -->
 	
 			<?php
-			/* Don't display Steeps Factoids (cat=7) under announcements */
-			query_posts( 'cat=-7' );	
+			/* Don't display Steeps Factoids (cat=7) under announcements, allow paging */
+			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+			$args = array(
+				'cat' 	=> -7,
+				'paged' => $paged
+			);
+			query_posts( $args );
 
 			if ( have_posts() ) : ?>
 	
