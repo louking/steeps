@@ -47,7 +47,7 @@
 
         <div class="header-images">
             <a href="<?php echo get_site_url(); ?>/"><img class="banner-logo" src="<?php echo get_site_url(); ?>/wp-content/uploads/2015/03/FSRC3-2015-03-18-small.png" alt="Banner"/></a>
-            <?php 
+            <?php /* this doesn't work with version 1.5.3 as it includes multiple (all?) galleries
             slideshow(true, null, false, array('layout' => 'responsive',
                                             'auto' => 'true',
                                             'gallery_id' => '1',
@@ -55,7 +55,8 @@
                                             'autospeed' => '6',
                                             'orderby' => 'random',
                                             'fadespeed' => '10',
-                                            'showinfo' => 'false'));
+                                            'showinfo' => 'false')); */
+            echo do_shortcode('[tribulant_slideshow gallery_id="1" layout="responsive" auto="true" showthumbs="false" autospeed="6" orderby="random" fadespeed="10" showinfo="false"]');
             ?>
         </div><!-- .header-images -->
 
