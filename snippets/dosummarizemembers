@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# use virtualenv venv
+source /var/chroot/home/content/89/11476389/devhome/venv/bin/activate
+
+# save files here
+pushd /var/chroot/home/content/89/11476389/html/wp-content/uploads/membership
+
+# summarizemembers - requires python package runningclub 1.9.1
+summarizemembers fsrc members-stats.json members-summary.csv
+
+# back to where we were
+popd
