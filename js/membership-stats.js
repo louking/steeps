@@ -1,6 +1,8 @@
-var margin = {top: 40, right: 70, bottom: 35, left: 50},
+var margin = {top: 40, right: 80, bottom: 45, left: 50},
     width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 500 - margin.top - margin.bottom,
+    viewbox_width = width + margin.left + margin.right,
+    viewbox_height = height + margin.top + margin.bottom;
 
 var parseDate = d3.time.format("%d-%b-%y").parse,
     bisectDate = d3.bisector(function(d) { return d.date; }).left;
@@ -38,10 +40,22 @@ var svg = d3.select(".entry-content")
     .text("Move your mouse around or touch screen to see the number of club members on any particular date.")
   .append("svg")
     .attr("class", "chart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("width", viewbox_width)
+    .attr("height", viewbox_height)
+    .attr("viewBox", "0 0 " + viewbox_width + " " + viewbox_height)
+    .attr("preserveAspectRation", "xMidYMid")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// make responsive, fit within parent
+var aspect = viewbox_width / viewbox_height,
+    chart = d3.select(".chart"),
+    entrycontent = d3.select(".entry-content");
+window.onresize = function() {
+    var targetWidth = parseFloat(entrycontent.style("width"));  // assumes width in px
+    chart.attr("width", targetWidth);
+    chart.attr("height", targetWidth / aspect);
+};
 
 var mouseoverlay = svg.append("rect")
     .attr("class", "overlay")
@@ -135,18 +149,18 @@ d3.json("/wp-content/uploads/membership/membership-stats.json", function(error, 
       .data(colormap)
     .enter().append("g")
       .attr("class", "legend")
-      .attr("transform", function(d, i) { return "translate(" + i * 80 + ",0)"; });
+      .attr("transform", function(d, i) { return "translate(" + i * 90 + ",0)"; });
 
   legend.append("rect")
-      .attr("y", height + margin.bottom - 10)
-      .attr("x", 50)
-      .attr("width", 12)
-      .attr("height", 12)
+      .attr("y", height + margin.bottom - 15)
+      .attr("x", 60)
+      .attr("width", 15)
+      .attr("height", 15)
       .style("fill", function(d) { return d.color });
 
   legend.append("text")
-      .attr("x", 20)
-      .attr("y", height + margin.bottom - 10)
+      .attr("x", 15)
+      .attr("y", height + margin.bottom - 15)
       .attr("dy", ".8em")
       .style("text-anchor", "bottom")
       .text(function(d) { return d.year; });
