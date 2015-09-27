@@ -19,9 +19,8 @@ function datatables_csv(fileuri, tableid, dtoptions) {
     tbl.append("tbody")
       .selectAll("tr")
           .data(rows.slice(1))
-        .enter().append("tr")
-
-      .selectAll("td")
+      .enter().append("tr")
+        .selectAll("td")
           .data(function(d){ return d; })
         .enter().append("td")
           .text(function(d){ return d; });
