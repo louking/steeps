@@ -7,7 +7,7 @@ source /var/chroot/home/content/89/11476389/devhome/venv/bin/activate
 pushd /var/chroot/home/content/89/11476389/html/wp-content/uploads/membership
 
 # summarizemembers - requires python package runningclub 1.9.1
-summarizemembers fsrc members-stats.json members-summary.csv
+summarizemembers fsrc membership-stats.json membership-summary.csv
 
 # back to where we were
 popd
