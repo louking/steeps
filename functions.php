@@ -168,3 +168,12 @@ require get_template_directory() . '/inc/customizer.php';
  * Load Jetpack compatibility file.
  */
 require get_template_directory() . '/inc/jetpack.php';
+
+/**
+* shortcodes
+*/
+
+function steepscomment_shortcode($atts) {
+	return '';
+}
+add_shortcode('steepscomment', 'steepscomment_shortcode');
