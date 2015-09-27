@@ -1,5 +1,10 @@
 .chart {
+  font-family: Verdana,Geneva,sans-serif;
   font: 10px sans-serif;
+}
+
+.chart .heading {
+  font: 15px sans-serif;
 }
 
 .axis path,

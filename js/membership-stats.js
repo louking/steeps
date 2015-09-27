@@ -1,4 +1,4 @@
-var margin = {top: 20, right: 70, bottom: 35, left: 50},
+var margin = {top: 40, right: 70, bottom: 35, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -33,7 +33,10 @@ var line = d3.svg.line()
     .y(function(d) { 
       return y(d.nummembers); });
 
-var svg = d3.select(".entry-content").append("svg")
+var svg = d3.select(".entry-content")
+  .append("p")
+    .text("Move your mouse around or touch screen to see the number of club members on any particular date.")
+  .append("svg")
     .attr("class", "chart")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -53,6 +56,12 @@ x.domain([jan1, dec31]);
 
 d3.json("/wp-content/uploads/membership/membership-stats.json", function(error, data) {
   if (error) throw error;
+
+  // do this before parsing all the dates
+  var lastyear = d3.keys(data)[d3.keys(data).length-1],
+      lastdoy = data[lastyear][data[lastyear].length-1].date;
+  lastdoy = formatDate(parseDate(lastdoy));
+  var lastdate = lastdoy + "/" + lastyear;
 
   // data is object by year of list of objects by {'date':date, 'nummembers':nummembers}
   // alldata is concatenation of all years' data for y.domain(d3.extent)
@@ -86,6 +95,13 @@ d3.json("/wp-content/uploads/membership/membership-stats.json", function(error, 
       .attr("dy", ".71em")
       .style("text-anchor", "end")
       .text("Num Members");
+
+  svg.append("g")
+      .attr("class", "heading")
+    .append("text")
+      .attr("transform", "translate(" + width/2 + ",-10)")
+      .style("text-anchor", "middle")
+      .text("year on year member count as of " + lastdate);
 
   var index = 0;
   colormap = [];
