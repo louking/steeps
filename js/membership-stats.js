@@ -35,9 +35,13 @@ var line = d3.svg.line()
     .y(function(d) { 
       return y(d.nummembers); });
 
-var svg = d3.select(".entry-content")
+var entry_content = d3.select(".entry-content")
+
+entry_content
   .append("p")
     .text("Move your mouse around or touch screen to see the number of club members on any particular date.")
+
+var svg = entry_content
   .append("svg")
     .attr("class", "chart")
     .attr("width", viewbox_width)
@@ -59,7 +63,7 @@ window.onresize = function() {
 
 var mouseoverlay = svg.append("rect")
     .attr("class", "overlay")
-    .attr("width", width)
+    .attr("width", width + margin.right)
     .attr("height", height);
 
 var formatDate = d3.time.format("%m/%d"); 
