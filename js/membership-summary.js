@@ -3,4 +3,4 @@ var dtoptions = {
     dom: '<"clear">lfrtip',
 }
 
-datatables_csv("/wp-content/uploads/membership/membership-summary.csv", "membership-table", dtoptions);
+datatables_csv("/api/_memberinfo", "membership-table", true, dtoptions);

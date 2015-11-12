@@ -1,0 +1,4 @@
+# this must be copied as .htaccess to location where membership cache is stored to prevent access
+<IfModule mod_rewrite.c>
+RewriteRule \.cache - [F]
+</IfModule>

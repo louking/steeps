@@ -1,10 +1,22 @@
 // assumes empty table in DOM before call
-function datatables_csv(fileuri, tableid, dtoptions) {
+function datatables_csv(fileuri, tableid, api, dtoptions) {
   if (typeof dtoptions === 'undefined') { dtoptions = {}; }
+  if (typeof api === 'undefined') { api = false; }
 
-  d3.text(fileuri, function (datasetText) {
+  d3.text(fileuri, function (contents) {
 
-    var rows = d3.csv.parseRows(datasetText);
+    // if not api, then must be just a file, use its contents
+    if (!api) {
+      data = contents;
+
+    // if api, assumes '{"success":<successval>, "data":<dataset>}' string sent, should be valid json
+    } else {
+      contents = JSON.parse(contents);
+      if (!contents.success) throw "error response from api";
+      data = contents.data;
+    }
+
+    var rows = d3.csv.parseRows(data);
 
     var tbl = d3.select("#" + tableid);
 

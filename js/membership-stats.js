@@ -72,8 +72,11 @@ var parseDate = d3.time.format("%m-%d").parse,
     dec31 = parseDate("12-31");
 x.domain([jan1, dec31]);
 
-d3.json("/wp-content/uploads/membership/membership-stats.json", function(error, data) {
+d3.json("/api/_memberstats", function(error, contents) {
   if (error) throw error;
+  if (!contents.success) throw "error response from api";
+
+  data = contents.data;
 
   // do this before parsing all the dates
   var lastyear = d3.keys(data)[d3.keys(data).length-1],
