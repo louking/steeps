@@ -517,7 +517,7 @@ a:active {
     text-decoration: none;    
 }
 .race-buttons a img {
-    width: 30%;     /* three races, fit evenly */
+    width: 23%;     /* four races, fit evenly */
 }
 
 .main-navigation ul {
