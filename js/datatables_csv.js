@@ -3,6 +3,14 @@ function datatables_csv(fileuri, tableid, api, dtoptions) {
   if (typeof dtoptions === 'undefined') { dtoptions = {}; }
   if (typeof api === 'undefined') { api = false; }
 
+  // show progress -- need jqueryui to be loaded
+  // jQuery("#" + tableid).after('<div id="progressbar"><div class="progress-label">&nbsp;&nbsp;&nbsploading...</div></div>');
+  // progressbar = jQuery("#progressbar");
+  // progressbar.progressbar({
+  //     value: false,
+  // });
+
+
   d3.text(fileuri, function (contents) {
 
     // if not api, then must be just a file, use its contents
@@ -19,6 +27,9 @@ function datatables_csv(fileuri, tableid, api, dtoptions) {
     var rows = d3.csv.parseRows(data);
 
     var tbl = d3.select("#" + tableid);
+
+    // stop showing progress -- need jqueryui to be loaded
+    // progressbar.progressbar("destroy");
 
     // headers
     tbl.append("thead").append("tr")
