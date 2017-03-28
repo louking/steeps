@@ -24,7 +24,6 @@
 					of Frederick, Maryland since 1975.</td>
 					<td><a href="<?php echo get_site_url(); ?>/about/contact-us/">Contact Us</a></td>
 					<td><a href="about/terms-of-use">Terms of Use</a></td>
-					<td style="text-align: center">Graphics by<br /><a href="http://www.freckledart.com/#!tip-line/cun" target="_blank">the Freckled Artist - Siobhan Leonardis</a></td>
 					<td><a href="about/site-map">Site Map</a></td>
 					<td><a href="http://www.rrca.org/" target="_blank"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/RRCA_Website_Icon.jpg"></a></td>
 				</tr>
@@ -34,7 +33,7 @@
 </div><!-- #page -->
 </div><!-- #background -->
 
-<?php if (get_site_url() != "http://steeplechasers.org") { ?>
+<?php if (parse_url(get_site_url(), PHP_URL_HOST) != "steeplechasers.org") { ?>
     <style>
         .site {background: gold;}
     </style>
