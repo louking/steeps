@@ -1020,6 +1020,11 @@ img.page-icon-20pc {
     max-width: 20%;
 }
 
+/* woocommerce support -- after site-main to override */
+.woocommerce-wrapper {    
+    margin: 3px 0 0 0;
+}
+
 @media screen and (max-width: 600px) {
     .content-area {
         width: 100%;

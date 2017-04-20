@@ -177,3 +177,41 @@ function steepscomment_shortcode($atts) {
 	return '';
 }
 add_shortcode('steepscomment', 'steepscomment_shortcode');
+
+/**
+ * woocommerce support
+**/
+
+/* tell woocommerce how we wrap content for steeps theme pages */
+remove_action( 'woocommerce_before_main_content', 'woocommerce_output_content_wrapper', 10);
+remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wrapper_end', 10);
+add_action('woocommerce_before_main_content', 'steeps_wc_wrapper_start', 10);
+add_action('woocommerce_after_main_content', 'steeps_wc_wrapper_end', 10);
+function steeps_wc_wrapper_start() {
+  echo '	<div id="primary" class="content-area">';
+  echo '		<main id="main" class="site-main woocommerce-wrapper" role="main">';
+}
+function steeps_wc_wrapper_end() {
+  echo '		</main><!-- #main -->';
+  echo '	</div><!-- #primary -->';
+}
+
+/* remove steeps sidebar from woocommerce pages */
+remove_action ( 'woocommerce_sidebar', 'woocommerce_get_sidebar', 10 );
+add_action ('woocommerce_sidebar', 'steeps_woocommerce_sidebar', 10 );
+function steeps_woocommerce_sidebar() {
+	/* nothing to see here -- i.e., kill the standard sidebar */
+	echo '';
+};
+
+/* remove woocommerce breadcrumb */
+add_action( 'init', 'steeps_remove_wc_breadcrumbs' );
+function steeps_remove_wc_breadcrumbs() {
+    remove_action( 'woocommerce_before_main_content', 'woocommerce_breadcrumb', 20, 0 );
+}
+
+/* tell woocommerce it is supported, so there are no complaints */
+add_action( 'after_setup_theme', 'woocommerce_support' );
+function woocommerce_support() {
+    add_theme_support( 'woocommerce' );
+}
