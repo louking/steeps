@@ -39,8 +39,9 @@ get_header(); ?>
 			/* Don't display Steeps Factoids (cat=7) under announcements, allow paging */
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			$args = array(
-				'cat' 	=> -7,
-				'paged' => $paged
+				'paged' => $paged,
+				/* make this match templates/full-text-page.php */
+		        'category_name' => 'Announcement'
 			);
 			query_posts( $args );
 

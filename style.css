@@ -462,6 +462,13 @@ a:active {
     color: rgb(12,126,170);
 }
 
+/* special for title links */
+h1 a {
+    text-decoration: none;
+    /*color: #404040; /* match 2.0 body */
+    color: inherit;
+}
+
 /*--------------------------------------------------------------
 5.2 Menus
 --------------------------------------------------------------*/
@@ -725,6 +732,11 @@ a:active {
 
 .banner-image th img {
         max-height: 120px;
+}
+
+/* archive - jQuery Archive Widget plugin */
+.jaw_widget, .jaw_widget ul {
+    list-style: none;
 }
 
 /*--------------------------------------------------------------

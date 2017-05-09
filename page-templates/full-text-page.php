@@ -16,7 +16,8 @@ get_header(); ?>
 		$args = array(
 		  'posts_per_page' => 5,
 		  'paged' => $paged,
-		  'cat'	=> -7	/* don't display Steeps Factoids (cat=7) */
+		  /* make this match index.php */
+          'category_name' => 'Announcement'
 		);
 		
 		query_posts($args);
