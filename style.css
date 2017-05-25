@@ -1,10 +1,10 @@
 /*
 Theme Name: steeps
-Theme URI: http://underscores.me/
-Author: Underscores.me
-Author URI: http://underscores.me/
-Description: Description
-Version: 1.0-wpcom
+Theme URI: https://github.com/louking/steeps
+Author: Lou King
+Author URI: https://github.com/louking
+Description: steeplechasers.org theme
+Version: 1.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: steeps
@@ -1178,6 +1178,41 @@ img.page-icon-20pc {
     margin-bottom: 2px;
     margin-top: 2px;
 }
+
+/*--------------------------------------------------------------
+10.4.1 Article Pages
+--------------------------------------------------------------*/
+.site-main article:not(:first-child) {
+    border-top: 1px solid #122B5F;  /* logo steeple color (darker) dark cobalt blue, or saturated volkswagen enzian blue (per  http://encycolorpedia.com/1a2e58 )*/
+}
+
+.site-main article.has-post-thumbnail .panel-wrap {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */    
+}
+
+.site-main article.has-post-thumbnail.steeps-archive .panel-image img {
+  -webkit-box-ordinal-group: 1;  
+  -moz-box-ordinal-group: 1;     
+  -ms-flex-order: 1;     
+  -webkit-order: 1;  
+  order: 1;
+  margin: 5px;
+}
+
+.site-main article.has-post-thumbnail.steeps-archive .panel-content {
+  -webkit-box-ordinal-group: 2;
+  -moz-box-ordinal-group: 2;
+  -ms-flex-order: 2;
+  -webkit-order: 2;
+  order: 2;
+  width: 70%;
+}
+
+
 
 /*--------------------------------------------------------------
 11.0 Infinite scroll

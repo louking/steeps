@@ -124,7 +124,8 @@ add_action( 'widgets_init', 'steeps_widgets_init' );
  * Enqueue scripts and styles.
  */
 function steeps_scripts() {
-	wp_enqueue_style( 'steeps-style', get_stylesheet_uri() );
+	$stylesheet = get_stylesheet_directory() . '/style.css';
+	wp_enqueue_style( 'steeps-style', get_stylesheet_uri(), array(), filemtime($stylesheet) );
 
 	wp_enqueue_script( 'steeps-navigation', get_template_directory_uri() . '/js/navigation.js', array(), '20120206', true );
 
@@ -143,6 +144,31 @@ function steeps_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'steeps_scripts' );
+
+/* 
+** enable Feature Images and Post Thumbnails 
+** see https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
+*/
+add_theme_support( 'post-thumbnails' );
+add_image_size( 'steeps-featured-image', 1000, 600, false );			/* don't crop */
+add_image_size( 'steeps-featured-image-thumbnail', 200, 200, true );	/* crop */
+
+/* custom functions related to thumbnails */
+function steeps_archive_single_class() {
+	if ( is_archive() ) {
+		return 'steeps-archive';
+	} else {
+		return 'steeps-single';
+	}
+}
+
+function steeps_image_size() {
+	if ( is_archive() ) {
+		return 'steeps-featured-image-thumbnail';
+	} else {
+		return 'steeps-featured-image';
+	}
+}
 
 /**
  * Implement the Custom Header feature.
@@ -215,3 +241,4 @@ add_action( 'after_setup_theme', 'woocommerce_support' );
 function woocommerce_support() {
     add_theme_support( 'woocommerce' );
 }
+

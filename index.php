@@ -32,11 +32,11 @@ get_header(); ?>
 			</div>
 			
 			<div class="content-title">
-				<h1><a href="index.php?page_id=55">Announcements</a></h1>
+				<h1><a href="category/announcement">Announcements</a></h1>
 			</div><!-- .content-title -->
 	
 			<?php
-			/* Don't display Steeps Factoids (cat=7) under announcements, allow paging */
+			/* Only display announcement category, allow paging */
 			$paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 			$args = array(
 				'paged' => $paged,
@@ -55,8 +55,8 @@ get_header(); ?>
 						 * If you want to override this in a child theme, then include a file
 						 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
 						 */
-						get_template_part( 'content', 'excerpt' );
-						//get_template_part( 'content', get_post_format() );
+						//get_template_part( 'content', 'excerpt' );
+						get_template_part( 'content', get_post_format() );
 					?>
 	
 				<?php endwhile; ?>
