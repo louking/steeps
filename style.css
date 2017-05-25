@@ -463,7 +463,7 @@ a:active {
 }
 
 /* special for title links */
-h1 a {
+.entry-title a {
     text-decoration: none;
     /*color: #404040; /* match 2.0 body */
     color: inherit;
