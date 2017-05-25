@@ -79,9 +79,7 @@ function steeps_posted_on() {
 	);
 
 	$posted_on = sprintf(
-		_x( '%s', 'post date', 'steeps' ),
-		'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
-	);
+		_x( '%s', 'post date', 'steeps' ), $time_string );
 
 	$byline = sprintf(
 		_x( 'by %s', 'post author', 'steeps' ),

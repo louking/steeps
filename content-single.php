@@ -12,11 +12,11 @@
 	<?php endif; ?>
 
 	<header class="entry-header">
-		<?php the_title( '<h1 class="entry-title">', '</h1>' ); ?>
+		<h1 class="entry-title">
+			<?php the_title( ); ?>
+		</h1>
 
-		<div class="entry-meta">
-			<?php steeps_posted_on(); ?>
-		</div><!-- .entry-meta -->
+		<?php steeps_posted_on(); ?>
 	</header><!-- .entry-header -->
 
 	<div class="entry-content">
