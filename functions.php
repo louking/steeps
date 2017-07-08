@@ -6,6 +6,11 @@
  */
 
 /**
+ * Detect plugin. For use on Front End only. See https://codex.wordpress.org/Function_Reference/is_plugin_active
+ */
+include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+/**
  * Set the content width based on the theme's design and stylesheet.
  */
 if ( ! isset( $content_width ) ) {
@@ -242,3 +247,103 @@ function woocommerce_support() {
     add_theme_support( 'woocommerce' );
 }
 
+/**
+ * Special processing to avoid conflicts between Toggle wpautop and The Events Calendar Community Events.
+ * An alternate solution would be to make this occur first and update_post_meta( $post_id, '_lp_disable_wpautop', 1 ) 
+ * but that is a bit less direct. However this assumes understanding of Toggle wpautop internals.
+ */
+if ( is_plugin_active('toggle-wpautop/toggle-wpautop.php') 
+		&& is_plugin_active('the-events-calendar-community-events/tribe-community-events.php') ) {
+	if ( ! function_exists( 'steeps_the_post' ) ) :
+	function steeps_the_post( $post ) {
+		// remove wpautop for tribe community events
+		// without this extra <p> tags are generated in these pages by Toggle wpautop plugin, causing javascript errors
+		if ( tribe_is_community_edit_event_page() || tribe_is_community_my_events_page() ) {
+			remove_filter( 'the_content', 'wpautop' );
+			remove_filter( 'the_excerpt', 'wpautop' );
+		}
+	}
+	endif; // steeps_the_post
+	add_action( 'the_post', 'steeps_the_post', 11 );	// needs to be higher priority than the_post in LP_Toggle_wpautop.__construct
+}
+
+/**
+ * For The Events Calendar: Community Events, on the event page, check for some special conditions. This is
+ * being done to control display of "before html" content
+ */
+if ( is_plugin_active('the-events-calendar-community-events/tribe-community-events.php') ) {
+	$ce_event_class = 'steeps-ce-class-unknown';
+
+	// adapted from Tribe__Events__Community__Main.get_submitted_event (Main.php)
+	function steeps_get_submitted_event() {
+		if ( empty( $_POST[ 'community-event' ] ) ) {
+			return array();
+		}
+
+		if ( ! check_admin_referer( 'ecp_event_submission' ) ) {
+			return array();
+		}
+		$submission = $_POST;
+
+		return $submission;
+	}
+
+	// adapted from Tribe__Events__Community__Main.doEventForm (Main.php)
+	// this action is invoked before community/edit processing
+	function steeps_ce_determine_class_edit ( $id ) {
+		global $ce_event_class;
+
+		if ( $id ) {
+			$tribe_event_id = $id = intval( $id );
+		} else {
+			$tribe_event_id = null;
+		}
+		if ( $tribe_event_id ) {
+			$event = get_post( intval( $tribe_event_id ) );
+		}
+		// special class if logged out
+		// NOTE: assumes allow anonymous submissions configured as false
+		if ( ! is_user_logged_in() ) {
+			$ce_event_class = 'steeps-ce-class-logged-out';
+		
+		// logged in
+		} else {
+			$submission = steeps_get_submitted_event();
+			if (! empty( $submission )) {
+				$ce_event_class = 'steeps-ce-class-submitted';
+			} else {
+				$ce_event_class = 'steeps-ce-class-empty-form';
+			}
+		}
+	}
+	add_action( 'tribe_community_before_event_page', 'steeps_ce_determine_class_edit', 11 );
+
+	// adapted from Tribe__Events__Community__Main.doMyEvents (Main.php)
+	// this action is invoked before community/list processing
+	function steeps_ce_determine_class_list ( ) {
+		global $ce_event_class;
+
+		// special class if logged out
+		if ( ! is_user_logged_in() ) {
+			$ce_event_class = 'steeps-ce-class-logged-out';
+		
+		// logged in
+		} else {
+			$ce_event_class = 'steeps-ce-class-list';			
+		}
+	}
+	add_action( 'tribe_ce_before_event_list_page', 'steeps_ce_determine_class_list', 11 );
+
+	function steeps_before_html ( $string ) {
+		global $ce_event_class;
+		return '<div class="steeps-ce-before-html ' . $ce_event_class . '">' . $string . '</div>';
+		// return '<div class=steeps-ce-before-html>' . $string . '</div>';
+	}
+	add_filter( 'tribe_events_before_html', 'steeps_before_html' );
+
+	// after html is noop for now
+	function steeps_after_html( $string ) {
+		return $string;
+	}
+	add_filter( 'tribe_events_after_html', 'steeps_after_html' );
+}

@@ -1340,6 +1340,10 @@ object {
 #cff.steeps-cff-widget .cff-viewpost-facebook { padding: 0; }
 
 /* the events calendar */
+#tribe-events-pg-template, .tribe-events-pg-template {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 .tribe-events-list-widget ol li { margin-bottom: 4px; }
 .tribe-events-list-widget ol { margin: 0; }
 .tribe-events-widget-link { display: none; }
@@ -1353,4 +1357,62 @@ object {
 .tribe-mini-calendar-event .list-info {
     margin-top: 2;
     margin-bottom: 2;
+}
+
+/* the events calendar - community events */
+body.tribe_community_edit .recurrence-row,              /* disable repeating of events */
+body.tribe_community_edit .tribe-section-taxonomy,      /* disable categories */
+body.tribe_community_edit .tribe-section-custom-fields, /* disable any custom fields */
+body.tribe_community_edit .tribe-section-cost           /* disable cost */
+{
+    display: none;
+}
+
+/*
+ * before html styling
+ */
+.tribe-events-before-html ul li {
+    line-height: inherit;
+    margin: 0 0 0 0;
+}
+.tribe-events-before-html table {
+    border-collapse: collapse;
+}
+.tribe-events-before-html table, .tribe-events-before-html th, .tribe-events-before-html td {
+    /*border: 1px solid black;*/
+    padding: 3px;
+}
+body.tribe_community_edit .steeps-ce-class-logged-out > form#loginform {
+    margin-top: 21px;
+}
+body.tribe_community_edit .steeps-ce-class-logged-out > .register {
+    margin-bottom: 21px;
+}
+
+/* 
+ * the events calendar - before html configuration 
+ *   selective for month view, community events add, community events list
+ *   requires steeps-event-community-xxxx class to be used in before or after html configuration
+ */
+body.events-gridview .steeps-event-month-view {         
+    display: initial !important;        /* display only on month view */
+}
+
+body.tribe_community_edit .steeps-ce-class-logged-out .steeps-event-community-logged-out,
+body.tribe_community_list .steeps-ce-class-logged-out .steeps-event-community-logged-out
+{ 
+    display: initial !important;        /* display when logged out ( edit and list views) */
+}
+body.tribe_community_edit .steeps-ce-class-logged-out > p,
+body.tribe_community_list .steeps-ce-class-logged-out > p
+{ 
+    display: none;                      /* hide default text when logged out ( edit and list views) */
+}
+
+body.tribe_community_edit .steeps-ce-class-empty-form .steeps-event-community-add { 
+    display: initial !important;        /* display only on community add empty form */
+}
+
+body.tribe_community_edit .steeps-ce-class-submitted .steeps-event-community-add-submitted { 
+    display: initial !important;        /* display only on community add after submission */
 }
