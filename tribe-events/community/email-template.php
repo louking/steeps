@@ -27,13 +27,21 @@ $events_label_singular = tribe_get_event_label_singular();
 
         <hr />
 
+        /*
+         * send user information to facilitate event review
+         */
         <h3><?php printf( __( 'Created By' ) ); ?></h3>
         <?php
             $user = wp_get_current_user();
             $username  = $user->user_firstname . ' ' . $user->user_lastname;
+            $userlogin = $user->user_login;
             $useremail = $user->user_email;
         ?>
-        <p><?php echo 'Name: ' . $username . '<br/>Email: ' . $useremail ?></p>
+        <p><?php 
+        echo 'Name: ' . $username;
+        echo '<br/>Login: ' . $userlogin;
+        echo '<br/>Email: ' . $useremail;
+        ?></p>
 
         <h3><?php printf( __( '%s Organizer', 'tribe-events-community' ), $events_label_singular ); ?></h3>
         <p><?php echo tribe_get_organizer( tribe_get_event_meta( $post->ID, '_EventOrganizerID', true ) ); ?></p>
