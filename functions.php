@@ -351,4 +351,16 @@ if ( is_plugin_active('the-events-calendar-community-events/tribe-community-even
 		return $string;
 	}
 	add_filter( 'tribe_events_after_html', 'steeps_after_html' );
+
+    // allow all users to be in post author dropdown. This is specifically for
+    // events to assign events to specific users with subscriber role
+    // see https://wordpress.stackexchange.com/questions/50827/select-subscriber-as-author-of-post-in-admin-panel
+    // and https://developer.wordpress.org/reference/hooks/wp_dropdown_users_args/#user-contributed-notes
+    function add_subscribers_to_dropdown( $query_args, $r ) {
+     
+        $query_args['who'] = '';
+        return $query_args;
+     
+    }
+    add_filter( 'wp_dropdown_users_args', 'add_subscribers_to_dropdown', 10, 2 );
 }
