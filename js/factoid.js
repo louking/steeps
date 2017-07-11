@@ -64,7 +64,9 @@ jQuery(document).ready(function($){
 
         // found the steeps-factoid category, get the posts for this category
         if ( typeof category != undefined ) {
-            $.getJSON( '/wp-json/wp/v2/posts?categories=' + category, function( data ) {
+            // per_page = 100 to get all the posts rather than looping
+            // although looping might be better user experience
+            $.getJSON( '/wp-json/wp/v2/posts?per_page=100&categories=' + category, function( data ) {
                 // collect title renderings from steeps-factoid posts
                 for (var i=0; i<data.length; i++) {
                     thisfactoid = data[i];
