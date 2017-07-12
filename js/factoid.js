@@ -11,7 +11,7 @@
 var factoids = [];          // save factoids here
 var $ = jQuery;             // need to access jQuery
 var page = 1;               // start with page 1, updated inside get_factoids()
-var PER_PAGE = 10;          // number to retrieve per page
+var PER_PAGE = 100;         // number to retrieve per page (max allowed = 100)
 var category = undefined;   // category number for steeps-factoid category
 
 /** 
@@ -80,7 +80,8 @@ function get_factoids() {
 
         // if we found some steeps-factoids, try to retrieve the next page
         // NOTE: can't loop now because of https://wordpress.org/support/topic/wordfence-ajaxwatcher-problem/#post-9313251
-        if ( data.length>0 ) {
+        // only need to ask for more if the last request was full
+        if ( data.length == PER_PAGE) {
             page += 1;
             get_factoids();            
         } 
