@@ -910,10 +910,6 @@ img.aligncenter { display: block; margin-left: auto; margin-right: auto; }
     font-size: 140%;
 }
 
-#steeps-factoid-temp {
-    display: none;
-}
-
 #quick-link-buttons {
     margin-left: 10%;
     margin-top: 20px;

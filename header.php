@@ -68,8 +68,7 @@
         </div><!-- #navigation-area -->
 
     	<div id="steeps-factoid">
-            <span id="steeps-factoid-base">The Steeps </span><span id="steeps-factoid-fact"></span>
-            <span id="steeps-factoid-temp"></span>
+            <span id="steeps-factoid-base">The Steeps </span><span id="steeps-factoid-fact">thank you for visiting our website!</span>
         </div>
 
         <?php if (!is_home()) { ?>
