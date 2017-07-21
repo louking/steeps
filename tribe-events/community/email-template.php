@@ -27,9 +27,11 @@ $events_label_singular = tribe_get_event_label_singular();
 
         <hr />
 
+        <?php
         /*
          * send user information to facilitate event review
          */
+        ?>
         <h3><?php printf( __( 'Created By' ) ); ?></h3>
         <?php
             $user = wp_get_current_user();
