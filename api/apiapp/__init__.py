@@ -34,34 +34,21 @@ import wtforms
 
 # homegrown
 from app import app
-from loutilities import apikey
-
-# get application key
-ak = apikey.ApiKey('Lou King','steepsapiwebapp')
-
-def getapikey(key):
-    try:
-        keyval = ak.getkey(key)
-        return eval(keyval)
-    except apikey.unknownKey:
-        return None
-    except:     # NameError, SyntaxError, what else?
-        return keyval
-    
-# get api keys
-secretkey = getapikey('secretkey')
-
-# configure app
-debug = app.config['DEBUG']
-if debug:
-    SECRET_KEY = 'flask development key'
-else:
-    SECRET_KEY = secretkey
-app.config.from_object(__name__)
+from loutilities.configparser import getitems
 
 # tell jinja to remove linebreaks
 app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
+
+# get configuration
+configpath = os.path.join(os.path.sep.join(os.path.dirname(__file__).split(os.path.sep)[:-1]), 'steepsapi.cfg')
+appconfig = getitems(configpath, 'app')
+app.config.update(appconfig)
+
+# configure for debug
+debug = app.config['DEBUG']
+if debug:
+    SECRET_KEY = 'flask development key'
 
 # import all views
 import clubmember

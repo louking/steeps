@@ -61,3 +61,13 @@ var
 sdist
 develop-eggs
 .installed.cfg
+
+#############
+## Application Specific
+#############
+
+# api cfg files
+apicfg/
+
+# temporary file during d3v4 update
+js/membership-stats-d3v4partial.js

@@ -49,9 +49,12 @@ class AjaxMemberInfo(MethodView):
             # get the club and cache
             club = app.config['STEEPSAPI_RACLUB']
             membercache = app.config['STEEPSAPI_MEMBERCACHE']
+            raprivuser = app.config['RAPRIVUSER']
+            rakey = app.config['RAKEY']
+            rasecret = app.config['RASECRET']
 
             # get the summarized statistics
-            memberinfo = summarize_membersinfo(club, membercachefile=membercache)
+            memberinfo = summarize_membersinfo(club, membercachefile=membercache, raprivuser=raprivuser, key=rakey, secret=rasecret)
             memberinfo = ''.join(memberinfo)
 
             # it's all good
@@ -78,9 +81,12 @@ class AjaxMemberStats(MethodView):
             # get the club and cache
             club = app.config['STEEPSAPI_RACLUB']
             membercache = app.config['STEEPSAPI_MEMBERCACHE']
+            raprivuser = app.config['RAPRIVUSER']
+            rakey = app.config['RAKEY']
+            rasecret = app.config['RASECRET']
 
             # get the summarized statistics
-            memberstats = summarize_memberstats(club, membercachefile=membercache)
+            memberstats = summarize_memberstats(club, membercachefile=membercache, raprivuser=raprivuser, key=rakey, secret=rasecret)
 
             # it's all good
             return success_response(data=memberstats)

@@ -1,9 +1,4 @@
 
-Options +FollowSymLinks +ExecCGI
-AddHandler fcgid-script .py
-RewriteEngine On
-RewriteBase /api/
-
 # no caching
 <IfModule mod_expires.c>
     ExpiresActive on
@@ -11,6 +6,3 @@ RewriteBase /api/
     ExpiresDefault "now"
 </IfModule>
 
-# everything else sent to flask
-RewriteRule ^(apidispatch\.py/.*)$ - [L]
-RewriteRule ^(.*)$ apidispatch.py/$1 [L]
