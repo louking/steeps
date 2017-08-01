@@ -339,16 +339,15 @@ if ( is_plugin_active('the-events-calendar-community-events/tribe-community-even
 	}
 	add_action( 'tribe_ce_before_event_list_page', 'steeps_ce_determine_class_list', 11 );
 
-	function steeps_before_html ( $string ) {
+	function steeps_before_html ( $html ) {
 		global $ce_event_class;
-		return '<div class="steeps-ce-before-html ' . $ce_event_class . '">' . $string . '</div>';
-		// return '<div class=steeps-ce-before-html>' . $string . '</div>';
+		return '<div class="steeps-events ' . $ce_event_class . '">' . $html;
 	}
 	add_filter( 'tribe_events_before_html', 'steeps_before_html' );
 
 	// after html is noop for now
-	function steeps_after_html( $string ) {
-		return $string;
+	function steeps_after_html( $html ) {
+		return $html . '</div><!-- .steeps-events -->';
 	}
 	add_filter( 'tribe_events_after_html', 'steeps_after_html' );
 
