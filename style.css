@@ -1089,7 +1089,12 @@ img.page-icon-20pc {
 }
 
 .site-footer img {
-    height: 50px;
+    height: 67px;   /* match .gs-trustbadge - see footer.php */
+    margin: 2px;
+}
+
+.site-footer .gs-trustbadge {
+    height: inherit;
     margin: 2px;
 }
 
