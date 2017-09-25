@@ -363,3 +363,9 @@ if ( is_plugin_active('the-events-calendar-community-events/tribe-community-even
     }
     add_filter( 'wp_dropdown_users_args', 'add_subscribers_to_dropdown', 10, 2 );
 }
+
+add_action('tribe_community_after_login_form', 'steeps_tribe_register_button', 10, 2 );
+
+function steeps_tribe_register_button() {
+   wp_register( '<div class="button button-primary steeps-tribe-button">', '</div>', true );  
+} 
