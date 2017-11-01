@@ -51,8 +51,6 @@ $(document).ready(function() {
           },
     ]);
   
-    var layer;
-
     myTable.on( 'draw.dt', function() {
         // get filtered data from datatables
         // datatables data() method extraneous information, just pull out the data
@@ -104,7 +102,11 @@ $(document).ready(function() {
 
         // Add the container when the overlay is added to the map.
         overlay.onAdd = function() {
-            layer = d3.select(this.getPanes().overlayLayer).append("div")
+            // remove layer if it already exists
+            $('.runningroutes').remove();
+
+            // (re)create runningroutes div
+            var layer = d3.select(this.getPanes().overlayLayer).append("div")
                 .attr("class", "runningroutes");
     
             // Draw each route as a separate SVG element.
