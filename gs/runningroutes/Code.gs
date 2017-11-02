@@ -56,8 +56,8 @@ function getGeoJson() {
           id          : point.id,
           name        : point.name,
           distance    : point.distance,
-          location    : point.startLocation,
           surface     : point.surface,
+          gain        : point.elevationGain,
           links       :   '<a href="https://www.google.com/maps/search/?api=1&query=' + point.startLocation + '" target=_blank>start</a> '
                         + '<a href="' + point.map + '" target=_blank>route</a> '
                         ,      // need to include turn by turn link

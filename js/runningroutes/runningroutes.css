@@ -7,12 +7,12 @@
 
 .external-filter .label {
     font-weight: bold;
-    width: 160px;
+    /*width: 160px;*/
     display: inline-block;
 }
 
 .external-filter .filter {
-    width: 160px;
+    /*width: 160px;*/
     display: inline-block;
 }
 
@@ -42,4 +42,10 @@
   fill: brown;
   stroke: black;
   stroke-width: 1.5px;
+}
+
+/* table stuff */
+
+#runningroutes-table_wrapper {
+    margin-top: 10px;
 }

@@ -13,19 +13,18 @@ This must be copied into wordpress Text view of desired page
 <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/Editor-1.6.5/css/editor.jqueryui.min.css"/>
 <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroutes.css"/>
 
-Insert useful descriptive text here.
+The map shows start locations for runs filtered by distance and/or surface. Hover over or touch table row to highlight start on map. Zoom the map to narrow your search [to be added].
 <br /><br />
-
-<div id='runningroutes-map'></div>
 
 <div class='external-filter'>
     <span class='label'>Distance (miles)</span>
     <span id='external-filter-distance' class='filter'></span>
-</div>
-<div class='external-filter'>
+
     <span class='label'>Surface</span>
     <span id='external-filter-surface' class='filter'></span>
 </div>
+
+<div id='runningroutes-map'></div>
 
 <table id="runningroutes-table">
     <thead>
@@ -33,6 +32,7 @@ Insert useful descriptive text here.
             <th>name</th>
             <th>miles</th>
             <th>surface</th>
+            <th>elevation gain</th>
             <th></th>
             <th>lat</th>
             <th>lng</th>

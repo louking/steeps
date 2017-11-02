@@ -31,6 +31,7 @@ var dtoptions = {
         { data: 'geometry.properties.name' },
         { data: 'geometry.properties.distance' },
         { data: 'geometry.properties.surface' },
+        { data: 'geometry.properties.gain', defaultContent: '' },
         { data: 'geometry.properties.links', orderable: false, defaultContent: '' },
         { data: 'geometry.properties.lat', visible: false },
         { data: 'geometry.properties.lng', visible: false },
