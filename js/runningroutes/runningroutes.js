@@ -50,8 +50,35 @@ $(document).ready(function() {
           { column_number: 2,
             filter_container_id: 'external-filter-surface',
           },
+          { column_number: 5,
+            filter_type: 'range_number',
+            filter_container_id: 'external-filter-bounds-lat',
+          },
+          { column_number: 6,
+            filter_type: 'range_number',
+            filter_container_id: 'external-filter-bounds-lng',
+          },
     ]);
   
+    // see https://issuetracker.google.com/issues/35818314#comment21
+    var handleboundscheck = false;
+    google.maps.event.addListener(map, 'idle', function(){
+        console.log('idle event fired');
+        // when do we start doing this? After first draw, I think
+        if (handleboundscheck) {
+            var bounds = map.getBounds();
+            var nebounds = bounds.getNorthEast();
+            var swbounds = bounds.getSouthWest();
+            var lowlat = Math.min(nebounds.lat(), swbounds.lat());
+            var lowlng = Math.min(nebounds.lng(), swbounds.lng());
+            var hilat  = Math.max(nebounds.lat(), swbounds.lat());
+            var hilng  = Math.max(nebounds.lng(), swbounds.lng());
+            console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
+            // not clear why I need to add third parameter here, but not in https://codepen.io/louking/pen/EbKYJd
+            yadcf.exFilterColumn(myTable, [[5, {from: lowlat, to: hilat}], [6,  {from: lowlng, to: hilng}]], true);
+        };
+    });
+
     myTable.on( 'draw.dt', function() {
         // get filtered data from datatables
         // datatables data() method extraneous information, just pull out the data
@@ -152,6 +179,8 @@ $(document).ready(function() {
         // Bind our overlay to the map…
         overlay.setMap(map);
 
+        // handle map bounds check after first draw
+        handleboundscheck = true;
     });
 });
 
