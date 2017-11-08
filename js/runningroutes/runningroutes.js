@@ -3,28 +3,12 @@
 
 var $ = jQuery;
 
-var NORMALCIRCLESIZE = 4.5;
-var HIGHLIGHTEDCIRCLESIZE = 8;
-
-// set map div height - see https://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
-// 50% of viewport
-var mapheight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * .5;
-$('#runningroutes-map').height( mapheight + 'px' );
-
-// Create the Google Map…
-var map = new google.maps.Map(d3.select("#runningroutes-map").node(), {
-  zoom: 9,
-  center: new google.maps.LatLng(39.431206, -77.415428),
-  mapTypeId: google.maps.MapTypeId.TERRAIN
-});
-
-var dtoptions = {
+// options for datatables
+var datatables_options = {
     // "order": [[1,'asc']],
     dom: '<"clear">lBfrtip',
-    //https://script.google.com/macros/u/1/s/AKfycbw0Nh_VCqs8GghmUImVuyQVzOCCSWUpVJO_B6PgaqnoprtSO_k/exec
     ajax: {
            url: 'https://script.google.com/a/macros/steeplechasers.org/s/AKfycbw0Nh_VCqs8GghmUImVuyQVzOCCSWUpVJO_B6PgaqnoprtSO_k/exec',
-           //url: 'https://script.google.com/a/macros/steeplechasers.org/s/AKfycbzGwC-QNVpj0RalO_WCSyYXsj5LHTos_xDyDUAW62Y/dev',
            dataSrc: 'features',
           },
     columns: [
@@ -39,10 +23,8 @@ var dtoptions = {
     buttons: ['csv'],
 }
 
-$(document).ready(function() {
-    var myTable = $("#runningroutes-table").DataTable(dtoptions);
-  
-    yadcf.init(myTable, [
+// options for yadcf
+var yadcf_options = [
           { column_number: 1, 
             filter_type: 'range_number',
             filter_container_id: 'external-filter-distance',
@@ -58,8 +40,30 @@ $(document).ready(function() {
             filter_type: 'range_number',
             filter_container_id: 'external-filter-bounds-lng',
           },
-    ]);
+    ];
+
+// configuration for map display
+var normalcirclesize = 10,
+    highlightedcirclesize = 1.5 * normalcirclesize,
+    padding = highlightedcirclesize + 2; // adjust for stroke width
+
+$(document).ready(function() {
+    // initialize datatables and yadcf
+    var myTable = $("#runningroutes-table").DataTable(datatables_options);
+    yadcf.init(myTable, yadcf_options);
   
+    // set map div height - see https://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
+    // 50% of viewport
+    var mapheight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * .5;
+    $('#runningroutes-map').height( mapheight + 'px' );
+
+    // Create the Google Map…
+    var map = new google.maps.Map(d3.select("#runningroutes-map").node(), {
+      zoom: 9,
+      center: new google.maps.LatLng(39.431206, -77.415428),
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    });
+
     // see https://issuetracker.google.com/issues/35818314#comment21
     var handleboundscheck = false;
     google.maps.event.addListener(map, 'idle', function(){
@@ -108,7 +112,7 @@ $(document).ready(function() {
             var routes = svg.parent();
 
             // highlight the circle
-            circle.attr("r", HIGHLIGHTEDCIRCLESIZE);
+            circle.attr("r", highlightedcirclesize);
 
             // bring containing svg to top - see https://stackoverflow.com/questions/14120232/svg-elements-overlapping-issue
             routes.append(svg);
@@ -125,12 +129,12 @@ $(document).ready(function() {
             var circle = $("#route-circle-" + thisid);
 
             // unhighlight the circle
-            circle.attr("r", NORMALCIRCLESIZE);
+            circle.attr("r", normalcirclesize);
         });
 
         // Add the container when the overlay is added to the map.
         overlay.onAdd = function() {
-            // remove layer if it already exists
+            // remove layer if it already exists from last table draw
             $('.runningroutes').remove();
 
             // (re)create runningroutes div
@@ -140,20 +144,13 @@ $(document).ready(function() {
             // Draw each route as a separate SVG element.
             // We could use a single SVG, but what size would it have?
             overlay.draw = function() {
-                var projection = this.getProjection(),
-                    padding = 10;
+                var projection = this.getProjection();
       
-                // delete all the points
-                var deleted = layer.selectAll("svg").remove();
-
                 // select all starting points
                 var routes = layer.selectAll("svg")
                   .data(d3.entries(data), id)
                     .each(updating)
                     .each(transform) // update existing routes
-                  // .exit()
-                  //   .each(removing)
-                  //   .remove()
                   .enter().append("svg")
                     .each(entering)
                     .each(transform)
@@ -161,17 +158,17 @@ $(document).ready(function() {
       
                 // Add a circle.
                 routes.append("circle")
-                    .attr("r", NORMALCIRCLESIZE)
+                    .attr("r", normalcirclesize)
                     .attr("cx", padding)
                     .attr("cy", padding)
                     .attr("id", function(d) { return 'route-circle-' + id(d) });
 
                 function transform(d) {
-                 d = new google.maps.LatLng(d.value.geometry.properties.lat, d.value.geometry.properties.lng);
-                 d = projection.fromLatLngToDivPixel(d);
-                 return d3.select(this)
-                     .style("left", (d.x - padding) + "px")
-                     .style("top", (d.y - padding) + "px");
+                    d = new google.maps.LatLng(d.value.geometry.properties.lat, d.value.geometry.properties.lng);
+                    d = projection.fromLatLngToDivPixel(d);
+                    return d3.select(this)
+                        .style("left", (d.x - padding) + "px")
+                        .style("top", (d.y - padding) + "px");
                 }
             };
         };
