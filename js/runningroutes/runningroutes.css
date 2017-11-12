@@ -31,17 +31,24 @@
   position: absolute;
 }
 
-.runningroutes svg {
-  width: 300px;
-  height: 300px;
+/* is this needed ? */
+/*.runningroutes svg {*/
+  /*width: 300px;*/
+  /*height: 300px;*/
   /*padding-right: 100px;*/
-  font: 10px sans-serif;
-}
+  /*font: 10px sans-serif;*/
+/*}*/
 
 .runningroutes circle {
-  fill: brown;
+  fill: steelblue;
   stroke: black;
-  stroke-width: 1.5px;
+  stroke-width: 1.2px;
+}
+
+.runningroutes text {
+  font-size: 14px;
+  font-family: helvetica, sans-serif;
+  font-weight: bold;
 }
 
 /* table stuff */
@@ -49,3 +56,22 @@
 #runningroutes-table_wrapper {
     margin-top: 10px;
 }
+
+/* map interactivity */
+
+circle.handle {
+  fill: red;
+}
+
+.d3-tip {
+  line-height: 1.2;
+  font-size: small;
+  font-weight: bold;
+  font-family: sans-serif;
+  padding: 6px;
+  background: white;
+  border: 1px;
+  border-style: solid;
+  border-radius: 6px;
+}
+
