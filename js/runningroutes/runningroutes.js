@@ -82,10 +82,9 @@ var rcircle = 10,
 var overlay, 
     mapwidth, 
     mapheight;
-var handleboundscheck;
 SVGOverlay.prototype = new google.maps.OverlayView();
 
-function initMap() {
+function initMap(width, height) {
     // Create the Google Map...
     var map = new google.maps.Map(d3.select("#runningroutes-map").node(), {
       zoom: 9,
@@ -93,27 +92,7 @@ function initMap() {
       mapTypeId: google.maps.MapTypeId.TERRAIN
     });
 
-    overlay = new SVGOverlay(map.getBounds(), map);
-
-    // see https://issuetracker.google.com/issues/35818314#comment21
-    handleboundscheck = false;
-    google.maps.event.addListener(map, 'idle', function() {
-        if (debug) console.log('idle event fired');
-
-        // when do we start doing this? After first draw, I think
-        if (handleboundscheck) {
-            var bounds = map.getBounds();
-            var nebounds = bounds.getNorthEast();
-            var swbounds = bounds.getSouthWest();
-            var lowlat = Math.min(nebounds.lat(), swbounds.lat());
-            var lowlng = Math.min(nebounds.lng(), swbounds.lng());
-            var hilat  = Math.max(nebounds.lat(), swbounds.lat());
-            var hilng  = Math.max(nebounds.lng(), swbounds.lng());
-            if (debug) console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
-            // not clear why I need to add third parameter here, but not in https://codepen.io/louking/pen/EbKYJd
-            yadcf.exFilterColumn(myTable, [[latcol, {from: lowlat, to: hilat}], [lngcol,  {from: lowlng, to: hilng}]], true);
-        };
-    });
+    overlay = new SVGOverlay(map, width, height);
 };
 
 
@@ -125,7 +104,7 @@ $(document).ready(function() {
     // set map div height - see https://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
     // 50% of viewport
     mapheight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * .5;
-    mapwidth  = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    mapwidth  = $("#runningroutes-map").width();
     $('#runningroutes-map').height( mapheight + 'px' );
 
     // do all the map stuff
@@ -243,7 +222,7 @@ $(document).ready(function() {
 
 
         // handle map bounds check after first draw
-        handleboundscheck = true;
+        overlay.sethandleboundscheck(true);
 
         // if not justsorting, draw again to sort
         justsorting = true;
@@ -253,29 +232,23 @@ $(document).ready(function() {
 
 // define SVGOverlay class
 /** @constructor */
-function SVGOverlay(bounds, map) {
+function SVGOverlay(map, width, height) {
     // Now initialize all properties.
-    this.bounds = bounds;
     this.map = map;
+    this.svg = null;
     this.data = [];
+    this.height = height;
+    this.width  = width;
+    this.handleboundscheck = false;
 
+    this.onIdle = this.onIdle.bind(this);
     this.onPanZoom = this.onPanZoom.bind(this);
 
     // Explicitly call setMap on this overlay
     this.setMap(map);
 }
 
-SVGOverlay.prototype.onAdd = function () {
-    if (debug) console.log('onAdd()')
-    // create runningroutes div
-    // clearly this needs to be adjusted or this.svg should be appended to this layer
-    var mappane = this.getPanes().overlayMouseTarget;
-    var layer = d3.select(mappane).append("div")
-        .attr("id", "runningroutes-layer")
-        .attr("class", "runningroutes");
-
-    this.vis = d3.select("#runningroutes-layer");
-
+SVGOverlay.prototype.createsvg_ = function () {
     // configuration for d3-tip
     tip = d3.tip()
             .direction('e')
@@ -296,24 +269,44 @@ SVGOverlay.prototype.onAdd = function () {
                     .style("position", 'absolute')
                     .style("top", 0)
                     .style("left", 0)
-                    .style("width", mapwidth)
-                    .style("height", mapheight)
-                    .attr("viewBox","0 0 " + mapwidth + " " + mapheight)
+                    .style("width", this.width)
+                    .style("height", this.height)
+                    .attr("viewBox","0 0 " + this.width + " " + this.height)
                     .on("click", function() {
                         if (debug) console.log('map clicked');
                         tip.hide();
                     });
 
     this.svg.call(tip);
+}
 
-    this.onPanZoom();
+SVGOverlay.prototype.onAdd = function () {
+    if (debug) console.log('onAdd()')
+    // create runningroutes div
+    // clearly this needs to be adjusted or this.svg should be appended to this layer
+    var mappane = this.getPanes().overlayMouseTarget;
+    var layer = d3.select(mappane).append("div")
+        .attr("id", "runningroutes-layer")
+        .attr("class", "runningroutes");
+
+    this.vis = d3.select("#runningroutes-layer");
+
+    // create svg
+    this.createsvg_()
+
+    this.map.addListener('idle', this.onIdle);
     this.map.addListener('bounds_changed', this.onPanZoom);
+    this.onPanZoom();
 };
 
 SVGOverlay.prototype.setdata = function ( data ) {
     if (debug) console.log('setdata()')
     this.data = data;
     this.draw();
+};
+
+SVGOverlay.prototype.sethandleboundscheck = function ( val ) {
+    this.handleboundscheck = val;
 };
 
 SVGOverlay.prototype.onPanZoom = function () {
@@ -349,7 +342,38 @@ SVGOverlay.prototype.onPanZoom = function () {
         .attr("class", function(d) { return "t-loc-" + d.loc; })
         .classed("route-text", true)
         .text(function(d) { return d.loc; });
+
+    // reset svg location 
+    this.bounds = this.map.getBounds();
+    var nebounds = this.bounds.getNorthEast();
+    var swbounds = this.bounds.getSouthWest();
+    var svgx = Math.round( this.transform( [nebounds.lat(), swbounds.lng()] ).x );
+    var svgy = Math.round( this.transform( [nebounds.lat(), swbounds.lng()] ).y );
+    this.svg
+        .style("left", svgx )
+        .style("top", svgy )
+        // .attr("transform", "translate(" + -svgx + "," + -svgy + ")")
+        .attr("viewBox",svgx + " " + svgy + " " + this.width + " " + this.height);
 };
+
+SVGOverlay.prototype.onIdle = function() {
+    if (debug) console.log('idle event fired');
+
+    // when do we start doing this? After first draw, I think
+    if (this.handleboundscheck) {
+        // filter table to show only routes within the rendered map view
+        this.bounds = this.map.getBounds();
+        var nebounds = this.bounds.getNorthEast();
+        var swbounds = this.bounds.getSouthWest();
+        var lowlat = Math.min(nebounds.lat(), swbounds.lat());
+        var lowlng = Math.min(nebounds.lng(), swbounds.lng());
+        var hilat  = Math.max(nebounds.lat(), swbounds.lat());
+        var hilng  = Math.max(nebounds.lng(), swbounds.lng());
+        if (debug) console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
+        // not clear why I need to add third parameter here, but not in https://codepen.io/louking/pen/EbKYJd
+        yadcf.exFilterColumn(myTable, [[latcol, {from: lowlat, to: hilat}], [lngcol,  {from: lowlng, to: hilng}]], true);
+    };
+}
 
 SVGOverlay.prototype.onRemove = function () {
     this.map.removeListener('bounds_changed', this.onPanZoom);
@@ -360,7 +384,6 @@ SVGOverlay.prototype.onRemove = function () {
 SVGOverlay.prototype.draw = function () {
     if (debug) console.log('draw');
 
-    var proj = this.getProjection();
     var svgoverlay = this;  // for use within d3 functions
 
     // select all starting points
