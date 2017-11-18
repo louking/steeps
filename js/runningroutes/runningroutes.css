@@ -16,13 +16,19 @@
     display: inline-block;
 }
 
+/* table stuff */
+
+#runningroutes-table_wrapper {
+    margin-top: 10px;
+}
+
 /* map stuff */
 
 /* see https://stackoverflow.com/questions/16349476/map-isnt-showing-on-google-maps-javascript-api-v3-when-nested-in-a-div-tag */
 
 #runningroutes-map {
   width: 100%;
-  height: 100%;
+  height: 50%;
   margin: 0;
   padding: 0;
 }
@@ -30,14 +36,6 @@
 .runningroutes, .runningroutes svg {
   position: absolute;
 }
-
-/* is this needed ? */
-/*.runningroutes svg {*/
-  /*width: 300px;*/
-  /*height: 300px;*/
-  /*padding-right: 100px;*/
-  /*font: 10px sans-serif;*/
-/*}*/
 
 .runningroutes circle {
   fill: steelblue;
@@ -49,12 +47,6 @@
   font-size: 14px;
   font-family: helvetica, sans-serif;
   font-weight: bold;
-}
-
-/* table stuff */
-
-#runningroutes-table_wrapper {
-    margin-top: 10px;
 }
 
 /* map interactivity */

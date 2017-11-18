@@ -1,7 +1,12 @@
 // map overlay: https://bl.ocks.org/mbostock/899711
 // d3 v3 -> v4: https://amdevblog.wordpress.com/2016/07/20/update-d3-js-scripts-from-v3-to-v4/
+// see https://developers.google.com/maps/documentation/javascript/customoverlays
 
 var $ = jQuery;
+
+// more console output when debug = true
+var debug = true;
+
 // for metadata within row
 var loc2id = {}
     id2loc = {};
@@ -10,6 +15,7 @@ var loc2id = {}
 var tip;
 
 // options for datatables
+var myTable;
 var datatables_options = {
     // "order": [[1,'asc']],
     dom: '<"clear">lBfrtip',
@@ -30,7 +36,6 @@ var datatables_options = {
     ],
     rowCallback: function( row, thisd, index ) {
         var thisid = thisd.geometry.properties.id;
-        // $('td:eq(0)', row).html(id2loc[thisid]);
         $(row).attr('rowid', thisid);
     },
     buttons: ['csv'],
@@ -73,28 +78,28 @@ var rcircle = 10,
     padding = rcircleselected + 2, // +2 adjusts for circle stroke width
     t = d3.transition(durt);
 
-$(document).ready(function() {
-    // initialize datatables and yadcf
-    var myTable = $("#runningroutes-table").DataTable(datatables_options);
-    yadcf.init(myTable, yadcf_options);
-  
-    // set map div height - see https://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
-    // 50% of viewport
-    var mapheight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * .5;
-    var mapwidth  = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    $('#runningroutes-map').height( mapheight + 'px' );
+// set up map overlay
+var overlay, 
+    mapwidth, 
+    mapheight;
+var handleboundscheck;
+SVGOverlay.prototype = new google.maps.OverlayView();
 
-    // Create the Google Map…
+function initMap() {
+    // Create the Google Map...
     var map = new google.maps.Map(d3.select("#runningroutes-map").node(), {
       zoom: 9,
       center: new google.maps.LatLng(39.431206, -77.415428),
       mapTypeId: google.maps.MapTypeId.TERRAIN
     });
 
+    overlay = new SVGOverlay(map.getBounds(), map);
+
     // see https://issuetracker.google.com/issues/35818314#comment21
-    var handleboundscheck = false;
+    handleboundscheck = false;
     google.maps.event.addListener(map, 'idle', function() {
-        // console.log('idle event fired');
+        if (debug) console.log('idle event fired');
+
         // when do we start doing this? After first draw, I think
         if (handleboundscheck) {
             var bounds = map.getBounds();
@@ -104,19 +109,28 @@ $(document).ready(function() {
             var lowlng = Math.min(nebounds.lng(), swbounds.lng());
             var hilat  = Math.max(nebounds.lat(), swbounds.lat());
             var hilng  = Math.max(nebounds.lng(), swbounds.lng());
-            console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
+            if (debug) console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
             // not clear why I need to add third parameter here, but not in https://codepen.io/louking/pen/EbKYJd
             yadcf.exFilterColumn(myTable, [[latcol, {from: lowlat, to: hilat}], [lngcol,  {from: lowlng, to: hilng}]], true);
         };
     });
+};
 
-    // remove tip when map clicked outside of circle
-    // google.maps.event.addListener(map, 'click', function() {
-    //     console.log('map clicked');
-    //     tip.hide();
-    // });
 
-    var data;
+$(document).ready(function() {
+    // initialize datatables and yadcf
+    myTable = $("#runningroutes-table").DataTable(datatables_options);
+    yadcf.init(myTable, yadcf_options);
+  
+    // set map div height - see https://stackoverflow.com/questions/1248081/get-the-browser-viewport-dimensions-with-javascript
+    // 50% of viewport
+    mapheight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) * .5;
+    mapwidth  = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    $('#runningroutes-map').height( mapheight + 'px' );
+
+    // do all the map stuff
+    initMap( mapwidth, mapheight );
+
     var justsorting = false;
     myTable.on( 'preDraw.dt', function() {
         // As preDraw actions happen after the sort in dataTables, a second draw is required.
@@ -126,7 +140,7 @@ $(document).ready(function() {
         // get filtered data from datatables
         // datatables data() method extraneous information, just pull out the data
         var dtdata = myTable.rows( { search: 'applied' } ).data();
-        data = [];
+        var data = [];
         for (var i=0; i<dtdata.length; i++) { 
             data.push(dtdata[i]) 
         };
@@ -158,7 +172,7 @@ $(document).ready(function() {
             for (var j=0; j<loc2id[key].length; j++) {
                 var thisid = loc2id[key][j];
                 id2loc[thisid] = thisloc;
-                // console.log('preDraw: id2loc['+thisid+'] = ' + thisloc);
+                if (debug) console.log('preDraw: id2loc['+thisid+'] = ' + thisloc);
             };
         };
 
@@ -176,9 +190,11 @@ $(document).ready(function() {
             var thisid = data[i].geometry.properties.id;
             var dloc = id2loc[thisid];
             data[i].loc = dloc;
+            data[i].id  = thisid;
         };
 
-
+        // tell the map about it
+        overlay.setdata ( data );
     });
 
     myTable.on( 'draw.dt', function() {
@@ -186,12 +202,12 @@ $(document).ready(function() {
         // As preDraw actions happen after the sort in dataTables, a second draw is required.
         // The 'justsorting' draw was invoked at the bottom of this function just to sort the table
         if (justsorting) {
-            console.log('draw event, just sorting');
+            if (debug) console.log('draw.dt event, just sorting');
             justsorting = false;
             return;
         }
 
-        console.log('draw event');
+        if (debug) console.log('draw.dt event');
 
         // handle mouseover events for table rows
         $("tr").not(':first').mouseenter(function(){
@@ -225,107 +241,6 @@ $(document).ready(function() {
             circle.attr("r", rcircle);
         });
 
-        // adapted from https://bl.ocks.org/mbostock/899711
-        // also see https://developers.google.com/maps/documentation/javascript/customoverlays
-        var overlay = new google.maps.OverlayView();
-
-        // Add the container when the overlay is added to the map.
-        overlay.onAdd = function() {
-
-            // remove layer if it already exists from last table draw
-            $('.runningroutes').remove();
-
-            // (re)create runningroutes div
-            var mappane = this.getPanes().overlayMouseTarget;
-            var layer = d3.select(mappane).append("div")
-                .attr("id", "runningroutes-layer")
-                .attr("class", "runningroutes");
-            var vis = d3.select("#runningroutes-layer");
-
-            // Draw each route as a separate SVG element.
-            // We could use a single SVG, but what size would it have?
-            overlay.draw = function() {
-                // add svg to map
-                // see https://stackoverflow.com/questions/28586618/add-custom-svg-layer-on-google-map-api-v3
-                // or maybe https://stackoverflow.com/questions/22075374/d3-overlay-on-google-maps-in-a-meteor-application
-                // see https://developers.google.com/maps/documentation/javascript/examples/overlay-simple (not followed)
-
-                // configuration for d3-tip
-                // since d3-tip depends on svg which is recreated, need to initialize after svg is created
-                if (tip) {
-                    tip.destroy();
-                }
-                tip = d3.tip()
-                        .direction('e')
-                        .offset([0,rcircle+1])
-                        .attr("class", "d3-tip")
-                        // .attr("class", function(d) { "tip-" + d.loc })
-                        .html(function(d) { 
-                            var dd = d.value.geometry.properties;
-                            var thistip = dd.name;
-                            thistip += "<br/>" + dd.distance + " miles (" + dd.surface + ")";
-                            if (dd.gain)
-                                thistip += "<br/>" + dd.gain + " ft elev gain";
-                            thistip += "<br/>" + dd.links;
-                            return thistip;
-                        });
-
-                var svg = layer.append("svg")
-                    .attr("id", "mapsvg")
-                    .attr("height", mapheight)
-                    .attr("width", mapwidth)
-                    .attr("viewBox","0 0 " + mapwidth + " " + mapheight)
-                    .on("click", function() {
-                        console.log('map clicked');
-                        tip.hide();
-                    });
-                svg.call(tip);
-
-                var projection = this.getProjection();
-      
-                // select all starting points
-                // Add group containers to hold circle and text
-                var routes = svg.selectAll("g")
-                  .data(d3.entries(data))
-                    .enter().append("g")
-                      .each(entering)
-                      .each(transform)  // adds cx, cy attributes
-                      .classed("route", true)
-                      .attr("class", function(d) { return "g-loc-" + d.value.loc; })
-                      .attr("transform", "translate(0,0)")
-                      .style("cursor", "pointer")
-                      .on("click", explodeData);
-
-                // Add a circle.
-                routes.append("circle")
-                    .attr("r", rcircle)
-                    .attr("cx", function(d) { return d3.select(this.parentNode).attr("cx") })
-                    .attr("cy", function(d) { return d3.select(this.parentNode).attr("cy") })
-                    .attr("id", function(d) { return 'route-circle-' + id(d) })
-                    .attr("class", function(d) { return "c-loc-" + d.value.loc; });
-
-                routes.append("text")
-                  .attr("x", function(d) { return d3.select(this.parentNode).attr("cx") })
-                  .attr("y", function(d) { return d3.select(this.parentNode).attr("cy") })
-                  .attr("text-anchor", "middle")
-                  .attr("dy", function(d) { return textdy })
-                  .attr("class", function(d) { return "t-loc-" + d.value.loc; })
-                  .text(function(d) { return d.value.loc; });
-
-                function transform(d) {
-                    d = new google.maps.LatLng(d.value.geometry.properties.lat, d.value.geometry.properties.lng);
-                    d = projection.fromLatLngToDivPixel(d);
-                    return d3.select(this)
-                        .attr("cx", d.x)
-                        .attr("cy", d.y);
-                        // .style("left", (d.x - padding))
-                        // .style("top", (d.y - padding));
-                }
-            };
-        };
-    
-        // Bind our overlay to the map…
-        overlay.setMap(map);
 
         // handle map bounds check after first draw
         handleboundscheck = true;
@@ -336,12 +251,162 @@ $(document).ready(function() {
     });
 });
 
+// define SVGOverlay class
+/** @constructor */
+function SVGOverlay(bounds, map) {
+    // Now initialize all properties.
+    this.bounds = bounds;
+    this.map = map;
+    this.data = [];
+
+    this.onPanZoom = this.onPanZoom.bind(this);
+
+    // Explicitly call setMap on this overlay
+    this.setMap(map);
+}
+
+SVGOverlay.prototype.onAdd = function () {
+    if (debug) console.log('onAdd()')
+    // create runningroutes div
+    // clearly this needs to be adjusted or this.svg should be appended to this layer
+    var mappane = this.getPanes().overlayMouseTarget;
+    var layer = d3.select(mappane).append("div")
+        .attr("id", "runningroutes-layer")
+        .attr("class", "runningroutes");
+
+    this.vis = d3.select("#runningroutes-layer");
+
+    // configuration for d3-tip
+    tip = d3.tip()
+            .direction('e')
+            .offset([0,rcircle+1])
+            .attr("class", "d3-tip")
+            // .attr("class", function(d) { "tip-" + d.loc })
+            .html(function(d) { 
+                var dd = d.geometry.properties;
+                var thistip = dd.name;
+                thistip += "<br/>" + dd.distance + " miles (" + dd.surface + ")";
+                if (dd.gain)
+                    thistip += "<br/>" + dd.gain + " ft elev gain";
+                thistip += "<br/>" + dd.links;
+                return thistip;
+            });
+
+    this.svg = this.vis.append("svg")
+                    .style("position", 'absolute')
+                    .style("top", 0)
+                    .style("left", 0)
+                    .style("width", mapwidth)
+                    .style("height", mapheight)
+                    .attr("viewBox","0 0 " + mapwidth + " " + mapheight)
+                    .on("click", function() {
+                        if (debug) console.log('map clicked');
+                        tip.hide();
+                    });
+
+    this.svg.call(tip);
+
+    this.onPanZoom();
+    this.map.addListener('bounds_changed', this.onPanZoom);
+};
+
+SVGOverlay.prototype.setdata = function ( data ) {
+    if (debug) console.log('setdata()')
+    this.data = data;
+    this.draw();
+};
+
+SVGOverlay.prototype.onPanZoom = function () {
+    if (debug) console.log('onPanZoom()')
+    var proj = this.getProjection();
+    var svgoverlay = this;  // for use within d3 functions
+
+    // collapse any exploded locations
+    d3.selectAll(".handle").each(unexplodeData);
+
+    this.svg.selectAll('.route')
+      // .data(this.data, function(d) { return d.id })
+        .attr('cx', function(d) { return svgoverlay.transform( d.geometry.coordinates ).x })
+        .attr('cy', function(d) { return svgoverlay.transform( d.geometry.coordinates ).y })
+        .attr("class", function(d) { return "g-loc-" + d.loc; })    // overwrites class so must be before classed()
+        .classed("route", true);
+
+    this.svg.selectAll('.route-circle')
+      // .data(this.data, function(d) { return d.id })
+        .attr("r", rcircle)
+        .attr("cx", function(d) { return svgoverlay.transform( d.geometry.coordinates ).x })
+        .attr("cy", function(d) { return svgoverlay.transform( d.geometry.coordinates ).y })
+        .attr("id", function(d) { return 'route-circle-' + d.id })
+        .attr("class", function(d) { return "c-loc-" + d.loc; })
+        .classed("route-circle", true);
+
+    this.svg.selectAll('.route-text')
+      // .data(this.data, function(d) { return d.id })
+        .attr("x", function(d) { return svgoverlay.transform( d.geometry.coordinates ).x })
+        .attr("y", function(d) { return svgoverlay.transform( d.geometry.coordinates ).y })
+        .attr("text-anchor", "middle")
+        .attr("dy", function(d) { return textdy })
+        .attr("class", function(d) { return "t-loc-" + d.loc; })
+        .classed("route-text", true)
+        .text(function(d) { return d.loc; });
+};
+
+SVGOverlay.prototype.onRemove = function () {
+    this.map.removeListener('bounds_changed', this.onPanZoom);
+    this.svg.remove();
+    this.svg = null;
+};
+
+SVGOverlay.prototype.draw = function () {
+    if (debug) console.log('draw');
+
+    var proj = this.getProjection();
+    var svgoverlay = this;  // for use within d3 functions
+
+    // select all starting points
+    // Add group containers to hold circle and text
+    var routes = this.svg.selectAll("g")
+          .data(this.data, function(d) { return d.id });
+
+    routes.enter().append("g")
+            // .call(entering)
+            .classed("route", true)
+            .attr("transform", "translate(0,0)")
+            .style("cursor", "pointer")
+            .on("click", explodeData);
+
+    routes.exit()
+          // .call(exiting)
+          .remove();
+
+    // Add a circle and text to all existing routes, if not there already
+    d3.selectAll(".route").each(function(d, i) {
+        var thisroute = d3.select(this);
+        if (thisroute.select("circle").empty()) {
+            thisroute.append("circle").classed("route-circle", true);
+        }
+        if (thisroute.select("text").empty()) {
+            thisroute.append("text").classed("route-text", true);
+        }
+    })
+
+    // update point locations
+    this.onPanZoom();
+};
+
+// transform point from [lat, lng] to google.maps.Point
+SVGOverlay.prototype.transform = function( p ) {
+    var latlng = new google.maps.LatLng( p[0], p[1] );
+    var proj = this.getProjection();
+    return proj.fromLatLngToDivPixel(latlng)
+};
+
 // called with group containing circle, text
 // if there are other groups in same location, explode
 // else special handling for lone group
 function explodeData(d, i) {
   // Use D3 to select element and also all at same location
-  var loc = d.value.loc;
+  var loc = d.loc;
   var thisg = d3.select(this);
   var theselocs = d3.selectAll(".g-loc-" + loc)
   var numlocs = theselocs.size();
@@ -388,7 +453,7 @@ function explodeData(d, i) {
       svg.append("circle")
         .attr("id", "exploded-" + loc)
         .attr("class", "handle")
-        .attr("loc", d.value.loc)
+        .attr("loc", d.loc)
         .attr("r", rcircle)
         .attr("cx", cx)
         .attr("cy", cy)
@@ -449,8 +514,7 @@ function unexplodeData(d, i) {
 
 // some other ancillary functions
 function id(d) {
-    // console.log('looking at id=' + d.value.geometry.properties.id)
-    return d.value.geometry.properties.id;
+    return d.geometry.properties.id;
 };
 
 function dexp(numlocs) {
@@ -464,11 +528,11 @@ function dexp(numlocs) {
 };
 
 function exiting(d) {
-    // console.log('exiting id=' + d.value.geometry.properties.id)
+    if (debug) console.log('exiting id=' + d.geometry.properties.id)
 };
 function entering(d) {
-    // console.log('entering id=' + d.value.geometry.properties.id)
+    if (debug) console.log('entering id=' + d.geometry.properties.id)
 };
 function updating(d) {
-    // console.log('updating id=' + d.value.geometry.properties.id)
+    if (debug) console.log('updating id=' + d.geometry.properties.id)
 };
