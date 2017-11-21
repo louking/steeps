@@ -8,7 +8,7 @@ var $ = jQuery;
 var debug = true;
 
 // for metadata within row
-var loc2id = {}
+var loc2id = {},
     id2loc = {};
 
 // keep tip global
@@ -266,11 +266,11 @@ SVGOverlay.prototype.createsvg_ = function () {
             });
 
     this.svg = this.vis.append("svg")
-                    .style("position", 'absolute')
-                    .style("top", 0)
-                    .style("left", 0)
-                    .style("width", this.width)
-                    .style("height", this.height)
+                    .style("position", "absolute")
+                    .style("top", 0 + "px")
+                    .style("left", 0 + "px")
+                    .style("width", this.width + "px")
+                    .style("height", this.height + "px")
                     .attr("viewBox","0 0 " + this.width + " " + this.height)
                     .on("click", function() {
                         if (debug) console.log('map clicked');
@@ -350,8 +350,8 @@ SVGOverlay.prototype.onPanZoom = function () {
     var svgx = Math.round( this.transform( [nebounds.lat(), swbounds.lng()] ).x );
     var svgy = Math.round( this.transform( [nebounds.lat(), swbounds.lng()] ).y );
     this.svg
-        .style("left", svgx )
-        .style("top", svgy )
+        .style("left", svgx + "px")
+        .style("top", svgy + "px")
         // .attr("transform", "translate(" + -svgx + "," + -svgy + ")")
         .attr("viewBox",svgx + " " + svgy + " " + this.width + " " + this.height);
 };
@@ -384,7 +384,11 @@ SVGOverlay.prototype.onRemove = function () {
 SVGOverlay.prototype.draw = function () {
     if (debug) console.log('draw');
 
-    var svgoverlay = this;  // for use within d3 functions
+    // nothing to do if onAdd hasn't been called yet
+    if (!this.svg) return;
+
+    // for use within d3 functions, may need to class instance that we're in
+    var svgoverlay = this;  
 
     // select all starting points
     // Add group containers to hold circle and text
@@ -457,7 +461,7 @@ function explodeData(d, i) {
       var cy = Number(thisg.attr("cy"));
       
       // create lines now so they're underneath
-      // p1 = p3 because we'll be transitioning
+      // initially x1,y1 = x2,y2 because we'll be transitioning
       theselocs.each(function (d,i) {
         svg.append('line')
             .attr("class", "l-loc-" + loc)
@@ -467,7 +471,7 @@ function explodeData(d, i) {
             .attr("y2", cy)
             .attr("stroke-width", 1.5)
             .attr("stroke", "black")
-          .transition(durt)
+          .transition(t)
             .attr("x2", cx + dexp(numlocs) * Math.cos((2*pi/numlocs)*i))
             .attr("y2", cy + dexp(numlocs) * Math.sin((2*pi/numlocs)*i))
       });
