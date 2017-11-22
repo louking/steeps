@@ -67,3 +67,15 @@ circle.handle {
   border-radius: 6px;
 }
 
+/* flexbox */
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.filter-item {
+  order: 0; 
+  flex-grow: 0;
+  margin-right: 5px;
+}

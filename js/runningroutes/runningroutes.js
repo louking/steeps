@@ -20,7 +20,8 @@ var datatables_options = {
     // "order": [[1,'asc']],
     dom: '<"clear">lBfrtip',
     ajax: {
-           url: 'https://script.google.com/a/macros/steeplechasers.org/s/AKfycbw0Nh_VCqs8GghmUImVuyQVzOCCSWUpVJO_B6PgaqnoprtSO_k/exec',
+           // defined in locally configured runningroutes-config.js
+           url: runningroutesurl+"?op=routes",
            dataSrc: 'features',
           },
     columns: [

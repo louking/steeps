@@ -17,11 +17,49 @@
 
 // main get function
 function doGet(event) {
-  // return GeoJson
-  geo = getGeoJson();
-  return ContentService
-    .createTextOutput(JSON.stringify(geo))
-    .setMimeType(ContentService.MimeType.JSON);
+  var parameters = event.parameters;
+  var config = getConfig('config');
+
+  // check for error
+  if (!parameters.op) {
+    return ContentService
+      .createTextOutput(JSON.stringify({status: "fail", message:"Error Encountered"}));
+
+  // return list of routes
+  } else if (parameters.op == 'routes') {
+    // return GeoJson
+    var geo = getGeoJson();
+    geo.status = "success";
+    return ContentService
+      .createTextOutput(JSON.stringify(geo))
+      .setMimeType(ContentService.MimeType.JSON);
+
+  // return turn by turn for a route id
+  } else if (parameters.op == 'turns') {
+    var thisid = parameters.id;
+
+    var dbfolder = DriveApp.getFolderById(config.datafolder);
+    var routefiles = dbfolder.getFilesByName("data-" + thisid);
+
+    // should be ok to assume only one file for this id, but there had better be at least one
+    if (!routefiles.hasNext()) {
+      return ContentService
+        .createTextOutput(JSON.stringify({status: "fail", message:"No data file for id=" + thisid}));
+    }
+
+    // open routefile and gather turn by turn
+    var routefile = SpreadsheetApp.open(routefiles.next())
+    var routesheet = routefile.getSheetByName("turns");
+    var turndata = getRowsData(routesheet, routesheet.getDataRange(), 1);
+    var justturns = []
+    // skip header row
+    for (var i=1; i<turndata.length; i++) {
+      justturns.push( turndata[i].turn);
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({status: "success", turns: justturns}));
+  }
 }
 
 // retrieve GeoJson from database
@@ -80,6 +118,24 @@ function getGeoJson() {
   
   return geo;
 }
+
+// get config from configuration sheet
+function getConfig(sheetname) {
+  var wb = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = wb.getSheetByName(sheetname); 
+  var configdata = getRowsData(sheet, sheet.getDataRange(), 1);
+
+  config = {};
+  for (i=1; i<configdata.length; i++) {
+    var param = configdata[i];
+    var thisparam = normalizeHeader(param.parameter)
+    config[thisparam] = param.value;
+  };
+
+  Logger.log( 'config = ' + Utilities.jsonStringify(config) );
+  return config;
+};
+
 
 //////////////////////////////////////////////////////////////////////////////////////////
 //
