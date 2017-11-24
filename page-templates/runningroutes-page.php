@@ -10,6 +10,11 @@
  */
 
 get_header(); ?>
+<?php 
+    $configmtime  = filemtime("wp-content/themes/steeps/js/runningroutes/runningroutes-config.js");
+    $cssmtime     = filemtime("wp-content/themes/steeps/js/runningroutes/runningroutes.css");
+    $jsmtime      = filemtime("wp-content/themes/steeps/js/runningroutes/runningroutes.js");
+?>
 
     <div id="primary" class="content-area">
         <main id="main" class="site-main runningroutes-main" role="main">
@@ -26,7 +31,7 @@ get_header(); ?>
                  somehow if these are included page loses slide show
             -->
             <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.1/jquery.dataTables.yadcf.css"/>
-            <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroutes.css?v=4"/>
+            <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroutes.css?v=<?= $cssmtime ?>"/>
 
             <div class='external-filter filter-container'>
                 <div class='filter-item'>
@@ -69,9 +74,9 @@ get_header(); ?>
 
             <!-- the next script is created locally, must be before import of runningroutes.js
                  and must include definition of var runningroutesurl = 'full url of google sheets gas app' -->
-            <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes-config.js?v=4"></script>
+            <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes-config.js?v=<?= $configmtime ?>"></script>
 
-            <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes.js?v=4"></script>
+            <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes.js?v=<?= $jsmtime ?>"></script>
 
         </main><!-- #main -->
     </div><!-- #primary -->

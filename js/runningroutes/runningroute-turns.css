@@ -1,0 +1,49 @@
+@media print {
+    body {-webkit-print-color-adjust: exact;}
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    border: 1px solid black;
+    padding: 2px;
+}
+
+#turn-title {
+    display: block;
+    font-size: 1.3em;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+    font-family: Verdana,Geneva,sans-serif;
+    font-weight: bold;
+}
+
+ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+ul.nobullets {
+    list-style-type: none;
+    padding-left: 5px;
+}
+
+/* https://www.w3schools.com/colors/colors_picker.asp */
+ul.highlighted li:nth-child(odd) {
+    background: yellow;
+}
+
+/* popup dialog */
+.grid-select {
+    background-color: white;
+}
+
+.gridcell {
+    padding: 5px;
+}
+
+.gridcell.active {
+    background-color: grey;
+}
