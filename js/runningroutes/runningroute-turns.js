@@ -4,7 +4,7 @@ var turns = [];
 var fulllist; 
 
 // configuration of grid widget
-var gridrows = 5, gridcols = 4;
+var gridrows = 6, gridcols = 4;
 
 // track last state for grid widget
 // todo make the grid stuff into a class

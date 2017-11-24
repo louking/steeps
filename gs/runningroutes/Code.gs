@@ -96,12 +96,12 @@ function getGeoJson() {
           distance    : point.distance,
           surface     : point.surface,
           gain        : point.elevationGain,
-          links       :   '<a href="https://www.google.com/maps/search/?api=1&query=' + point.startLocation + '" target=_blank>start</a> '
-                        + '<a href="' + point.map + '" target=_blank>route</a> '
-                        ,      // need to include turn by turn link
+          links       : '',   // placeholder - built on the client
           description : point.description,  // do we need this?
           lat         : location.lat,
           lng         : location.lng,
+          start       : point.startLocation,
+          map         : point.map,
         }
       }
     }

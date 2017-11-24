@@ -30,7 +30,11 @@ var datatables_options = {
         { name: 'distance', data: 'geometry.properties.distance' },
         { name: 'surface',  data: 'geometry.properties.surface' },
         { name: 'gain',     data: 'geometry.properties.gain', defaultContent: '' },
-        { name: 'links',    data: 'geometry.properties.links', orderable: false, defaultContent: '' },
+        { name: 'links',    data: 'geometry.properties.links', orderable: false, render: function(data, type, row, meta) {
+            var props = row.geometry.properties;
+            var links = buildlinks(props, ' ');
+            return links;
+        } },
         { name: 'lat',      data: 'geometry.properties.lat', visible: false },
         { name: 'lng',      data: 'geometry.properties.lng', visible: false },
         { name: 'id',       data: 'geometry.properties.id', visible: false },
@@ -262,7 +266,7 @@ SVGOverlay.prototype.createsvg_ = function () {
                 thistip += "<br/>" + dd.distance + " miles (" + dd.surface + ")";
                 if (dd.gain)
                     thistip += "<br/>" + dd.gain + " ft elev gain";
-                thistip += "<br/>" + dd.links;
+                thistip += "<br/>" + buildlinks(dd, ', ');
                 return thistip;
             });
 
@@ -538,6 +542,16 @@ function unexplodeData(d, i) {
   // remove handle
   d3.select("#exploded-" + loc).remove();
 
+};
+
+// build links for map, table
+function buildlinks(props, separator) {
+    var links = [];
+    links.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURI(props.start) + '" target=_blank>start</a>');
+    links.push('<a href="' + props.map + '" target=_blank>route</a>');
+    links.push('<a href="' + rrturnsurl + '?title=' + encodeURI(props.name) 
+                                         + '&id=' + props.id + '" target=_blank>turns</a>')
+    return links.join(separator);
 };
 
 // some other ancillary functions
