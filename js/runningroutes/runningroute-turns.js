@@ -58,8 +58,13 @@ $(document).ready(function() {
     var thisid = $.urlParam('id');
 
     $("#turn-title").text(title);
+    var progress = $("#progress-bar").progressbar({value: false});
+    var progresslabel = $(".progress-label");
 
     $.getJSON(runningroutesurl+"?op=turns&id="+thisid, function (data) {
+        progress.progressbar("destroy");
+        progresslabel.hide();
+
         $.each( data.turns, function ( key, turn ) {
             turns.push("<li>" + turn + "</li>");
         });

@@ -16,6 +16,7 @@
     $jsmtime      = filemtime("wp-content/themes/steeps/js/runningroutes/runningroute-turns.js");
 ?>
 
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.min.css" />
 <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroute-turns.css?v=<?= $cssmtime ?>" />
 
 <div id="turn-title"></div>
@@ -50,6 +51,7 @@
     <div id="grid-dialog"></div>
 </div>
 
+<div id="progress-bar"><div class="progress-label">Loading...</div></div>
 <div id="turn-table"></div>
 
 

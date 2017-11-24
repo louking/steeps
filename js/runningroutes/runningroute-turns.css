@@ -2,6 +2,10 @@
     body {-webkit-print-color-adjust: exact;}
 }
 
+body {
+    font-family: Verdana,Geneva,sans-serif;
+}
+
 table {
     border-collapse: collapse;
 }
@@ -46,4 +50,16 @@ ul.highlighted li:nth-child(odd) {
 
 .gridcell.active {
     background-color: grey;
+}
+
+/* jquery ui progressbar */
+.ui-progressbar {
+    position: relative;
+}
+.progress-label {
+    position: absolute;
+    left: 50%;
+    top: 4px;
+    font-weight: bold;
+    text-shadow: 1px 1px 0 #fff;
 }
