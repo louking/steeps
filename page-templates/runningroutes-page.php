@@ -1,6 +1,6 @@
 <?php
 /**
- * Template Name: Running Routes
+ * Template Name: Running Routes Overview
  *
  * Please note that this is the WordPress construct of pages
  * and that other 'pages' on your WordPress site will use a
@@ -19,17 +19,17 @@ get_header(); ?>
     <div id="primary" class="content-area">
         <main id="main" class="site-main runningroutes-main" role="main">
 
-                <?php
-                    /* Include the Post-Format-specific template for the content.
-                     * If you want to override this in a child theme, then include a file
-                     * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-                     */
-                    get_template_part( 'content', get_post_format() );
-                ?>
+            <?php
+                // Include the Post-Format-specific template for the content.
+                // If you want to override this in a child theme, then include a file
+                // called content-___.php (where ___ is the Post Format name) and that will be used instead.
+                get_template_part( 'content', get_post_format() );
+            ?>
 
-            <!-- assumes jquery and dataTables are included by one plugin or another
-                 somehow if these are included page loses slide show
-            -->
+            <?php  
+             // assumes jquery and dataTables are included by one plugin or another
+             // somehow if these are included page loses slide show            
+            ?>
             <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.1/jquery.dataTables.yadcf.css"/>
             <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroutes.css?v=<?= $cssmtime ?>"/>
 
@@ -72,8 +72,10 @@ get_header(); ?>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.1/jquery.dataTables.yadcf.min.js"></script>
             <script src="//maps.google.com/maps/api/js"></script>
 
-            <!-- the next script is created locally, must be before import of runningroutes.js
-                 and must include definition of var runningroutesurl = 'full url of google sheets gas app' -->
+            <?php 
+            // the next script is created locally, must be before import of runningroutes.js
+            // and must include definition of var runningroutesurl = 'full url of google sheets gas app' 
+            ?>
             <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes-config.js?v=<?= $configmtime ?>"></script>
 
             <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes.js?v=<?= $jsmtime ?>"></script>

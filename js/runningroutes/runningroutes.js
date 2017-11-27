@@ -25,11 +25,11 @@ var datatables_options = {
            dataSrc: 'features',
           },
     columns: [
-        { name: 'loc',      data: 'loc', defaultContent: '' },  // set in preDraw
+        { name: 'loc',      data: 'loc',  className: "dt-body-center", defaultContent: '' },  // set in preDraw
         { name: 'name',     data: 'geometry.properties.name' },
-        { name: 'distance', data: 'geometry.properties.distance' },
-        { name: 'surface',  data: 'geometry.properties.surface' },
-        { name: 'gain',     data: 'geometry.properties.gain', defaultContent: '' },
+        { name: 'distance', data: 'geometry.properties.distance',  className: "dt-body-center"},
+        { name: 'surface',  data: 'geometry.properties.surface',  className: "dt-body-center" },
+        { name: 'gain',     data: 'geometry.properties.gain',  className: "dt-body-center", defaultContent: '' },
         { name: 'links',    data: 'geometry.properties.links', orderable: false, render: function(data, type, row, meta) {
             var props = row.geometry.properties;
             var links = buildlinks(props, ' ');
@@ -549,7 +549,7 @@ function buildlinks(props, separator) {
     var links = [];
     links.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURI(props.start) + '" target=_blank>start</a>');
     links.push('<a href="' + props.map + '" target=_blank>route</a>');
-    links.push('<a href="' + rrturnsurl + '?title=' + encodeURI(props.name) 
+    links.push('<a href="' + rrturnsurl + '?title=' + encodeURI(props.name + ' - ' + props.distance + ' miles - ' + props.surface)
                                          + '&id=' + props.id + '" target=_blank>turns</a>')
     return links.join(separator);
 };
