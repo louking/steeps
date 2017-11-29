@@ -94,7 +94,8 @@ function initMap(width, height) {
     var map = new google.maps.Map(d3.select("#runningroutes-map").node(), {
       zoom: 9,
       center: new google.maps.LatLng(39.431206, -77.415428),
-      mapTypeId: google.maps.MapTypeId.TERRAIN
+      mapTypeId: google.maps.MapTypeId.TERRAIN,
+      fullscreenControl: false
     });
 
     overlay = new SVGOverlay(map, width, height);
@@ -264,6 +265,8 @@ SVGOverlay.prototype.createsvg_ = function () {
                 var dd = d.geometry.properties;
                 var thistip = dd.name;
                 thistip += "<br/>" + dd.distance + " miles (" + dd.surface + ")";
+                if (dd.description) 
+                    thistip += "<br/>" + dd.description;
                 if (dd.gain)
                     thistip += "<br/>" + dd.gain + " ft elev gain";
                 thistip += "<br/>" + buildlinks(dd, ', ');
@@ -307,6 +310,17 @@ SVGOverlay.prototype.onAdd = function () {
 SVGOverlay.prototype.setdata = function ( data ) {
     if (debug) console.log('setdata()')
     this.data = data;
+
+    // change bounds depending on data
+    var lats = this.data.map(p => p.geometry.coordinates[0]);
+    var lngs = this.data.map(p => p.geometry.coordinates[1]);
+    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max
+    var slat = lats.reduce(function(a,b) {return Math.min(a,b)});
+    var nlat = lats.reduce(function(a,b) {return Math.max(a,b)});
+    var elng = lngs.reduce(function(a,b) {return Math.max(a,b)});
+    var wlng = lngs.reduce(function(a,b) {return Math.min(a,b)});
+    this.map.fitBounds( { north: nlat, east: elng, south: slat, west: wlng } );
+
     this.draw();
 };
 
@@ -547,10 +561,37 @@ function unexplodeData(d, i) {
 // build links for map, table
 function buildlinks(props, separator) {
     var links = [];
+    // start link
     links.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURI(props.start) + '" target=_blank>start</a>');
-    links.push('<a href="' + props.map + '" target=_blank>route</a>');
-    links.push('<a href="' + rrturnsurl + '?title=' + encodeURI(props.name + ' - ' + props.distance + ' miles - ' + props.surface)
-                                         + '&id=' + props.id + '" target=_blank>turns</a>')
+    
+    // map link
+    // display our own map?
+    if (props.map) {
+        var mapparts = props.map.split('%');
+        if (mapparts[0] == 'gpx') {
+            var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURI(props.name + ' - ' 
+                            + props.distance + ' miles - ' + props.surface)
+                            + '&id=' + props.id;
+            if (props.description)
+                thislink += '&descr=' + encodeURI(props.description);
+            thislink += '" target=_blank>route</a>';
+            links.push(thislink);
+        // display configured url
+        } else {
+            links.push('<a href="' + props.map + '" target=_blank>route</a>');
+        }
+    }
+
+    // turns link
+    var thislink = '<a href="' + rrturnsurl + '?title=' + encodeURI(props.name + ' - ' 
+                    + props.distance + ' miles - ' + props.surface)
+                    + '&id=' + props.id;
+    if (props.description)
+        thislink += '&descr=' + encodeURI(props.description);
+    thislink += '" target=_blank>turns</a>';
+    links.push(thislink);
+
+    // join these all together
     return links.join(separator);
 };
 

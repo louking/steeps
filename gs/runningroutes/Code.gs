@@ -48,10 +48,10 @@ function doGet(event) {
     }
 
     // open routefile and gather turn by turn
-    var routefile = SpreadsheetApp.open(routefiles.next())
+    var routefile = SpreadsheetApp.open(routefiles.next());
     var routesheet = routefile.getSheetByName("turns");
     var turndata = getRowsData(routesheet, routesheet.getDataRange(), 1);
-    var justturns = []
+    var justturns = [];
     // skip header row
     for (var i=1; i<turndata.length; i++) {
       justturns.push( turndata[i].turn);
@@ -59,6 +59,44 @@ function doGet(event) {
 
     return ContentService
       .createTextOutput(JSON.stringify({status: "success", turns: justturns}));
+
+  // return path for a route id
+  } else if (parameters.op == 'path') {
+    var thisid = parameters.id;
+
+    var dbfolder = DriveApp.getFolderById(config.datafolder);
+    var routefiles = dbfolder.getFilesByName("data-" + thisid);
+
+    // should be ok to assume only one file for this id, but there had better be at least one
+    if (!routefiles.hasNext()) {
+      return ContentService
+        .createTextOutput(JSON.stringify({status: "fail", message:"No data file for id=" + thisid}));
+    }
+
+    // open routefile and gather path points
+    var routefile = SpreadsheetApp.open(routefiles.next());
+    var routesheet = routefile.getSheetByName("path");
+    var pathdata = getRowsData(routesheet, routesheet.getDataRange(), 1);
+    var justpath = [];
+    var ftpermeter = 3.280839895;
+
+    // skip header row
+    for (var i=1; i<pathdata.length; i++) {
+      var row = pathdata[i];
+
+      // row.ele is in meters -- use feet by default
+      var ele;
+      if ( parameters.metric ) {
+        ele = +row.ele;
+      } else {
+        ele = +row.ele * ftpermeter;
+      }
+
+      justpath.push( [ +row.lat, +row.lng, +ele.toFixed(1) ] );
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({status: "success", path: justpath}));
   }
 }
 
@@ -97,7 +135,7 @@ function getGeoJson() {
           surface     : point.surface,
           gain        : point.elevationGain,
           links       : '',   // placeholder - built on the client
-          description : point.description,  // do we need this?
+          description : point.description,
           lat         : location.lat,
           lng         : location.lng,
           start       : point.startLocation,
