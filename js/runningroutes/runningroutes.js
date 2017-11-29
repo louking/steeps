@@ -182,6 +182,7 @@ $(document).ready(function() {
         overlay.setdata ( data );
     });
 
+    var firstdraw = true;
     myTable.on( 'draw.dt', function() {
 
         // As preDraw actions happen after the sort in dataTables, a second draw is required.
@@ -227,8 +228,12 @@ $(document).ready(function() {
         });
 
 
-        // handle map bounds check after first draw
-        overlay.sethandleboundscheck(true);
+        // zoom to current bounds and handle map bounds check after first draw
+        if (firstdraw) {
+            firstdraw = false;
+            overlay.zoomtobounds();
+            overlay.sethandleboundscheck(true);
+        };
 
         // if not justsorting, draw again to sort
         justsorting = true;
@@ -311,6 +316,10 @@ SVGOverlay.prototype.setdata = function ( data ) {
     if (debug) console.log('setdata()')
     this.data = data;
 
+    this.draw();
+};
+
+SVGOverlay.prototype.zoomtobounds = function ( ) {
     // change bounds depending on data
     var lats = this.data.map(p => p.geometry.coordinates[0]);
     var lngs = this.data.map(p => p.geometry.coordinates[1]);
@@ -320,9 +329,7 @@ SVGOverlay.prototype.setdata = function ( data ) {
     var elng = lngs.reduce(function(a,b) {return Math.max(a,b)});
     var wlng = lngs.reduce(function(a,b) {return Math.min(a,b)});
     this.map.fitBounds( { north: nlat, east: elng, south: slat, west: wlng } );
-
-    this.draw();
-};
+}
 
 SVGOverlay.prototype.sethandleboundscheck = function ( val ) {
     this.handleboundscheck = val;
