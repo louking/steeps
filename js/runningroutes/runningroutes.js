@@ -573,20 +573,17 @@ function buildlinks(props, separator) {
     
     // map link
     // display our own map?
-    if (props.map) {
-        var mapparts = props.map.split('%');
-        if (mapparts[0] == 'gpx') {
-            var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURI(props.name + ' - ' 
-                            + props.distance + ' miles - ' + props.surface)
-                            + '&id=' + props.id;
-            if (props.description)
-                thislink += '&descr=' + encodeURI(props.description);
-            thislink += '" target=_blank>route</a>';
-            links.push(thislink);
-        // display configured url
-        } else {
-            links.push('<a href="' + props.map + '" target=_blank>route</a>');
-        }
+    if (props.gpx) {
+        var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURI(props.name + ' - ' 
+                        + props.distance + ' miles - ' + props.surface)
+                        + '&id=' + props.id;
+        if (props.description)
+            thislink += '&descr=' + encodeURI(props.description);
+        thislink += '" target=_blank>route</a>';
+        links.push(thislink);
+    // display configured url?
+    } else if (props.map) {
+        links.push('<a href="' + props.map + '" target=_blank>route</a>');
     }
 
     // turns link

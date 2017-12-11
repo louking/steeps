@@ -140,6 +140,7 @@ function getGeoJson() {
           lng         : location.lng,
           start       : point.startLocation,
           map         : point.map,
+          gpx         : point.gpx,
         }
       }
     }

@@ -62,12 +62,41 @@ sdist
 develop-eggs
 .installed.cfg
 
+# Virtualenv
+.Python
+bin
+Scripts
+lib
+include
+share
+tcl
+
+# Installer logs
+pip-log.txt
+pip-selfcheck.json
+
+# Unit test / coverage reports
+.coverage
+.tox
+
 #############
 ## Application Specific
 #############
 
+# vendor proprietary javascript
+Editor-*/
+FieldType-Selectize/
+jquery.ui.dialog-clickoutside.js
+
+# all cfg files
+*.cfg
+client_secret.json
+
 # api cfg files
 apicfg/
+
+# runningroutes cfg files
+runningroutescfg/
 
 # temporary file during d3v4 update
 js/membership-stats-d3v4partial.js
