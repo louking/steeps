@@ -24,7 +24,7 @@ from apiclient.errors import HttpError
 from app import app
 from loutilities.transform import Transform
 from loutilities.googleauth import GoogleAuth, get_credentials
-from loutilities.tables import CrudApi, DataTablesEditor, dt_editor_response
+from loutilities.tables import CrudApi, CrudFiles, DataTablesEditor, dt_editor_response
 from request import addscripts
 
 SHEETS_SERVICE = 'sheets'
@@ -32,7 +32,7 @@ SHEETS_VERSION = 'v4'
 DRIVE_SERVICE = 'drive'
 DRIVE_VERSION = 'v3'
 
-debug = False
+debug = True
 
 idlocker = RLock()
 
@@ -257,12 +257,57 @@ class RunningRoutesTable(CrudApi):
         pass
 
 
+#######################################################################
+class RunningRoutesFiles(CrudFiles):
+#######################################################################
+
+    #----------------------------------------------------------------------
+    def upload(self):
+    #----------------------------------------------------------------------
+        thisfile = request.files['upload']
+        filename = thisfile.filename
+        fileid = 417
+
+        if (debug): print 'upload()'
+        return {
+            'upload' : {'id': fileid },
+            'files' : {
+                'data' : {
+                    fileid : {'filename': filename}
+                },
+            },
+            'elev' : 1243,
+            'distance': 19.4,
+            'filename': filename,
+        }
+
+    #----------------------------------------------------------------------
+    def list(self):
+    #----------------------------------------------------------------------
+        table = 'data'
+        filename = 'test list'
+        fileid = 417
+
+        if (debug): print 'list()'
+        return {
+            table : {
+                fileid : {'filename': filename}
+            },
+        }
+
 #############################################
 # google auth views
 appscopes = [ 'https://www.googleapis.com/auth/spreadsheets',
               'https://www.googleapis.com/auth/drive' ]
 googleauth = GoogleAuth(app, app.config['APP_CLIENT_SECRETS_FILE'], appscopes, 'admin')
 googleauth.register()
+
+#############################################
+# files handling
+rrfiles = RunningRoutesFiles(
+             app = app,
+             uploadendpoint = 'admin/upload',
+            )
 
 #############################################
 # admin views
@@ -274,6 +319,7 @@ rrtable = RunningRoutesTable(app=app,
                              pagename='Edit Routes', 
                              idSrc = 'rowid',
                              endpoint = 'admin',
+                             files = rrfiles,
                              eduploadoption = {
                                 'type': 'POST',
                                 'url':  'admin/upload',
@@ -299,36 +345,3 @@ rrtable = RunningRoutesTable(app=app,
         ]);
 rrtable.register()
 
-#######################################################################
-class AjaxUploadFile(MethodView):
-#######################################################################
-    
-    #----------------------------------------------------------------------
-    def post(self):
-    #----------------------------------------------------------------------
-        try:
-            thisfile = request.files['upload']
-            filename = thisfile.filename
-            fileid = 417
-
-            _responsedata = {
-                'upload' : {'id': fileid },
-                'files' : {
-                    'data' : {
-                        fileid : {'filename': filename}
-                    },
-                },
-                'elev' : 1243,
-                'distance': 19.4,
-                'filename': filename,
-            }
-            return dt_editor_response(**_responsedata)
-        
-        except Exception,e:
-            # roll back database updates and close transaction
-            cause = 'Unexpected Error: {}\n{}'.format(e,traceback.format_exc())
-            app.logger.error(cause)
-            return dt_editor_response(data=[], error=cause)
-#----------------------------------------------------------------------
-app.add_url_rule('/admin/upload',view_func=AjaxUploadFile.as_view('admin/upload'),methods=['POST'])
-#----------------------------------------------------------------------
