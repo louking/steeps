@@ -573,10 +573,10 @@ function buildlinks(props, separator) {
     
     // map link
     // display our own map?
-    if (props.gpx) {
+    if (props.fileid) {
         var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURI(props.name + ' - ' 
                         + props.distance + ' miles - ' + props.surface)
-                        + '&id=' + props.id;
+                        + '&fileid=' + props.fileid;
         if (props.description)
             thislink += '&descr=' + encodeURI(props.description);
         thislink += '" target=_blank>route</a>';
@@ -587,13 +587,17 @@ function buildlinks(props, separator) {
     }
 
     // turns link
-    var thislink = '<a href="' + rrturnsurl + '?title=' + encodeURI(props.name + ' - ' 
-                    + props.distance + ' miles - ' + props.surface)
-                    + '&id=' + props.id;
-    if (props.description)
-        thislink += '&descr=' + encodeURI(props.description);
-    thislink += '" target=_blank>turns</a>';
-    links.push(thislink);
+    if (props.fileid) {
+        var thislink = '<a href="' + rrturnsurl + '?title=' + encodeURI(props.name + ' - ' 
+                        + props.distance + ' miles - ' + props.surface)
+                        + '&fileid=' + props.fileid;
+
+        if (props.description)
+            thislink += '&descr=' + encodeURI(props.description);
+
+        thislink += '" target=_blank>turns</a>';
+        links.push(thislink);
+    }
 
     // join these all together
     return links.join(separator);

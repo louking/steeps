@@ -311,8 +311,8 @@ rrfiles = RunningRoutesFiles(
 
 #############################################
 # admin views
-admin_dbattrs = 'id,name,distance,start location,surface,elevation gain,map,gpx,description'.split(',')
-admin_formfields = 'rowid,name,distance,location,surface,elev,map,gpxfile,description'.split(',')
+admin_dbattrs = 'id,name,distance,start location,surface,elevation gain,map,fileid,description'.split(',')
+admin_formfields = 'rowid,name,distance,location,surface,elev,map,fileid,description'.split(',')
 admin_dbmapping = dict(zip(admin_dbattrs, admin_formfields))
 admin_formmapping = dict(zip(admin_formfields, admin_dbattrs))
 rrtable = RunningRoutesTable(app=app, 
@@ -334,7 +334,7 @@ rrtable = RunningRoutesTable(app=app,
             { 'name': 'surface',     'data': 'surface',     'label': 'Surface',     'type': 'select',
                                                                             'options': ['road','trail','mixed']},
             { 'name': 'map',         'data': 'map',         'label': 'Route URL', 'fieldInfo': 'URL from mapmyrun, strava, etc., where route was created' },
-            { 'name': 'gpxfile',     'data': 'gpxfile',     'label': 'GPX File',       
+            { 'name': 'fileid',      'data': 'fileid',      'label': 'File',       
                     'ed': {'type': 'upload', 
                            'fieldInfo': 'use GPX file downloaded from mapmyrun, strava, etc.',
                            'dragDrop': False,

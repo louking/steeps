@@ -55,13 +55,13 @@ griddialog.hide();
 
 $(document).ready(function() {
     var title = decodeURI( $.urlParam('title') );
-    var thisid = $.urlParam('id');
+    var thisfid = $.urlParam('fileid');
 
     $("#turn-title").text(title);
     var progress = $("#progress-bar").progressbar({value: false});
     var progresslabel = $(".progress-label");
 
-    $.getJSON(runningroutesurl+"?op=turns&id="+thisid, function (data) {
+    $.getJSON(runningroutesurl+"?op=turns&fileid="+thisfid, function (data) {
         progress.progressbar("destroy");
         progresslabel.hide();
 

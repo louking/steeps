@@ -36,19 +36,9 @@ function doGet(event) {
 
   // return turn by turn for a route id
   } else if (parameters.op == 'turns') {
-    var thisid = parameters.id;
-
-    var dbfolder = DriveApp.getFolderById(config.datafolder);
-    var routefiles = dbfolder.getFilesByName("data-" + thisid);
-
-    // should be ok to assume only one file for this id, but there had better be at least one
-    if (!routefiles.hasNext()) {
-      return ContentService
-        .createTextOutput(JSON.stringify({status: "fail", message:"No data file for id=" + thisid}));
-    }
-
     // open routefile and gather turn by turn
-    var routefile = SpreadsheetApp.open(routefiles.next());
+    var thisfid = parameters.fileid;
+    var routefile = SpreadsheetApp.openById(thisfid);
     var routesheet = routefile.getSheetByName("turns");
     var turndata = getRowsData(routesheet, routesheet.getDataRange(), 1);
     var justturns = [];
@@ -58,23 +48,14 @@ function doGet(event) {
     }
 
     return ContentService
-      .createTextOutput(JSON.stringify({status: "success", turns: justturns}));
+      .createTextOutput(JSON.stringify({status: "success", turns: justturns}))
+      .setMimeType(ContentService.MimeType.JSON);
 
   // return path for a route id
   } else if (parameters.op == 'path') {
-    var thisid = parameters.id;
-
-    var dbfolder = DriveApp.getFolderById(config.datafolder);
-    var routefiles = dbfolder.getFilesByName("data-" + thisid);
-
-    // should be ok to assume only one file for this id, but there had better be at least one
-    if (!routefiles.hasNext()) {
-      return ContentService
-        .createTextOutput(JSON.stringify({status: "fail", message:"No data file for id=" + thisid}));
-    }
-
     // open routefile and gather path points
-    var routefile = SpreadsheetApp.open(routefiles.next());
+    var thisfid = parameters.fileid;
+    var routefile = SpreadsheetApp.openById(thisfid);
     var routesheet = routefile.getSheetByName("path");
     var pathdata = getRowsData(routesheet, routesheet.getDataRange(), 1);
     var justpath = [];
@@ -96,7 +77,8 @@ function doGet(event) {
     }
 
     return ContentService
-      .createTextOutput(JSON.stringify({status: "success", path: justpath}));
+      .createTextOutput(JSON.stringify({status: "success", path: justpath}))
+      .setMimeType(ContentService.MimeType.JSON);
   }
 }
 
@@ -140,7 +122,7 @@ function getGeoJson() {
           lng         : location.lng,
           start       : point.startLocation,
           map         : point.map,
-          gpx         : point.gpx,
+          fileid      : point.fileid,
         }
       }
     }

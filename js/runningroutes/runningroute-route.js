@@ -46,7 +46,7 @@ $(document).ready(function() {
     // do all the map stuff
     initMap( mapwidth, mapheight );
 
-    var thisid = $.urlParam('id');
+    var thisfid = $.urlParam('fileid');
     $("#path-title").text(decodeURI( $.urlParam('title') ));
     $("#path-descr").append('<p>' + decodeURI( $.urlParam('descr') ) + '</p>');
     
@@ -54,7 +54,7 @@ $(document).ready(function() {
     var progresslabel = $(".progress-label");
 
     // get data
-    $.getJSON(runningroutesurl+"?op=path&id="+thisid, function (data) {
+    $.getJSON(runningroutesurl+"?op=path&fileid="+thisfid, function (data) {
         progress.progressbar("destroy");
         progresslabel.hide();
 
