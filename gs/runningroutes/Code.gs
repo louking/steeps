@@ -100,6 +100,9 @@ function getGeoJson() {
   for (var i = 0; i < objects.length; ++i) {
     // Get a row object
     var point = objects[i];
+
+    // skip inactive points
+    if (!point.active) continue
     
     var geocode, location;
     geocode = Maps.newGeocoder().geocode(point.startLocation);
