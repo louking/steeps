@@ -50,7 +50,7 @@ jq_theme_ver = '1.12.1'
 # dataTables
 dt_cdn = 'https://cdn.datatables.net'
 dt_datatables_ver = '1.10.16'
-dt_buttons_ver = '1.4.2'
+dt_buttons_ver = '1.5.0'
 dt_colvis_ver = '1.4.2'
 dt_fixedcolumns_ver = '3.2.3'
 dt_select_ver = '1.2.3'
@@ -95,9 +95,9 @@ SCRIPTS = [
     ('fixedcolumns/{ver}/css/fixedColumns.jqueryui{min}.css', dt_fixedcolumns_ver, dt_cdn),
 
     # Editor is not yet available from the dataTables CDN
-    'js/Editor-1.6.5/js/dataTables.editor.js',
-    'js/Editor-1.6.5/js/editor.jqueryui.js',
-    'js/Editor-1.6.5/css/editor.jqueryui.css',
+    'js/Editor-1.7.0/js/dataTables.editor.js',
+    'js/Editor-1.7.0/js/editor.jqueryui.js',
+    'js/Editor-1.7.0/css/editor.jqueryui.css',
 
     ('select/{ver}/js/dataTables.select.js', dt_select_ver, dt_cdn),
     ('select/{ver}/css/select.jqueryui.css', dt_select_ver, dt_cdn),
