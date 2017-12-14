@@ -38,7 +38,7 @@
 }
 
 .runningroutes circle {
-  fill: steelblue;
+  fill: #009999;
   stroke: black;
   stroke-width: 1.2px;
 }
@@ -52,7 +52,7 @@
 /* map interactivity */
 
 circle.handle {
-  fill: red;
+  fill: #990033;
 }
 
 .d3-tip {
@@ -79,3 +79,26 @@ circle.handle {
   flex-grow: 0;
   margin-right: 5px;
 }
+
+/* branding */
+.brand-all,
+.brand-left,
+.brand-right {
+  font-family: Impact, Charcoal, sans-serif;
+}
+
+h2 .brand-left,
+h2 .brand-right {
+  font-size: 1.3em;
+}
+
+.brand-left {
+  color:#009999;
+  font-weight: lighter;
+}
+
+.brand-right {
+  color:#990033;
+  font-weight:bold;
+}
+
