@@ -401,7 +401,7 @@ div.DTE {
 
 .ui-widget-header {
     border: 1px solid #009999;
-    background: #009999 url(images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) 50% 50% repeat-x;
+    background: #009999 50% 50% repeat-x;
     color: #ffffff;
     font-weight: bold;
 }

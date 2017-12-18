@@ -19,6 +19,8 @@ config = SafeConfigParser()
 thisdir = os.path.dirname(__file__)
 config.readfp(open(os.path.join(thisdir, os.environ['RR_CONFIG_FILE'])))
 PROJECT_DIR = config.get('project', 'PROJECT_DIR')
+# remove quotes if present
+if PROJECT_DIR[0] == '"': PROJECT_DIR = PROJECT_DIR[1:-1]
 
 # activate virtualenv
 activate_this = os.path.join(PROJECT_DIR, 'bin', 'activate_this.py')

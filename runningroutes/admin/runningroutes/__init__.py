@@ -45,6 +45,12 @@ configpath = os.path.join(os.path.sep.join(os.path.dirname(__file__).split(os.pa
 appconfig = getitems(configpath, 'app')
 app.config.update(appconfig)
 
+# set static, templates if configured
+app.static_folder = appconfig.get('STATIC_FOLDER', 'static')
+app.template_folder = appconfig.get('TEMPLATE_FOLDER', 'templates')
+app.static_path = appconfig.get('STATIC_PATH', 'static')
+app.template_path = appconfig.get('TEMPLATE_PATH', 'templates')
+
 # configure for debug
 debug = app.config['DEBUG']
 if debug:
