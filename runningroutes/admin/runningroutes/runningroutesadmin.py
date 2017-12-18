@@ -17,7 +17,7 @@ from pprint import pprint
 
 # pypi
 from flask import render_template, redirect, session, request, url_for, jsonify
-from flask.views import MethodView
+from flask.views import MethodView, View
 from apiclient import discovery # google api
 from apiclient.errors import HttpError
 from googlemaps.client import Client
@@ -500,6 +500,26 @@ appscopes = [ 'https://www.googleapis.com/auth/spreadsheets',
               'https://www.googleapis.com/auth/drive' ]
 googleauth = GoogleAuth(app, app.config['APP_CLIENT_SECRETS_FILE'], appscopes, 'admin')
 googleauth.register()
+
+#######################################################################
+class Logout(View):
+#######################################################################
+
+    #----------------------------------------------------------------------
+    def __init__( self, app ):
+    #----------------------------------------------------------------------
+        self.app = app
+        self.app.add_url_rule('/admin/logout', view_func=self.logout, methods=['GET',])
+
+    #----------------------------------------------------------------------
+    def logout( self ):
+    #----------------------------------------------------------------------
+        googleauth.clear_credentials()
+        return redirect('authorize')
+
+#############################################
+# logout handling
+logout = Logout(app)
 
 #############################################
 # files handling

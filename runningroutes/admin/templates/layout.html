@@ -22,6 +22,9 @@
     {% if request.url[0:14] == "http://sandbox" %} (sandbox){% endif %}
     </h1>
     <div class=pagename>{{self.pagename()}}</div>
+    <div class=metanav>
+        <a href="{{ url_for('logout') }}">log out</a>
+    </div>
   </div>
   <div class=wrapper>
     <div class=body>
