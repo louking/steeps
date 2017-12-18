@@ -11,10 +11,13 @@
 import os, sys
 from ConfigParser import SafeConfigParser
 
+# set configuration file, for here and for app
+os.environ['RR_CONFIG_FILE'] = 'runningroutes.cfg'
+
 # get configuration
 config = SafeConfigParser()
 thisdir = os.path.dirname(__file__)
-config.readfp(open(os.path.join(thisdir, 'runningroutes.cfg')))
+config.readfp(open(os.path.join(thisdir, os.environ['RR_CONFIG_FILE'])))
 PROJECT_DIR = config.get('project', 'PROJECT_DIR')
 
 # activate virtualenv

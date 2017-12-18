@@ -34,6 +34,8 @@ import pdb
 import os
 import os.path
 
+# must set config file before importing app
+os.environ['RR_CONFIG_FILE'] = 'develop.cfg'
 from runningroutes import app
 
 # must set up logging after setting configuration

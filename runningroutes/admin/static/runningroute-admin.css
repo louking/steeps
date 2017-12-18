@@ -391,6 +391,21 @@ table.DataList tr:hover td
     cursor: pointer;
 }
 
+/* datatables editor adjustments */
+div.DTE {
+  font-size: 0.9em;
+}
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+  font-size: 0.9em;
+}
+
+.ui-widget-header {
+    border: 1px solid #009999;
+    background: #009999 url(images/ui-bg_gloss-wave_55_5c9ccc_500x100.png) 50% 50% repeat-x;
+    color: #ffffff;
+    font-weight: bold;
+}
+
 /* fix labels on editor popups */
 div.DTE_Body div.DTE_Body_Content div.DTE_Field > label {
   margin-right: 0px;

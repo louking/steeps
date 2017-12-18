@@ -77,7 +77,7 @@ d3_sc_ver = 'v1'    # d3-scale-chromatic
 SCRIPTS = [
     ('jquery-{ver}{min}.js', jq_ver, jq_cdn),
     ('ui/{ver}/jquery-ui{min}.js', jq_theme_ver, jq_cdn),
-    ('ui/{ver}/themes/smoothness/jquery-ui{min}.css', jq_theme_ver, jq_cdn),
+    ('ui/{ver}/themes/redmond/jquery-ui{min}.css', jq_theme_ver, jq_cdn),
 
     ('{ver}/js/jquery.dataTables{min}.js', dt_datatables_ver, dt_cdn),
     ('{ver}/js/dataTables.jqueryui{min}.js', dt_datatables_ver, dt_cdn),

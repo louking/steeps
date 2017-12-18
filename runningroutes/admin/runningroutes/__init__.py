@@ -40,7 +40,8 @@ app.jinja_env.globals['_rrdb_productname'] = '<span class="brand-all"><span clas
 app.jinja_env.globals['_rrdb_productname_text'] = 'routetility'
 
 # get configuration
-configpath = os.path.join(os.path.sep.join(os.path.dirname(__file__).split(os.path.sep)[:-1]), 'runningroutes.cfg')
+configfile = os.environ['RR_CONFIG_FILE']
+configpath = os.path.join(os.path.sep.join(os.path.dirname(__file__).split(os.path.sep)[:-1]), configfile)
 appconfig = getitems(configpath, 'app')
 app.config.update(appconfig)
 
