@@ -460,6 +460,8 @@ class RunningRoutesFiles(CrudFiles):
             'elev' : int(round(gain)),
             'distance': '{:.1f}'.format(distance),
             'filename': filename,
+            # start defaults to first point
+            'location' : ', '.join(['{:.6f}'.format(ll) for ll in locations[0]])
         }
 
     #----------------------------------------------------------------------
@@ -550,8 +552,7 @@ rrtable = RunningRoutesTable(app=app,
                              buttons = ['create', 'edit'],
                              clientcolumns =  [
             { 'name': 'name',        'data': 'name',        'label': 'Route Name', 'fieldInfo': 'name you want to call this route' },
-            { 'name': 'location',    'data': 'location',    'label': 'Start Location', 'fieldInfo' : 'full address or lat,long'},
-            { 'name': 'description', 'data': 'description', 'label': 'Description', 'fieldInfo' : 'optionally give more details here, e.g., name of the business to meet at' },
+            { 'name': 'description', 'data': 'description', 'label': 'Description', 'fieldInfo' : 'optionally give details of where to meet here, e.g., name of the business' },
             { 'name': 'surface',     'data': 'surface',     'label': 'Surface',     'type': 'select',
                                                                             'options': ['road','trail','mixed']},
             { 'name': 'map',         'data': 'map',         'label': 'Route URL', 'fieldInfo': 'URL from mapmyrun, strava, etc., where route was created' },
@@ -568,8 +569,9 @@ rrtable = RunningRoutesTable(app=app,
                            },
                     'dt' : {'visible': False},
             },
-            { 'name': 'distance',    'data': 'distance',    'label': 'Distance (miles)', 'fieldInfo': 'calculated from GPX file, you may override'},
-            { 'name': 'elev',        'data': 'elev',        'label': 'Elev Gain (ft)', 'fieldInfo': 'calculated from GPX file, you may override'},
+            { 'name': 'location',    'data': 'location',    'label': 'Start Location', 'fieldInfo' : 'start location from GPX file - you may override, e.g., with address. Please make sure this value is valid search location in Google maps'},
+            { 'name': 'distance',    'data': 'distance',    'label': 'Distance (miles)', 'fieldInfo': 'calculated from GPX file - you may override'},
+            { 'name': 'elev',        'data': 'elev',        'label': 'Elev Gain (ft)', 'fieldInfo': 'calculated from GPX file - you may override'},
             { 'name': 'active',      'data': 'active',      'label': 'Active',         'fieldInfo': 'when set to "deleted" will not show to users',
                     'ed' : {'type':'select', 'options':{'active':1, 'deleted':0}},
                     'dt' : {'render': 'renderactive()'},

@@ -22,6 +22,7 @@ function afterdatatables(){
         editor.field('elev').set(json.elev);
         editor.field('distance').set(json.distance);
         editor.field('active').set(json.active);
+        editor.field('location').set(json.location);
     } );
 
     editor.on('initCreate', function() {
