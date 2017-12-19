@@ -17,9 +17,6 @@ function renderactive() {
 
 // this must be done after datatables() is called in datatables.js
 function afterdatatables(){
-    // $( editor.field( 'gpxfile' ).input() ).on( 'upload.editor', function (e, val) {
-    //   console.log( 'gpxfile field has changed value', this, val, e );
-    // } );
     editor.on( 'uploadXhrSuccess', function ( e, fieldName, json ) {
         console.log ('elev = ' + json.elev + ' distance = ' + json.distance);
         editor.field('elev').set(json.elev);
@@ -37,7 +34,8 @@ function afterdatatables(){
         editor.set('turns', 'Loading...')
         editor.field('active').show()
         $.ajax({
-            url: '/admin/' + fileid + '/turns', 
+            // rr_turns_url_prefix comes from runningroute-*-config.js
+            url: rr_turns_url_prefix + '/admin/' + fileid + '/turns', 
             success : function(data) {
                 editor.set('turns', data.turns)
             },

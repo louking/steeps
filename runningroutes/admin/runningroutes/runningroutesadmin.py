@@ -323,8 +323,10 @@ class RunningRoutesTable(CrudApi):
         # all arguments are made into attributes for self
         if debug: print 'RunningRoutesTable.render_template()'
 
+        configfile = self.app.config['APP_JS_CONFIG']
         args = dict(
                     pagejsfiles = addscripts([
+                                              configfile,
                                               'runningroute-admin.js',
                                               'datatables.js', 
                                               'buttons.colvis.js',     

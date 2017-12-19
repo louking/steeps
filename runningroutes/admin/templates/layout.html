@@ -19,7 +19,7 @@
   <div class=heading>
     <h1>{{_rrdb_productname|safe}}
     {% if request.url[0:16] == "http://127.0.0.1" %} (development){% endif %}
-    {% if request.url[0:14] == "http://sandbox" %} (sandbox){% endif %}
+    {% if request.url[0:15] == "https://sandbox" %} (sandbox){% endif %}
     </h1>
     <div class=pagename>{{self.pagename()}}</div>
     <div class=metanav>
@@ -67,7 +67,7 @@
   {% if request.url[0:16] == "http://127.0.0.1" %}
     html {background: antiquewhite;}
   {% endif %}
-  {% if request.url[0:14] == "http://sandbox" %}
+  {% if request.url[0:15] == "https://sandbox" %}
     html {background: lightcyan;}
   {% endif %}
 </style>

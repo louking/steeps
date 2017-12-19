@@ -170,7 +170,7 @@ def annotatescripts(scripts):
         
         # handle static file items
         else:
-            filepath = os.path.join(app.static_path,scriptitem)
+            filepath = os.path.join(app.static_folder,scriptitem)
             version = os.stat(filepath)[stat.ST_MTIME]
             fileurl = url_for('static', filename=scriptitem)
             fileref = '{}?v={}'.format(fileurl, version)
