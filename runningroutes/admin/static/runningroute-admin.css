@@ -35,7 +35,7 @@ div.DTE_Form_Error {
 }
 
 div.DTE_Field input._rrdb_CRUD_input_short {
-    width: 85%;
+    width: 100%;
 }
 ._rrdb_button_age_cycle {
     float: right;
@@ -66,7 +66,7 @@ div.DTE_Field input._rrdb_CRUD_input_short {
   /*left: 10%;*/
   padding-left:15px;
   padding-right:15px;
-  width:85%;  /* must equal width of .scrollarea width; left plus width = .heading width */
+  width:95%;  /* must equal width of .scrollarea width; left plus width = .heading width */
   float:left;
   font-size: 0.8em;
 }
@@ -91,7 +91,7 @@ div.DTE_Field input._rrdb_CRUD_input_short {
 
 .scrollarea {
   height:550px;
-  width: 90%;
+  width: 95%;
   overflow: auto; /* scroll */
 }
 
@@ -100,7 +100,9 @@ div.DTE_Field input._rrdb_CRUD_input_short {
   text-align: left;
   margin: 0px;
   padding: 0;
-  width:100%;
+  width:95%;
+  padding-left:15px;
+  padding-right:15px;
   float:top;
   font-size: 1em;
 }
@@ -397,13 +399,6 @@ div.DTE {
 }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
   font-size: 0.9em;
-}
-
-.ui-widget-header {
-    border: 1px solid #009999;
-    background: #009999 50% 50% repeat-x;
-    color: #ffffff;
-    font-weight: bold;
 }
 
 /* fix labels on editor popups */
