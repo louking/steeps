@@ -48,7 +48,9 @@ $(document).ready(function() {
 
     var thisfid = $.urlParam('fileid');
     $("#path-title").text(decodeURI( $.urlParam('title') ));
-    $("#path-descr").append('<p>' + decodeURI( $.urlParam('descr') ) + '</p>');
+    if ( $.urlParam('descr') ) {
+        $("#path-descr").append('<p>' + decodeURI( $.urlParam('descr') ) + '</p>');
+    }
     
     var progress = $("#progress-bar").progressbar({value: false});
     var progresslabel = $(".progress-label");
