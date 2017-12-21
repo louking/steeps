@@ -95,9 +95,9 @@ SCRIPTS = [
     ('fixedcolumns/{ver}/css/fixedColumns.jqueryui{min}.css', dt_fixedcolumns_ver, dt_cdn),
 
     # Editor is not yet available from the dataTables CDN
-    'js/Editor-1.7.0/js/dataTables.editor.js',
-    'js/Editor-1.7.0/js/editor.jqueryui.js',
-    'js/Editor-1.7.0/css/editor.jqueryui.css',
+    'js/Editor-1.7.1beta/js/dataTables.editor.js',
+    'js/Editor-1.7.1beta/js/editor.jqueryui.js',
+    'js/Editor-1.7.1beta/css/editor.jqueryui.css',
 
     ('select/{ver}/js/dataTables.select.js', dt_select_ver, dt_cdn),
     ('select/{ver}/css/select.jqueryui.css', dt_select_ver, dt_cdn),
