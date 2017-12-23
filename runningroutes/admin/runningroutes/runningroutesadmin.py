@@ -37,6 +37,8 @@ SHEETS_VERSION = 'v4'
 DRIVE_SERVICE = 'drive'
 DRIVE_VERSION = 'v3'
 
+APP_CRED_FOLDER = app.config['APP_CRED_FOLDER']
+
 debug = False
 
 idlocker = RLock()
@@ -93,19 +95,18 @@ class RunningRoutesTable(CrudApi):
         # must authorize if not already authorized
         if debug: print 'RunningRoutesTable.init()'
 
-        if 'credentials' not in session:
+        # load credentials for us and for self.files instance
+        credentials = get_credentials(APP_CRED_FOLDER)
+        if not credentials:
             if debug: print "url_for('authorize') = {}".format(url_for('authorize'))
             return redirect('authorize')
-
-        # load credentials for us and for self.files instance
-        self.credentials = get_credentials()
 
         # set up form mapping
         self.dte = DataTablesEditor(self.dbmapping, self.formmapping)
 
         # set up services
-        self.drive = discovery.build(DRIVE_SERVICE, DRIVE_VERSION, credentials=self.credentials)
-        self.sheets = discovery.build(SHEETS_SERVICE, SHEETS_VERSION, credentials=self.credentials)
+        self.drive = discovery.build(DRIVE_SERVICE, DRIVE_VERSION, credentials=credentials)
+        self.sheets = discovery.build(SHEETS_SERVICE, SHEETS_VERSION, credentials=credentials)
 
         # get the header, and all the values
         # TODO: maybe init() should just get the header, and open() should get all the values
@@ -491,19 +492,21 @@ class RunningRoutesFiles(CrudFiles):
         if (debug): print 'RunningRoutesFiles._set_services()'
 
         if not self.datafolderid:
-            self.credentials = get_credentials()
-            self.drive = discovery.build(DRIVE_SERVICE, DRIVE_VERSION, credentials=self.credentials)
-            self.sheets = discovery.build(SHEETS_SERVICE, SHEETS_VERSION, credentials=self.credentials)
+            credentials = get_credentials(APP_CRED_FOLDER)
+            self.drive = discovery.build(DRIVE_SERVICE, DRIVE_VERSION, credentials=credentials)
+            self.sheets = discovery.build(SHEETS_SERVICE, SHEETS_VERSION, credentials=credentials)
             fid = self.app.config['RR_DB_SHEET_ID']
             datafolder = self.sheets.spreadsheets().values().get(spreadsheetId=fid, range='datafolder').execute()
             self.datafolderid = datafolder['values'][0][0]
 
 #############################################
 # google auth views
-appscopes = [ 'https://www.googleapis.com/auth/spreadsheets',
+appscopes = [ 'https://www.googleapis.com/auth/plus.me',
+              'https://www.googleapis.com/auth/spreadsheets',
               'https://www.googleapis.com/auth/drive' ]
-googleauth = GoogleAuth(app, app.config['APP_CLIENT_SECRETS_FILE'], appscopes, 'admin')
-googleauth.register()
+googleauth = GoogleAuth(app, app.config['APP_CLIENT_SECRETS_FILE'], appscopes, 'admin', 
+                        credfolder=APP_CRED_FOLDER, 
+                        loginfo=app.logger.info, logdebug=app.logger.debug, logerror=app.logger.error)
 
 #######################################################################
 class Logout(View):
@@ -598,7 +601,6 @@ class RunningRoutesTurns(MethodView):
         for key in args:
             setattr(self, key, args[key])
 
-        self.credentials = None
         self.sheets = None
 
     #----------------------------------------------------------------------
@@ -629,8 +631,8 @@ class RunningRoutesTurns(MethodView):
         if (debug): print 'RunningRoutesFiles._set_services()'
 
         if not self.sheets:
-            self.credentials = get_credentials()
-            self.sheets = discovery.build(SHEETS_SERVICE, SHEETS_VERSION, credentials=self.credentials)
+            credentials = get_credentials(APP_CRED_FOLDER)
+            self.sheets = discovery.build(SHEETS_SERVICE, SHEETS_VERSION, credentials=credentials)
 
 #############################################
 # turns handling
