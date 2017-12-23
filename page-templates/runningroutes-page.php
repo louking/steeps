@@ -67,6 +67,8 @@ get_header(); ?>
                 </thead>
             </table>
 
+            <a href='/runningroutes/admin'>Admin</a>
+            
             <script src="https://d3js.org/d3.v4.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.8.0-alpha.1/d3-tip.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.1/jquery.dataTables.yadcf.min.js"></script>
