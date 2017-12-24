@@ -29,7 +29,7 @@ from app import app
 from loutilities.transform import Transform
 from loutilities.googleauth import GoogleAuth, get_credentials
 from loutilities.tables import CrudApi, CrudFiles, DataTablesEditor, dt_editor_response, _uploadmethod
-from loutilities.geo import LatLng, haversineDistance, elevation_gain
+from loutilities.geo import LatLng, GeoDistance, elevation_gain, calculateBearing
 from request import addscripts
 
 SHEETS_SERVICE = 'sheets'
@@ -38,12 +38,13 @@ DRIVE_SERVICE = 'drive'
 DRIVE_VERSION = 'v3'
 
 APP_CRED_FOLDER = app.config['APP_CRED_FOLDER']
+APP_EARTH_RADIUS = app.config['APP_EARTH_RADIUS']
 
 debug = False
 
 idlocker = RLock()
 # see https://developers.google.com/maps/documentation/elevation/usage-limits
-gelev = Client(key=app.config['GMAPS_ELEV_API_KEY'],queries_per_second=50)
+gelevclient = Client(key=app.config['GMAPS_ELEV_API_KEY'],queries_per_second=50)
 
 # configuration
 ## note resolution is about 9.5 meters, so no need to have points
@@ -396,56 +397,72 @@ class RunningRoutesFiles(CrudFiles):
         parents = ','.join(thisfile['parents'])
         self.drive.files().update( fileId=fileid, removeParents=parents, addParents=self.datafolderid ).execute()
 
-        # calculate distance based on original data
+        # calculate distance in km
+        geodist = GeoDistance(APP_EARTH_RADIUS)
         distance = 0.0
+        maxinterval = app.config['APP_MAX_DIST_INTERVAL']/1000.0  # convert m to km
+        locs = [locations[0]]
+        # anno is list of [cumdist, inserted], where inserted is empty or 'inserted'
+        anno = [[0, '']]
         for i in range(1,len(locations)):
-            distance += haversineDistance(locations[i-1], locations[i], True)
+            thisdist = geodist.haversineDistance(locations[i-1], locations[i], False)
+            eachdist = thisdist
+            # add additional points if the distance between these is longer than allowed
+            if thisdist > maxinterval:
+                numnew = int(thisdist / maxinterval)
+                eachdist = thisdist / (numnew+1)
+                bearing = calculateBearing(locations[i-1], locations[i])
+                lastcoord = locations[i-1]
+                for j in range(numnew):
+                    distance += eachdist
+                    anno.append([distance, 'inserted'])
+                    # getDestinationLatLng expects distance in meters
+                    newcoord = geodist.getDestinationLatLng(lastcoord, bearing, eachdist*1000)
+                    locs.append(newcoord)
+                    lastcoord = newcoord
+            distance += eachdist
+            anno.append([distance, ''])
+            locs.append(locations[i])
+
+        # convert to miles
+        distance /= 1.609344
 
         # query for elevation points
-        ## make a copy
-        locs = locations[:]
-        latlngeles = []
-        
-        ## slice off locations which meet max sample requirements from google
+        ## slice off locations which meet max sample requirements from google for each query
         pathlen = MAX_SAMPLES
+        gelevs = []
         while len(locs) > 0:
             if debug: print 'len(locs) = {}'.format(len(locs))
-
-            # nextdist = 0.0
-            # for i in range(1,len(locs)):
-            #     # from last iteration
-            #     thisdist = nextdist
-            #     # save current path length in case we're at the end
-            #     pathlen = i+1
-            #     nextdist = thisdist + haversineDistance(locs[i-1], locs[i], True)
-            #     if nextdist >= GELEV_MAX_MILES:
-            #         # back up to previous point
-            #         # note thisdist is distance including up to previous point
-            #         # length is 1 less where we're currently at
-            #         pathlen = i     
-            #         break
 
             theselocs = locs[:pathlen]
             del locs[:pathlen]
 
             ## get this set of elevations
-            # samples = int(thisdist*SAMPLES_PER_MILE)
-            # if debug: print 'elevation_along_path(samples = {}, thisdist = {})'.format(samples, thisdist)
-            # elev = elevation_along_path(gelev, theselocs, int(thisdist*SAMPLES_PER_MILE))
-            elev = elevation(gelev, theselocs)
-            latlngeles += [[p['location']['lat'], p['location']['lng'], p['elevation'], p['resolution']] for p in elev]
+            elev = elevation(gelevclient, theselocs)
+            gelevs += [[p['location']['lat'], p['location']['lng'], p['elevation'], p['resolution']] for p in elev]
+
+        # combine gelevs with anno
+        if len(gelevs) != len(anno):
+            app.logger.debug('annotation list invalid len(anno) {} vs len(gelevs) {} '.format(len(anno), len(gelevs)))
+
+        pathrows = []
+        for i in range(len(gelevs)):
+            try:
+                pathrows.append(gelevs[i] + anno[i])
+            except IndexError:
+                pathrows.append(gelevs[i])
 
         # update sheet with data values
         self.sheets.spreadsheets().values().batchUpdate(spreadsheetId=fileid, body={
                 'valueInputOption' : 'USER_ENTERED',
                 'data' : [
                     { 'range' : filename, 'values' : [['content']] + [[r.rstrip()] for r in filecontents]},
-                    { 'range' : 'path',   'values' : [['lat', 'lng', 'ele', 'res']] + latlngeles },
+                    { 'range' : 'path',   'values' : [['lat', 'lng', 'ele', 'res', 'cumdist', 'inserted']] + pathrows },
                 ]
             }).execute()
 
         # calculate elevation gain
-        elevations = [float(p[2]) for p in latlngeles]
+        elevations = [float(p[2]) for p in gelevs]
         upthreshold = app.config['APP_ELEV_UPTHRESHOLD']
         downthreshold = app.config['APP_ELEV_DOWNTHRESHOLD']
         gain = elevation_gain(elevations, upthreshold=upthreshold, downthreshold=downthreshold)
