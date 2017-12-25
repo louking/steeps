@@ -16,6 +16,7 @@ function renderactive() {
 }
 
 // this must be done after datatables() is called in datatables.js
+var openVals;
 function afterdatatables(){
     editor.on( 'uploadXhrSuccess', function ( e, fieldName, json ) {
         console.log ('elev = ' + json.elev + ' distance = ' + json.distance);
@@ -47,4 +48,24 @@ function afterdatatables(){
         });
         
     });
+
+    // confirm before closing window for unsaved changes
+    // from https://datatables.net/forums/discussion/32883
+    editor
+        .on( 'open', function () {
+            // Store the values of the fields on open
+            openVals = JSON.stringify( editor.get() );
+        } )
+       .on( 'preClose', function ( e ) {
+            // On close, check if the values have changed and ask for closing confirmation if they have
+            if ( openVals !== JSON.stringify( editor.get() ) ) {
+                return confirm( 'You have unsaved changes. Are you sure you want to exit?' );
+            }
+        } )      
+       .on( 'preBlur', function ( e ) {
+            // On close, check if the values have changed and ask for closing confirmation if they have
+            if ( openVals !== JSON.stringify( editor.get() ) ) {
+                return confirm( 'You have unsaved changes. Are you sure you want to exit?' );
+            }
+    } );
 };
