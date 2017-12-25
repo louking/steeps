@@ -12,7 +12,7 @@ httplib2==0.10.3
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
-loutilities==0.13.1
+loutilities==0.13.2
 MarkupSafe==1.0
 numpy==1.13.3
 oauth2client==4.1.2

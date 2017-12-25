@@ -23,6 +23,7 @@ from apiclient.errors import HttpError
 from googlemaps.client import Client
 from googlemaps.elevation import elevation_along_path, elevation
 from googlemaps import convert
+import numpy
 
 # homegrown
 from app import app
@@ -441,14 +442,34 @@ class RunningRoutesFiles(CrudFiles):
             elev = elevation(gelevclient, theselocs)
             gelevs += [[p['location']['lat'], p['location']['lng'], p['elevation'], p['resolution']] for p in elev]
 
-        # combine gelevs with anno
-        if len(gelevs) != len(anno):
-            app.logger.debug('annotation list invalid len(anno) {} vs len(gelevs) {} '.format(len(anno), len(gelevs)))
+        # calculate elevation gain
+        elevations = numpy.array([float(p[2]) for p in gelevs])
+        upthreshold = app.config['APP_ELEV_UPTHRESHOLD']
+        downthreshold = app.config['APP_ELEV_DOWNTHRESHOLD']
+        smoothwin = app.config['APP_SMOOTHING_WINDOW']
 
+        ## first smooth the elevations using flat window
+        ## see http://scipy-cookbook.readthedocs.io/items/SignalSmooth.html
+        s = numpy.r_[elevations[smoothwin-1:0:-1],elevations,elevations[-2:-smoothwin-1:-1]]
+        w = numpy.ones(smoothwin,'d')
+        y=numpy.convolve(w/w.sum(),s,mode='valid')
+        smoothed = y[(smoothwin/2):-(smoothwin/2)]
+        # reference suggested below to 
+        # smoothed = y[(smoothwin/2-1):-(smoothwin/2)]
+
+        ## calculate the gain using the smoothed elevation profile
+        gain = elevation_gain(smoothed, upthreshold=upthreshold, downthreshold=downthreshold)
+
+        # combine gelevs with anno
+        if len(gelevs) != len(anno) or len(gelevs) != len(smoothed):
+            app.logger.debug('invalid list len len(gelevs)={} len(anno)={} len(smoothed)={}'.format(len(gelevs), len(anno), len(smoothed)))
+
+        # construct rows we're going to save to the path sheet
         pathrows = []
+        smoothedl = [[e] for e in smoothed]
         for i in range(len(gelevs)):
             try:
-                pathrows.append(gelevs[i] + anno[i])
+                pathrows.append(gelevs[i] + smoothedl[i] + anno[i])
             except IndexError:
                 pathrows.append(gelevs[i])
 
@@ -457,15 +478,9 @@ class RunningRoutesFiles(CrudFiles):
                 'valueInputOption' : 'USER_ENTERED',
                 'data' : [
                     { 'range' : filename, 'values' : [['content']] + [[r.rstrip()] for r in filecontents]},
-                    { 'range' : 'path',   'values' : [['lat', 'lng', 'ele', 'res', 'cumdist', 'inserted']] + pathrows },
+                    { 'range' : 'path',   'values' : [['lat', 'lng', 'orig ele', 'res', 'ele', 'cumdist(km)', 'inserted']] + pathrows },
                 ]
             }).execute()
-
-        # calculate elevation gain
-        elevations = [float(p[2]) for p in gelevs]
-        upthreshold = app.config['APP_ELEV_UPTHRESHOLD']
-        downthreshold = app.config['APP_ELEV_DOWNTHRESHOLD']
-        gain = elevation_gain(elevations, upthreshold=upthreshold, downthreshold=downthreshold)
 
         return {
             'upload' : {'id': fileid },
