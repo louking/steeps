@@ -11,6 +11,13 @@
 import os, sys
 from ConfigParser import SafeConfigParser
 
+# debug - information about python environment
+# goes to /var/log/httpd/error_log, per http://modwsgi.readthedocs.io/en/develop/user-guides/debugging-techniques.html
+if True:
+    import platform
+    print >> sys.stderr, 'started with python {}, {}'.format(platform.python_version(), platform.python_compiler())
+
+
 # set configuration file, for here and for app
 os.environ['RR_CONFIG_FILE'] = 'runningroutes.cfg'
 
