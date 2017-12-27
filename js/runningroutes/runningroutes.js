@@ -75,7 +75,7 @@ var rcircle = 10,
     pi = Math.PI,
     dexpmin = rcircle * 4,    // minimum distance for explosion
     maxroutes = 40,           // maximum number of routes handled for non-overlapping explosion
-    separation = 5,           // number of pixels to separate individual routes during explosion
+    separation = 3,           // number of pixels to separate individual routes during explosion
     dexpmax = maxroutes * (rcircle + separation) / (2*pi),
     durt = 500,   // transition duration (msec)
     textdy = 4,   // a bit of a hack, trial and error
@@ -607,12 +607,13 @@ function id(d) {
 };
 
 function dexp(numlocs) {
-    var thisdexp = numlocs * (rcircle + separation) / (2*pi);
+    var thisdexp = numlocs * (2*rcircle + separation) / (2*pi);
     if (thisdexp < dexpmin) {
         thisdexp = dexpmin;
     } else if (thisdexp > dexpmax) {
         thisdexp = dexpmax;
     }
+    // console.log('dexp() numlocs ' + numlocs + ' rcircle ' + rcircle + ' separation ' + separation + ' thisdexp ' + thisdexp);
     return thisdexp;
 };
 
