@@ -104,15 +104,14 @@ function getGeoJson() {
     // skip inactive points
     if (!point.active) continue
     
-    var geocode, location;
-    geocode = Maps.newGeocoder().geocode(point.startLocation);
-    location = geocode.results[0].geometry.location; // assuming first match is the right one is probably ok
-
+    var lat = point.latlng.split(',')[0];
+    var lng = point.latlng.split(',')[1];
+    
     var thisgeo = {
       type : 'Feature',
       geometry : {
         type : 'Point',
-        coordinates : [location.lat, location.lng],
+        coordinates : [lat, lng],
         properties: {
           id          : point.id,
           name        : point.name,
@@ -121,9 +120,10 @@ function getGeoJson() {
           gain        : point.elevationGain,
           links       : '',   // placeholder - built on the client
           description : point.description,
-          lat         : location.lat,
-          lng         : location.lng,
+          lat         : lat,
+          lng         : lng,
           start       : point.startLocation,
+          latlng      : point.latlng,
           map         : point.map,
           fileid      : point.fileid,
         }

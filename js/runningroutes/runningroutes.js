@@ -135,9 +135,7 @@ $(document).ready(function() {
         for (var i=0; i<data.length; i++) {
             var d = data[i];    // get convenient handle
             var thisid = d.geometry.properties.id;
-            var dlat = d.geometry.properties.lat.toFixed(4);
-            var dlng = d.geometry.properties.lng.toFixed(4);
-            var key = dlat + "," + dlng;
+            var key = d.geometry.properties.latlng;
             if (loc2id[key] === undefined) {
                 loc2id[key] = [];
             };

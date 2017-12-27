@@ -13,7 +13,6 @@ import httplib2
 from itertools import izip_longest
 from threading import RLock
 import traceback
-from pprint import pprint
 
 # pypi
 from flask import render_template, redirect, session, request, url_for, jsonify
@@ -22,7 +21,6 @@ from apiclient import discovery # google api
 from apiclient.errors import HttpError
 from googlemaps.client import Client
 from googlemaps.elevation import elevation_along_path, elevation
-from googlemaps import convert
 import numpy
 
 # homegrown
@@ -40,12 +38,14 @@ DRIVE_VERSION = 'v3'
 
 APP_CRED_FOLDER = app.config['APP_CRED_FOLDER']
 APP_EARTH_RADIUS = app.config['APP_EARTH_RADIUS']
+geodist = GeoDistance(APP_EARTH_RADIUS)
 
 debug = False
 
 idlocker = RLock()
 # see https://developers.google.com/maps/documentation/elevation/usage-limits
-gelevclient = Client(key=app.config['GMAPS_ELEV_API_KEY'],queries_per_second=50)
+# also used for google maps geocoding
+gmapsclient = Client(key=app.config['GMAPS_ELEV_API_KEY'],queries_per_second=50)
 
 # configuration
 ## note resolution is about 9.5 meters, so no need to have points
@@ -215,6 +215,9 @@ class RunningRoutesTable(CrudApi):
                 ]
             }).execute()
 
+        # for location, snap to close loc, or create new one
+        formdata['latlng'] = self.snaploc(formdata['location'])
+
         # make data row ready for prime time. make sure the row is in the same order as spreadsheet header
         dbrow = rowObj({'id':nextid})
         self.dte.set_dbrow(formdata, dbrow)
@@ -245,6 +248,9 @@ class RunningRoutesTable(CrudApi):
         
         rowrange = self._findrow(thisid)
 
+        # for location, snap to close loc, or create new one
+        formdata['latlng'] = self.snaploc(formdata['location'])
+        
         # convert to db format and spreadsheet format
         dbrow = rowObj({'id':thisid})
         self.dte.set_dbrow(formdata, dbrow)
@@ -312,6 +318,56 @@ class RunningRoutesTable(CrudApi):
 
         return 'routes!{r}:{r}'.format(r=rownum)
 
+    #----------------------------------------------------------------------
+    def snaploc(self, loc):
+    #----------------------------------------------------------------------
+        '''
+        return "close" latlng for this loc
+
+        :param loc: loc to look for
+        :rtype: 'lat,lng' (6 decimal places)
+        '''
+
+        # convert loc to [lat, lng]
+        ## if 'lat,lng', i.e., exactly two floating point numbers separated by comma
+        try:
+            checkloc = loc.split(',')
+            if len(checkloc) != 2: raise ValueError
+            latlng = [float(l) for l in checkloc]
+
+        ## get lat, lng from google maps API
+        except ValueError:
+            self.app.logger.debug('snaploc() ValueError: loc = {}'.format(loc))
+            # assume first location is best
+            geoloc = gmapsclient.geocode(loc)[0]
+            lat = float(geoloc['geometry']['location']['lat'])
+            lng = float(geoloc['geometry']['location']['lng'])
+            latlng = [lat, lng]
+
+        # determine column which holds latlng data
+        fid = self.app.config['RR_DB_SHEET_ID']
+        hdrvalues = self.sheets.spreadsheets().values().get(spreadsheetId=fid, range='routes!1:1').execute()['values']
+        self.app.logger.debug('snaploc() values = {}'.format(hdrvalues))
+        header = hdrvalues[0]
+        # there will be less than 26 columns
+        latlngcol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[header.index('latlng')]
+
+        # retrieve lat,lng data already saved
+        rows = self.sheets.spreadsheets().values().get(spreadsheetId=fid, range='routes!{c}:{c}'.format(c=latlngcol)).execute()['values']
+        # skip header row
+        start_locs = [[float(v) for v in r[0].split(',')] for r in rows[1:]]
+
+        # check if start location is "close" to any existing location. If so, snap to existing location
+        epsilon = app.config['APP_ROUTE_LOC_EPSILON']/1000.0   # convert to km
+        this_loc = latlng
+        for start_loc in start_locs:
+            # haversineDistance returns km
+            if geodist.haversineDistance(this_loc, start_loc, False) <= epsilon:
+                this_loc = start_loc
+                break
+
+        # normalize format to 6 decimal places
+        return ','.join(['{:.6f}'.format(l) for l in this_loc])
 
     #----------------------------------------------------------------------
     def render_template(self, **kwargs):
@@ -399,7 +455,6 @@ class RunningRoutesFiles(CrudFiles):
         self.drive.files().update( fileId=fileid, removeParents=parents, addParents=self.datafolderid ).execute()
 
         # calculate distance in km
-        geodist = GeoDistance(APP_EARTH_RADIUS)
         distance = 0.0
         maxinterval = app.config['APP_MAX_DIST_INTERVAL']/1000.0  # convert m to km
         locs = [locations[0]]
@@ -439,7 +494,7 @@ class RunningRoutesFiles(CrudFiles):
             del locs[:pathlen]
 
             ## get this set of elevations
-            elev = elevation(gelevclient, theselocs)
+            elev = elevation(gmapsclient, theselocs)
             gelevs += [[p['location']['lat'], p['location']['lng'], p['elevation'], p['resolution']] for p in elev]
 
         # calculate elevation gain
@@ -569,8 +624,8 @@ rrfiles = RunningRoutesFiles(
 
 #############################################
 # admin views
-admin_dbattrs = 'id,name,distance,start location,surface,elevation gain,map,fileid,description,active'.split(',')
-admin_formfields = 'rowid,name,distance,location,surface,elev,map,fileid,description,active'.split(',')
+admin_dbattrs = 'id,name,distance,start location,latlng,surface,elevation gain,map,fileid,description,active'.split(',')
+admin_formfields = 'rowid,name,distance,location,latlng,surface,elev,map,fileid,description,active'.split(',')
 admin_dbmapping = dict(zip(admin_dbattrs, admin_formfields))
 admin_formmapping = dict(zip(admin_formfields, admin_dbattrs))
 rrtable = RunningRoutesTable(app=app, 
@@ -605,6 +660,10 @@ rrtable = RunningRoutesTable(app=app,
                     'dt' : {'render': 'rendergpxfile()'},
             },
             { 'name': 'location',    'data': 'location',    'label': 'Start Location', 'fieldInfo' : 'start location from GPX file - you may override, e.g., with address. Please make sure this value is valid search location in Google maps'},
+            { 'name': 'latlng',      'data': 'latlng',      'label': 'Loc lat,lng',       
+                    'ed' : {'className': 'Hidden'},
+                    'dt' : {'visible': False},
+            },
             { 'name': 'distance',    'data': 'distance',    'label': 'Distance (miles)', 'fieldInfo': 'calculated from GPX file - you may override'},
             { 'name': 'elev',        'data': 'elev',        'label': 'Elev Gain (ft)', 'fieldInfo': 'calculated from GPX file - you may override'},
             { 'name': 'active',      'data': 'active',      'label': 'Active',         'fieldInfo': 'when set to "deleted" will not show to users',
