@@ -116,11 +116,19 @@ $(document).ready(function() {
     // do all the map stuff
     initMap( mapwidth, mapheight );
 
+    var justpaging = false;
+    myTable.on('page.dt', function() {
+        justpaging = true;
+    });
+
     var justsorting = false;
     myTable.on( 'preDraw.dt', function() {
         // As preDraw actions happen after the sort in dataTables, a second draw is required.
         // The 'justsorting' draw was invoked at the bottom of the draw.dt function just to sort the table
         if (justsorting) return;
+
+        // don't want to do all this if we're just paging
+        if (justpaging) return;
 
         // get filtered data from datatables
         // datatables data() method extraneous information, just pull out the data
@@ -190,6 +198,13 @@ $(document).ready(function() {
             justsorting = false;
             return;
         }
+
+        // don't want to do all this if we're just paging
+        if (justpaging) {
+            if (debug) console.log('draw.dt event, just paging');
+            justpaging = false;
+            return;
+        };
 
         if (debug) console.log('draw.dt event');
 
