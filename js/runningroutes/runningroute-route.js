@@ -47,10 +47,23 @@ $(document).ready(function() {
     initMap( mapwidth, mapheight );
 
     var thisfid = $.urlParam('fileid');
-    $("#path-title").text(decodeURI( $.urlParam('title') ));
+    $("#path-title").text( $.urlParam('title') );
+
+    descr = '<p>';
     if ( $.urlParam('descr') ) {
-        $("#path-descr").append('<p>' + decodeURI( $.urlParam('descr') ) + '</p>');
+        descr += $.urlParam('descr');
     }
+    if ( $.urlParam('gain') ) {
+        if ( $.urlParam('descr') ) {
+            descr += '<br/>';
+        }
+        descr +=  $.urlParam('gain') + 'ft elev gain';
+    }
+    if (descr !== '<p>') {
+        descr += '</p>';
+        $("#path-descr").append(descr);        
+    }
+
     
     var progress = $("#progress-bar").progressbar({value: false});
     var progresslabel = $(".progress-label");

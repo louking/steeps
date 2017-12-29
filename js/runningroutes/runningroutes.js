@@ -592,6 +592,8 @@ function buildlinks(props, separator) {
                         + '&fileid=' + props.fileid;
         if (props.description)
             thislink += '&descr=' + encodeURI(props.description);
+        if (props.gain)
+            thislink += '&gain=' + encodeURI(props.gain);
         thislink += '" target=_blank>route</a>';
         links.push(thislink);
     // display configured url?
