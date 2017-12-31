@@ -337,7 +337,7 @@ class RunningRoutesTable(CrudApi):
 
         ## get lat, lng from google maps API
         except ValueError:
-            self.app.logger.debug('snaploc() ValueError: loc = {}'.format(loc))
+            self.app.logger.debug('snaploc() looking up loc = {}'.format(loc))
             # assume first location is best
             geoloc = gmapsclient.geocode(loc)[0]
             lat = float(geoloc['geometry']['location']['lat'])
@@ -347,7 +347,7 @@ class RunningRoutesTable(CrudApi):
         # determine column which holds latlng data
         fid = self.app.config['RR_DB_SHEET_ID']
         hdrvalues = self.sheets.spreadsheets().values().get(spreadsheetId=fid, range='routes!1:1').execute()['values']
-        self.app.logger.debug('snaploc() values = {}'.format(hdrvalues))
+        self.app.logger.debug('snaploc() header values = {}'.format(hdrvalues))
         header = hdrvalues[0]
         # there will be less than 26 columns
         latlngcol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'[header.index('latlng')]
