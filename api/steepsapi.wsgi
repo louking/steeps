@@ -8,13 +8,15 @@
 #   Copyright 2017 Lou King
 ###########################################################################################
 
+# use only standard libraries until virtualenv is activated
 import os, sys
 from ConfigParser import SafeConfigParser
 
-# get configuration
+# get virtualenv directory
 config = SafeConfigParser()
 thisdir = os.path.dirname(__file__)
-config.readfp(open(os.path.join(thisdir, 'steepsapi.cfg')))
+configfile = os.path.join(thisdir, 'steepsapi.cfg')
+config.readfp(open(configfile))
 PROJECT_DIR = config.get('project', 'PROJECT_DIR')
 
 # activate virtualenv
@@ -23,10 +25,18 @@ execfile(activate_this, dict(__file__=activate_this))
 sys.path.append(PROJECT_DIR)
 sys.path.append(thisdir)
 
-# debug - which user is starting this?
-# goes to /var/log/httpd/error_log, per http://modwsgi.readthedocs.io/en/develop/user-guides/debugging-techniques.html
-if False:
-    from getpass import getuser
-    print >> sys.stderr, 'steepsapi user = {}'.format(getuser())
-
+# virtualenv activated, import rest of configuration
 from apiapp import app as application
+from apiapp.config import getconfig
+import time
+from loutilities import timeu
+tu = timeu.asctime('%Y-%m-%d %H:%M:%S')
+
+appconfig = getconfig(configfile)
+application.config.update(appconfig)
+application.configtime = tu.epoch2asc(time.time())
+application.configpath = configfile
+
+# must set up logging after setting configuration
+from apiapp import applogging
+applogging.setlogging()

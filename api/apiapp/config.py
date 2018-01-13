@@ -1,11 +1,11 @@
 ###########################################################################################
-# localapi - run the web application
+# config - retrieve configuration for steeps api
 #
 #       Date            Author          Reason
 #       ----            ------          ------
-#       10/10/15        Lou King        Create
+#       01/11/18        Lou King        Create
 #
-#   Copyright 2015 Lou King
+#   Copyright 2018 Lou King.  All rights reserved
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
@@ -21,34 +21,22 @@
 #
 ###########################################################################################
 
-'''
-use this script to run the steeps api locally for debug
+# homegrown
+from loutilities.configparser import getitems
 
-Usage::
+#----------------------------------------------------------------------
+def getconfig(configfile):
+#----------------------------------------------------------------------
+    '''
+    get configuratoin from configfile
 
-    python localapi.py
-'''
+    :param configfile: file containing configuration, formatted per 
+        python ConfigParser
+    :rtype: dict with configuration key, value pairs
+    '''
 
-# standard
-import pdb
-import os
-import os.path
+    # combine app and runsignup sections
+    config = getitems(configfile, 'app')
+    config.update(getitems(configfile, 'runsignup'))
 
-from apiapp import app
-from apiapp.config import getconfig
-
-import time
-from loutilities import timeu
-tu = timeu.asctime('%Y-%m-%d %H:%M:%S')
-
-configpath = os.path.abspath('./developapi.cfg')
-config = getconfig(configpath)
-app.config.update(config)
-app.configtime = tu.epoch2asc(time.time())
-app.configpath = configpath
-
-# must set up logging after setting configuration
-from apiapp import applogging
-applogging.setlogging()
-
-app.run()
+    return config

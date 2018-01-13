@@ -38,10 +38,12 @@ class ScriptNameStripper(object):
 import time
 from loutilities import timeu
 tu = timeu.asctime('%Y-%m-%d %H:%M:%S')
-os.environ['API_SETTINGS'] = os.path.abspath('./steepsapi.cfg')
-app.config.from_envvar('API_SETTINGS')
+
+configpath = os.path.abspath('./steepsapi.cfg')
+config = getconfig(configpath)
+app.config.update(config)
 app.configtime = tu.epoch2asc(time.time())
-app.configpath = os.environ['API_SETTINGS']
+app.configpath = configpath
 
 # must set up logging after setting configuration
 from apiapp import applogging

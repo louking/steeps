@@ -7,10 +7,15 @@
   font: 18px sans-serif;
 }
 
+.axis {
+  font: 14px sans-serif;
+}
+
 .axis path,
 .axis line {
   fill: none;
   stroke: #000;
+  stroke-width: 2px;
   shape-rendering: crispEdges;
 }
 

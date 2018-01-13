@@ -27,10 +27,6 @@ import os.path
 
 # pypi
 import flask
-from flask.ext.login import login_required
-import flask.ext.principal as principal
-import flask.ext.wtf as flaskwtf
-import wtforms
 
 # homegrown
 from app import app
@@ -41,9 +37,9 @@ app.jinja_env.trim_blocks = True
 app.jinja_env.lstrip_blocks = True
 
 # get configuration
-configpath = os.path.join(os.path.sep.join(os.path.dirname(__file__).split(os.path.sep)[:-1]), 'steepsapi.cfg')
-appconfig = getitems(configpath, 'app')
-app.config.update(appconfig)
+# configpath = os.path.join(os.path.sep.join(os.path.dirname(__file__).split(os.path.sep)[:-1]), 'steepsapi.cfg')
+# appconfig = getitems(configpath, 'app')
+# app.config.update(appconfig)
 
 # configure for debug
 debug = app.config['DEBUG']

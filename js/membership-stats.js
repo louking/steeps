@@ -4,42 +4,38 @@ var margin = {top: 40, right: 80, bottom: 45, left: 50},
     viewbox_width = width + margin.left + margin.right,
     viewbox_height = height + margin.top + margin.bottom;
 
-var parseDate = d3.time.format("%d-%b-%y").parse,
+var parseDate = d3.timeFormat("%d-%b-%y").parse,
     bisectDate = d3.bisector(function(d) { return d.date; }).left;
 
-var x = d3.time.scale()
+var x = d3.scaleTime()
     .range([0, width]);
 
-var y = d3.scale.linear()
+var y = d3.scaleLinear()
     .range([height, 0]);
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom")
-    .ticks(d3.time.months)
+// see https://bl.ocks.org/d3noob/0e276dc70bb9184727ee47d6dd06e915
+var xAxis = d3.axisBottom(x)
     .tickSize(16)
-    .tickFormat(d3.time.format("%b"));
+    .tickFormat(d3.timeFormat("%b"));
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("left");
+var yAxis = d3.axisLeft(y);
 
-// copied from matplotlib
-var colorcycle = ['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black'];
-var color = d3.scale.ordinal()
-    .range(['blue', 'green', 'red', 'cyan', 'magenta', 'yellow', 'black']);
+// copied from matplotlib v2.0 - see https://matplotlib.org/users/dflt_style_changes.html#colors-in-default-property-cycle
+var colorcycle = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
+              '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
+              '#bcbd22', '#17becf'];
+var color = d3.scaleOrdinal()
+    .range(['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728',
+              '#9467bd', '#8c564b', '#e377c2', '#7f7f7f',
+              '#bcbd22', '#17becf']);
 
-var line = d3.svg.line()
+var line = d3.line()
     .x(function(d) { 
       return x(d.date); })
     .y(function(d) { 
-      return y(d.nummembers); });
+      return y(d.count); });
 
 var entry_content = d3.select(".entry-content")
-
-entry_content
-  .append("p")
-    .text("Move your mouse around or touch screen to see the number of club members on any particular date.")
 
 var svg = entry_content
   .append("svg")
@@ -66,8 +62,8 @@ var mouseoverlay = svg.append("rect")
     .attr("width", width + margin.right)
     .attr("height", height);
 
-var formatDate = d3.time.format("%m/%d"); 
-var parseDate = d3.time.format("%m-%d").parse,
+var formatDate = d3.timeFormat("%m/%d"); 
+var parseDate = d3.timeParse("%m-%d"),
     jan1 = parseDate("01-01"),
     dec31 = parseDate("12-31");
 x.domain([jan1, dec31]);
@@ -77,26 +73,26 @@ d3.json("/api/_memberstats", function(error, contents) {
   if (!contents.success) throw "error response from api";
 
   data = contents.data;
+  cachetime = contents.cachetime;
 
   // do this before parsing all the dates
-  var lastyear = d3.keys(data)[d3.keys(data).length-1],
-      lastdoy = data[lastyear][data[lastyear].length-1].date;
-  lastdoy = formatDate(parseDate(lastdoy));
-  var lastdate = lastdoy + "/" + lastyear;
+  var lastyearcounts = data[data.length-1]
+      lastyear = lastyearcounts.year,
+      lastcounts = lastyearcounts.counts;
 
-  // data is object by year of list of objects by {'date':date, 'nummembers':nummembers}
+  // data is [{year:year, counts: {['date':date, 'count':count}, ... ]}, ... ]
   // alldata is concatenation of all years' data for y.domain(d3.extent)
   alldata = [];
-  for (var year in data) {
-    data[year].forEach(function(d) {
+  for (i=0; i<data.length; i++) {
+    data[i].counts.forEach(function(d) {
       d.date = parseDate(d.date);
-      d.nummembers = +d.nummembers;
+      d.count = +d.count;
     });
-    alldata = alldata.concat(data[year]);
+    alldata = alldata.concat(data[i].counts);
   };
 
-  // y.domain(d3.extent(alldata, function(d) { return d.nummembers; }));
-  y.domain([0, Math.ceil(d3.max(alldata, function(d) { return d.nummembers})/100)*100]);
+  // y.domain(d3.extent(alldata, function(d) { return d.count; }));
+  y.domain([0, Math.ceil(d3.max(alldata, function(d) { return d.count})/100)*100]);
 
   svg.append("g")
       .attr("class", "x axis")
@@ -122,22 +118,22 @@ d3.json("/api/_memberstats", function(error, contents) {
     .append("text")
       .attr("transform", "translate(" + width/2 + ",-10)")
       .style("text-anchor", "middle")
-      .text("year on year member count as of " + lastdate);
+      .text("year on year member count as of " + cachetime);
 
-  var index = 0;
   colormap = [];
-  for (var year in data) {
-    colormap.push({'year': year, 'color': colorcycle[index % colorcycle.length]});
+  for (i=0; i<data.length; i++) {
+    year = data[i].year
+    colormap.push({'year': year, 'color': colorcycle[i % colorcycle.length]});
 
     svg.append("path")
-        .style("stroke", colormap[index].color)
-        .datum(data[year])
+        .style("stroke", colormap[i].color)
+        .datum(data[i].counts)
         .attr("class", "line")
         .attr("d", line);
 
     var thisfocus = svg.append("g")
         .attr("class", "focus")
-        .attr("id","focus"+index)
+        .attr("id","focus"+i)
         .style("display", "none");
 
     thisfocus.append("circle")
@@ -148,8 +144,6 @@ d3.json("/api/_memberstats", function(error, contents) {
         .attr("x", 4)
         .attr("y", 7)
         .attr("dy", ".35em");
-
-    index += 1;
   }
 
   var legend = svg.selectAll(".legend")
@@ -180,23 +174,20 @@ d3.json("/api/_memberstats", function(error, contents) {
 
   function mousemove() {
     var x0 = x.invert(d3.mouse(this)[0]);
-    var index = 0;
-    for (var year in data) {
-      var i = bisectDate(data[year], x0, 1);
+    for (i=0; i<data.length; i++) {
+      var j = bisectDate(data[i].counts, x0, 1);
       // use d0, d1 if in range
-      if (i < data[year].length) {
-        var d0 = data[year][i - 1],
-            d1 = data[year][i];
+      if (j < data[i].counts.length) {
+        var d0 = data[i].counts[j - 1],
+            d1 = data[i].counts[j];
         var d = x0 - d0.date > d1.date - x0 ? d1 : d0;
       }
       else {
-        var d = data[year][data[year].length-1]
+        var d = data[i].counts[data[i].counts.length-1]
       }
-      var thisfocus = d3.select("#focus"+index);
-      thisfocus.attr("transform", "translate(" + x(d.date) + "," + y(d.nummembers) + ")");
-      thisfocus.select("text").text(formatDate(d.date) + " " + d.nummembers);
-
-      index += 1;
+      var thisfocus = d3.select("#focus"+i);
+      thisfocus.attr("transform", "translate(" + x(d.date) + "," + y(d.count) + ")");
+      thisfocus.select("text").text(formatDate(d.date) + " " + d.count);
     }
   }
 });

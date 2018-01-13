@@ -18,6 +18,8 @@ function renderactive() {
 // this must be done after datatables() is called in datatables.js
 var openVals;
 function afterdatatables(){
+    console.log('afterdatatables()');
+
     editor.on( 'uploadXhrSuccess', function ( e, fieldName, json ) {
         console.log ('elev = ' + json.elev + ' distance = ' + json.distance);
         editor.field('elev').set(json.elev);
@@ -49,24 +51,28 @@ function afterdatatables(){
         
     });
 
-    // *** causes Create button to raise popup
-    // // confirm before closing window for unsaved changes
-    // // from https://datatables.net/forums/discussion/32883
+    // confirm before closing window for unsaved changes
+    // from https://datatables.net/forums/discussion/32883
+    // but see https://datatables.net/forums/discussion/46526/confirmation-on-form-close
+    
     // editor
-    //     .on( 'open', function () {
-    //         // Store the values of the fields on open
-    //         openVals = JSON.stringify( editor.get() );
-    //     } )
-    //    .on( 'preClose', function ( e ) {
-    //         // On close, check if the values have changed and ask for closing confirmation if they have
-    //         if ( openVals !== JSON.stringify( editor.get() ) ) {
-    //             return confirm( 'You have unsaved changes. Are you sure you want to exit?' );
-    //         }
-    //     } )      
-    //    .on( 'preBlur', function ( e ) {
-    //         // On close, check if the values have changed and ask for closing confirmation if they have
-    //         if ( openVals !== JSON.stringify( editor.get() ) ) {
-    //             return confirm( 'You have unsaved changes. Are you sure you want to exit?' );
-    //         }
-    // } );
+    //   .on("open", function() {
+    //     console.log('editor on open fired');
+    //     // Store the values of the fields on open
+    //     openVals = JSON.stringify(editor.get());
+     
+    //     editor.on("preClose", function(e) {
+    //       console.log('editor on preClose fired');
+    //       // On close, check if the values have changed and ask for closing confirmation if they have
+    //       if (openVals !== JSON.stringify(editor.get())) {
+    //         return confirm(
+    //           "You have unsaved changes. Are you sure you want to exit?"
+    //         );
+    //       }
+    //     });
+    //   })
+    //   .on("submit", function() {
+    //     console.log('editor on submit fired')
+    //     editor.off("preClose");
+    //   });
 };

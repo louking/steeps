@@ -24,7 +24,7 @@ function datatables_csv(fileuri, tableid, api, dtoptions) {
       data = contents.data;
     }
 
-    var rows = d3.csv.parseRows(data);
+    var rows = d3.csvParseRows(data);
 
     var tbl = d3.select("#" + tableid);
 
