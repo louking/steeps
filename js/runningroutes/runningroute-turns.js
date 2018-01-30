@@ -11,8 +11,8 @@ var gridrows = 6, gridcols = 4;
 var lastrowx = 0, 
     lastcolx = 0;
 
-// more console output when debug = true
-var debug = true;
+// more console output when rrdebug = true
+var rrdebug = true;
 
 // get arguments -- https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
 $.urlParam = function(name){
@@ -149,7 +149,7 @@ function setactivegrid(thisrowx, thiscolx) {
 function showgridval() {
     var thisrowx = +$(this).attr("rowx");
     var thiscolx = +$(this).attr("colx");
-    if (debug) console.log("showgridval() " + thisrowx + " " + thiscolx);
+    if (rrdebug) console.log("showgridval() " + thisrowx + " " + thiscolx);
 
     setactivegrid(thisrowx, thiscolx);
 };
@@ -157,7 +157,7 @@ function showgridval() {
 function setgridval() {
     var rowx = +$(this).attr("rowx");
     var colx = +$(this).attr("colx");
-    if (debug) console.log("setgridval() " + rowx + " " + colx);
+    if (rrdebug) console.log("setgridval() " + rowx + " " + colx);
     griddialog.hide();
     griddialog.removeClass("visible");
     setgrid (rowx+1, colx+1);

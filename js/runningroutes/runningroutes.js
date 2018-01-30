@@ -5,7 +5,7 @@
 var $ = jQuery;
 
 // more console output when debug = true
-var debug = true;
+var rrdebug = true;
 
 // for metadata within row
 var loc2id = {},
@@ -163,7 +163,7 @@ $(document).ready(function() {
             for (var j=0; j<loc2id[key].length; j++) {
                 var thisid = loc2id[key][j];
                 id2loc[thisid] = thisloc;
-                if (debug) console.log('preDraw: id2loc['+thisid+'] = ' + thisloc);
+                if (rrdebug) console.log('preDraw: id2loc['+thisid+'] = ' + thisloc);
             };
         };
 
@@ -194,19 +194,19 @@ $(document).ready(function() {
         // As preDraw actions happen after the sort in dataTables, a second draw is required.
         // The 'justsorting' draw was invoked at the bottom of this function just to sort the table
         if (justsorting) {
-            if (debug) console.log('draw.dt event, just sorting');
+            if (rrdebug) console.log('draw.dt event, just sorting');
             justsorting = false;
             return;
         }
 
         // don't want to do all this if we're just paging
         if (justpaging) {
-            if (debug) console.log('draw.dt event, just paging');
+            if (rrdebug) console.log('draw.dt event, just paging');
             justpaging = false;
             return;
         };
 
-        if (debug) console.log('draw.dt event');
+        if (rrdebug) console.log('draw.dt event');
 
         // handle mouseover events for table rows
         $("tr").not(':first').mouseenter(function(){
@@ -299,7 +299,7 @@ SVGOverlay.prototype.createsvg_ = function () {
                     .style("height", this.height + "px")
                     .attr("viewBox","0 0 " + this.width + " " + this.height)
                     .on("click", function() {
-                        if (debug) console.log('map clicked');
+                        if (rrdebug) console.log('map clicked');
                         tip.hide();
                     });
 
@@ -307,7 +307,7 @@ SVGOverlay.prototype.createsvg_ = function () {
 }
 
 SVGOverlay.prototype.onAdd = function () {
-    if (debug) console.log('onAdd()')
+    if (rrdebug) console.log('onAdd()')
     // create runningroutes div
     // clearly this needs to be adjusted or this.svg should be appended to this layer
     var mappane = this.getPanes().overlayMouseTarget;
@@ -326,7 +326,7 @@ SVGOverlay.prototype.onAdd = function () {
 };
 
 SVGOverlay.prototype.setdata = function ( data ) {
-    if (debug) console.log('setdata()')
+    if (rrdebug) console.log('setdata()')
     this.data = data;
 
     this.draw();
@@ -334,8 +334,8 @@ SVGOverlay.prototype.setdata = function ( data ) {
 
 SVGOverlay.prototype.zoomtobounds = function ( ) {
     // change bounds depending on data
-    var lats = this.data.map(p => p.geometry.coordinates[0]);
-    var lngs = this.data.map(p => p.geometry.coordinates[1]);
+    var lats = this.data.map(function(p) {return p.geometry.coordinates[0]});
+    var lngs = this.data.map(function(p) {return p.geometry.coordinates[1]});
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/max
     var slat = lats.reduce(function(a,b) {return Math.min(a,b)});
     var nlat = lats.reduce(function(a,b) {return Math.max(a,b)});
@@ -349,7 +349,7 @@ SVGOverlay.prototype.sethandleboundscheck = function ( val ) {
 };
 
 SVGOverlay.prototype.onPanZoom = function () {
-    if (debug) console.log('onPanZoom()')
+    if (rrdebug) console.log('onPanZoom()')
     var proj = this.getProjection();
     var svgoverlay = this;  // for use within d3 functions
 
@@ -396,7 +396,7 @@ SVGOverlay.prototype.onPanZoom = function () {
 };
 
 SVGOverlay.prototype.onIdle = function() {
-    if (debug) console.log('idle event fired');
+    if (rrdebug) console.log('idle event fired');
 
     // when do we start doing this? After first draw, I think
     if (this.handleboundscheck) {
@@ -408,7 +408,7 @@ SVGOverlay.prototype.onIdle = function() {
         var lowlng = Math.min(nebounds.lng(), swbounds.lng());
         var hilat  = Math.max(nebounds.lat(), swbounds.lat());
         var hilng  = Math.max(nebounds.lng(), swbounds.lng());
-        if (debug) console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
+        if (rrdebug) console.log ('(lowlat, hilat, lowlng, hilng) = ' + lowlat + ', ' + hilat + ', ' + lowlng + ', ' + hilng );
         // not clear why I need to add third parameter here, but not in https://codepen.io/louking/pen/EbKYJd
         yadcf.exFilterColumn(myTable, [[latcol, {from: lowlat, to: hilat}], [lngcol,  {from: lowlng, to: hilng}]], true);
     };
@@ -421,7 +421,7 @@ SVGOverlay.prototype.onRemove = function () {
 };
 
 SVGOverlay.prototype.draw = function () {
-    if (debug) console.log('draw');
+    if (rrdebug) console.log('draw');
 
     // nothing to do if onAdd hasn't been called yet
     if (!this.svg) return;
@@ -635,11 +635,11 @@ function dexp(numlocs) {
 };
 
 function exiting(d) {
-    if (debug) console.log('exiting id=' + d.geometry.properties.id)
+    if (rrdebug) console.log('exiting id=' + d.geometry.properties.id)
 };
 function entering(d) {
-    if (debug) console.log('entering id=' + d.geometry.properties.id)
+    if (rrdebug) console.log('entering id=' + d.geometry.properties.id)
 };
 function updating(d) {
-    if (debug) console.log('updating id=' + d.geometry.properties.id)
+    if (rrdebug) console.log('updating id=' + d.geometry.properties.id)
 };
