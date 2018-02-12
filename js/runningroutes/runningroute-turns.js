@@ -14,17 +14,6 @@ var lastrowx = 0,
 // more console output when rrdebug = true
 var rrdebug = true;
 
-// get arguments -- https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
-$.urlParam = function(name){
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results==null){
-       return null;
-    }
-    else{
-       return decodeURI(results[1]) || 0;
-    }
-}
-
 // fill in grid widget
 var gridtable = $( "<table/>", { class: "grid-select" });
 for (var rowx=0; rowx<gridrows; rowx++) {
@@ -54,8 +43,28 @@ griddialog.hide();
 
 
 $(document).ready(function() {
-    var title = decodeURI( $.urlParam('title') );
-    var thisfid = $.urlParam('fileid');
+    var title = urlParam('title');
+    var thisfid = urlParam('fileid');
+
+    // gather parameters and return path for route link
+    var descrparam = urlParam('descr')
+    var gain = urlParam('gain');
+    var route = urlParam('route');
+    var thispath = window.location.pathname;
+    console.log('thispath='+thispath);
+    var routeurl = route + '?' + setParams({
+        title: title,
+        fileid: thisfid,
+        gain: gain,
+        turns: thispath,
+    });
+
+    // add route link
+    var $routelink = $( "<a/>", {
+        href: routeurl, 
+        text: 'route',
+    });
+    $( '#route-link' ).append( $routelink );
 
     $("#turn-title").text(title);
     var progress = $("#progress-bar").progressbar({value: false});

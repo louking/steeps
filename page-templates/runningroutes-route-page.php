@@ -32,7 +32,12 @@ get_header(); ?>
             <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroute-route.css?v=<?= $cssmtime ?>"/>
 
             <div id="path-title"></div>
-            <div id="path-descr"></div>
+            <div class="descr-block">
+                <span id="path-descr" style="float: left;"></span>
+                <span id="turns-link" style="float: right;"></span>
+            </div>
+            <div style="clear: both;"></div>
+            
             <div id="progress-bar"><div class="progress-label">Loading...</div></div>
             <div id='runningroutes-route-map'></div>
             <div id='runningroutes-route-elev'></div>

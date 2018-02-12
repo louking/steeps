@@ -1,14 +1,40 @@
 // get arguments -- https://stackoverflow.com/questions/19491336/get-url-parameter-jquery-or-how-to-get-query-string-values-in-js
 if (jQuery) {
-  jQuery.urlParam = function(name){
+  function urlParam(name) {
       var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
       if (results==null){
          return null;
       }
       else{
-         return decodeURI(results[1]) || 0;
+         return decodeURIComponent(results[1]) || 0;
       }
   }
+
+  // Serialize an array of form elements or a set of
+  // key/values into a query string
+  // adapted from jQuery.param
+  function setParams(a) {
+    var prefix,
+      s = [],
+      add = function( key, valueOrFunction ) {
+
+        // If value is a function, invoke it and use its return value
+        var value = typeof obj === "function" && typeof obj.nodeType !== "number" ?
+          valueOrFunction() :
+          valueOrFunction;
+
+        s[ s.length ] = encodeURIComponent( key ) + "=" +
+          encodeURIComponent( value == null ? "" : value );
+      };
+
+      // encode each item
+      for ( prefix in a ) {
+        add( prefix, a[ prefix ] );
+      }
+
+    // Return the resulting serialization
+    return s.join( "&" );
+  };
 }
 
 // degrees to Radians

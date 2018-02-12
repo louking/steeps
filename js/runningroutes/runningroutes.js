@@ -209,7 +209,7 @@ $(document).ready(function() {
         if (rrdebug) console.log('draw.dt event');
 
         // handle mouseover events for table rows
-        $("tr").not(':first').mouseenter(function(){
+        $("#runningroutes-table tr").not(':first').mouseenter(function(){
             // highlight table
             $( this ).css("background-color", "yellow");
 
@@ -582,18 +582,20 @@ function unexplodeData(d, i) {
 function buildlinks(props, separator) {
     var links = [];
     // start link
-    links.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURI(props.start) + '" target=_blank>start</a>');
+    links.push('<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(props.start) + '" target=_blank>start</a>');
     
     // map link
     // display our own map?
     if (props.fileid) {
-        var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURI(props.name + ' - ' 
+        var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURIComponent(props.name + ' - ' 
                         + props.distance + ' miles - ' + props.surface)
                         + '&fileid=' + props.fileid;
         if (props.description)
-            thislink += '&descr=' + encodeURI(props.description);
+            thislink += '&descr=' + encodeURIComponent(props.description);
         if (props.gain)
-            thislink += '&gain=' + encodeURI(props.gain);
+            thislink += '&gain=' + encodeURIComponent(props.gain);
+        thislink += '&turns=' + rrturnsurl;
+
         thislink += '" target=_blank>route</a>';
         links.push(thislink);
     // display configured url?
@@ -603,12 +605,15 @@ function buildlinks(props, separator) {
 
     // turns link
     if (props.fileid) {
-        var thislink = '<a href="' + rrturnsurl + '?title=' + encodeURI(props.name + ' - ' 
+        var thislink = '<a href="' + rrturnsurl + '?title=' + encodeURIComponent(props.name + ' - ' 
                         + props.distance + ' miles - ' + props.surface)
                         + '&fileid=' + props.fileid;
 
         if (props.description)
-            thislink += '&descr=' + encodeURI(props.description);
+            thislink += '&descr=' + encodeURIComponent(props.description);
+        if (props.gain)
+            thislink += '&gain=' + encodeURIComponent(props.gain);
+        thislink += '&route=' + rrrouteurl;
 
         thislink += '" target=_blank>turns</a>';
         links.push(thislink);
