@@ -4,8 +4,9 @@
 
 var $ = jQuery;
 
-// more console output when rrdebug = true
-var rrdebug = true;
+// more console output 
+var rrdebug = false;
+var debugdetail = false;
 
 // keep tip global
 var tip;
@@ -206,6 +207,50 @@ SVGOverlay.prototype.setdata = function ( data ) {
     this.draw();
 };
 
+// get current position
+SVGOverlay.prototype.getpos = function( createpos ) {
+    // browser supports geolocation
+    var iconsize = 100;
+    var svgoverlay = this;  // remember for during getCurrentPosition callback
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function( position ) {
+            svgoverlay.geolocationok = true;
+            // elevation not required
+            var currpos = [ position.coords.latitude, position.coords.longitude, 0 ];
+
+            if ( createpos ){
+                var posGenerator = d3.symbol().type(d3.symbolStar).size(iconsize);
+                var posData = posGenerator();
+                svgoverlay.pos = svgoverlay.svg.append("g")
+                                .attr("d", currpos)
+                                .classed("pos-marker", true)
+                                .classed("route-marker", true);
+                svgoverlay.pos.append('path')
+                        .attr("d", posData);
+                svgoverlay.onPanZoom();
+            }
+
+            // update position
+            if (svgoverlay.pos) {
+                svgoverlay.pos.attr("d", currpos)
+                svgoverlay.onPanZoom();
+            };
+
+            console.log('getpos(): lat,lng = ' + currpos[0] + ',' + currpos[1]);
+        }, 
+
+        // error trying to get current position
+        function() {
+            console.log('geolocation service failed');
+        });
+
+    //browser doesn't support geolocation
+    } else {
+        console.log('browser doesn\'t support geolocation');
+    }
+}
+
 // create start, finish and mile/km icons
 SVGOverlay.prototype.addmarkers = function() {
     // http://d3indepth.com/shapes/#symbols
@@ -236,6 +281,13 @@ SVGOverlay.prototype.addmarkers = function() {
     end.append('path')
             .attr("d", endData);
 
+    // position marker
+    this.geolocationok = false;
+    this.getpos( true );
+    var svgoverlay = this;
+    // update position every 5 seconds
+    this.postimer = setInterval(function(){ svgoverlay.getpos( false ) }, 5000);
+
     // mile / km markers
     this._dist = [];
     this._dist.push(0);
@@ -243,7 +295,6 @@ SVGOverlay.prototype.addmarkers = function() {
     var lastmarker = 0;
     var isMiles = !this.metric;
     // start at 2nd coordinate (index 1)
-    var debugdetail = true;
     if (debugdetail) console.log('i,lat1,lng1,ele1,lat2,lng2,ele2,dist')
     for (var i=1; i<this.data.length; i++) {
         dist += haversineDistance(this.data[i-1], this.data[i], isMiles);

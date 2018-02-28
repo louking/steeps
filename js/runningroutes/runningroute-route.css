@@ -21,6 +21,11 @@ body {
     stroke: black;
 }
 
+.pos-marker {
+    fill: orange;
+    stroke: black;
+}
+
 .distance-marker {
     fill: yellow;
     stroke: black;
