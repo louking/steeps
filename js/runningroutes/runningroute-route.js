@@ -29,7 +29,7 @@ function initMap(width, height) {
       zoom: 9,
       center: new google.maps.LatLng(39.431206, -77.415428),
       mapTypeId: google.maps.MapTypeId.TERRAIN,
-      fullscreenControl: false
+      fullscreenControl: true
     });
 
     overlay = new SVGOverlay(map, width, height);
@@ -149,6 +149,7 @@ SVGOverlay.prototype.createsvg_ = function () {
                         if (rrdebug) console.log('map clicked');
                         tip.hide();
                     });
+    this.fullscreen = false;
 
     this.svg.call(tip);
 
@@ -178,11 +179,7 @@ SVGOverlay.prototype.onAdd = function () {
     this.onPanZoom();
 };
 
-SVGOverlay.prototype.setdata = function ( data ) {
-    if (rrdebug) console.log('setdata()')
-    this.data = data;
-    var svgoverlay = this;
-
+SVGOverlay.prototype.fitbounds = function ( ) {
     // change bounds depending on data
     var lats = this.data.map(function(p) {return p[0]});
     var lngs = this.data.map(function(p) {return p[1]});
@@ -192,6 +189,16 @@ SVGOverlay.prototype.setdata = function ( data ) {
     var elng = lngs.reduce(function(a,b) {return Math.max(a,b)});
     var wlng = lngs.reduce(function(a,b) {return Math.min(a,b)});
     this.map.fitBounds( { north: nlat, east: elng, south: slat, west: wlng } );
+
+}
+
+SVGOverlay.prototype.setdata = function ( data ) {
+    if (rrdebug) console.log('setdata()')
+    this.data = data;
+    var svgoverlay = this;
+
+    // change bounds depending on data
+    this.fitbounds();
 
     // create start, finish and mile icons
     this.addmarkers();
@@ -266,6 +273,7 @@ SVGOverlay.prototype.sethandleboundscheck = function( val ) {
     this.handleboundscheck = val;
 };
 
+// handles pan and zoom, and also handles change to/from full screen
 SVGOverlay.prototype.onPanZoom = function () {
     if (rrdebug) console.log('onPanZoom()')
     var proj = this.getProjection();
@@ -298,17 +306,48 @@ SVGOverlay.prototype.onPanZoom = function () {
     //     .attr("cx", function(d) { return svgoverlay.transform( d ).x })
     //     .attr("cy", function(d) { return svgoverlay.transform( d ).y });
 
-    // reset svg location 
+    // reset svg location and size
     this.bounds = this.map.getBounds();
     var nebounds = this.bounds.getNorthEast();
     var swbounds = this.bounds.getSouthWest();
     var svgx = Math.round( this.transform( [nebounds.lat(), swbounds.lng()] ).x );
     var svgy = Math.round( this.transform( [nebounds.lat(), swbounds.lng()] ).y );
+
+    // determine height / width based on whether fullscreen or not
+    // see https://stackoverflow.com/questions/39620850/google-maps-api-v3-how-to-detect-when-map-changes-to-full-screen-mode
+    var width, height;
+    // if fullscreen now
+    if ( $(this.map.getDiv()).children().eq(0).height() == window.innerHeight &&
+         $(this.map.getDiv()).children().eq(0).width()  == window.innerWidth ) {
+        if (rrdebug) console.log( 'FULL SCREEN' );
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        // change in state, refit bounds [not working]
+        // if (!this.fullscreen) {
+        //     this.fitbounds();
+        // }
+        // this.fullscreen = true;
+    }
+    else {
+        if (rrdebug) console.log ('NOT FULL SCREEN');
+        width = this.width;
+        height = this.height;
+
+        // change in screen state, refit bounds [not working]
+        // if (this.fullscreen) {
+        //     this.fitbounds()
+        // }
+        // this.fullscreen = false;
+    }
+
+    // reset svg attributes
     this.svg
         .style("left", svgx + "px")
         .style("top", svgy + "px")
-        // .attr("transform", "translate(" + -svgx + "," + -svgy + ")")
-        .attr("viewBox",svgx + " " + svgy + " " + this.width + " " + this.height);
+        .style("width", width + "px")
+        .style("height", height + "px")
+        .attr("viewBox",svgx + " " + svgy + " " + width + " " + height);
 };
 
 SVGOverlay.prototype.onIdle = function() {
