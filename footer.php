@@ -35,10 +35,9 @@
 					supporting the running community<br>
 					of Frederick, Maryland since 1975.</td>
 					<td><a href="<?php echo get_site_url(); ?>/about/contact-us/">Contact Us</a></td>
-					<td><a href="about/terms-of-use">Terms of Use</a></td>
-					<td><a href="about/site-map">Site Map</a></td>
+					<td><a href="<?php echo get_site_url(); ?>/about/terms-of-use">Terms of Use</a></td>
+					<td><a href="<?php echo get_site_url(); ?>/about/site-map">Site Map</a></td>
 					<td><a href="https://www.rrca.org/" target="_blank"><img src="<?php echo get_site_url(); ?>/wp-content/uploads/2014/12/RRCA_Website_Icon.jpg"></a></td>
-					<td><a onclick="window.open('https://www.gravityscan.com/verify/<?php echo $gs_trustid ?>','gravityscan-verified-secure-site','width=760,height=470,left=160,top=170');return false;" href="https://www.gravityscan.com/verify/<?php echo $gs_trustid ?>" target="_blank" rel="noopener noreferrer"><img class="gs-trustbadge" src="https://badges.gravityscan.com/badges/<?php echo $gs_site ?>-<?php echo $gs_trustid ?>" alt="Website Malware Scan" width="117" height="67"></a></td>
 				</tr>
 			</table>
 		</div><!-- .site-info -->
