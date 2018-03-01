@@ -24,9 +24,15 @@ get_header(); ?>
 
     <div id="primary" class="content-area">
         <main id="main" class="site-main newsletter-main" role="main">
-            <br>
-            <p>Newsletter content comes from the members. Please send proposed articles and photos to
-            <a href="mailto:newsletter@steeplechasers.org" target="_blank">newsletter@steeplechasers.org</a>.</p>
+            <h1><i>Intervals</i> Blog</h1>
+            <p>Intervals Blog content comes from FSRC members. Share your club news or running-related experiences, expertise, or interests in the next edition of Intervals.</p>
+            <p>Submission guidelines:</p>
+            <ul>
+                <li>500-word maximum</li>
+                <li>Up to 2 pictures (2 MB size-limit, per image), including photo credit</li>
+                <li>Send submissions to <a href="mailto:intervalsblog@steeplechasers.org" target="_blank">intervalsblog@steeplechasers.org</a></li>
+                <li>Intervals is produced quarterly with deadlines for submission: March 1st, June 1st, September 1st, and December 1st.</li>
+            </ul>
 
         <?php if ( have_posts() ) : ?>
 
