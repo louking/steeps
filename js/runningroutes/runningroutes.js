@@ -20,7 +20,8 @@ var datatables_options = {
     // "order": [[1,'asc']],
     dom: '<"clear">lBfrtip',
     ajax: {
-           // defined in locally configured runningroutes-config.js
+           // runningroutesurl is defined in in wp-content/themes/steeps/js/runningroutes directory locally 
+           // configured runningroutes-config.js
            url: runningroutesurl+"?op=routes",
            dataSrc: 'features',
           },
@@ -587,6 +588,8 @@ function buildlinks(props, separator) {
     // map link
     // display our own map?
     if (props.fileid) {
+        // rrrouteurl is defined in in wp-content/themes/steeps/js/runningroutes directory locally 
+        // configured runningroutes-config.js
         var thislink = '<a href="' + rrrouteurl + '?title=' + encodeURIComponent(props.name + ' - ' 
                         + props.distance + ' miles - ' + props.surface)
                         + '&fileid=' + props.fileid;
@@ -594,6 +597,8 @@ function buildlinks(props, separator) {
             thislink += '&descr=' + encodeURIComponent(props.description);
         if (props.gain)
             thislink += '&gain=' + encodeURIComponent(props.gain);
+        // rrturnsurl is defined in in wp-content/themes/steeps/js/runningroutes directory locally 
+        // configured runningroutes-config.js
         thislink += '&turns=' + rrturnsurl;
 
         thislink += '" target=_blank>route</a>';
@@ -605,6 +610,8 @@ function buildlinks(props, separator) {
 
     // turns link
     if (props.fileid) {
+        // rrturnsurl is defined in in wp-content/themes/steeps/js/runningroutes directory locally 
+        // configured runningroutes-config.js
         var thislink = '<a href="' + rrturnsurl + '?title=' + encodeURIComponent(props.name + ' - ' 
                         + props.distance + ' miles - ' + props.surface)
                         + '&fileid=' + props.fileid;
@@ -613,6 +620,8 @@ function buildlinks(props, separator) {
             thislink += '&descr=' + encodeURIComponent(props.description);
         if (props.gain)
             thislink += '&gain=' + encodeURIComponent(props.gain);
+        // rrrouteurl is defined in in wp-content/themes/steeps/js/runningroutes directory locally 
+        // configured runningroutes-config.js
         thislink += '&route=' + rrrouteurl;
 
         thislink += '" target=_blank>turns</a>';
