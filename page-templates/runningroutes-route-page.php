@@ -44,7 +44,7 @@ get_header(); ?>
 
             <script src="https://d3js.org/d3.v4.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.8.0-alpha.1/d3-tip.min.js"></script>
-            <script src="//maps.google.com/maps/api/js"></script>
+            <script src="https://maps.google.com/maps/api/js?key=AIzaSyAhlpnT784sPYWtTigwbaZdZfyvHluOVHc"></script>
             
             <?php 
             // assumes jquery and dataTables are included by one plugin or another

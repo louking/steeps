@@ -273,6 +273,17 @@ if ( is_plugin_active('toggle-wpautop/toggle-wpautop.php')
 }
 
 /**
+ * Unregisters the Google Maps API script on Events Calendar PRO.
+ */
+if ( is_plugin_active('events-calendar-pro/events-calendar-pro.php') ) {
+	add_action( 'wp_print_scripts', 'ecp_remove_google_maps_api', 100 );
+
+	function ecp_remove_google_maps_api() {
+		wp_deregister_script( 'tribe-gmaps' );
+	}
+}
+
+/**
  * For The Events Calendar: Community Events, on the event page, check for some special conditions. This is
  * being done to control display of "before html" content
  */
