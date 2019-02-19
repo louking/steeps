@@ -8,25 +8,76 @@
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-22407293-1', 'auto');
+    ga('create', '{{ config.GOOGLE_ANALYTICS_ID }}', 'auto');
     ga('send', 'pageview');
 
   </script>
   <!-- End Google Analytics -->
+    {% set urlparts = request.url.split('/') %}
+    {% set hostname = urlparts[2] %}
+
+  <script type="text/javascript">
+    var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+  </script>
+  
+{# see request.py for list of css, js files #}
+{% for css in _rrdb_cssfiles %}
+  <link rel=stylesheet type=text/css href="{{ css }}">
+{% endfor %}
+{% for css in pagecssfiles %}
+  <link rel=stylesheet type=text/css href="{{ css }}">
+{% endfor %}
+<style>
+  {% if hostname[0:9] == "127.0.0.1" or hostname[0:9] == "localhost" or hostname[0:13] == "dev.localhost" %}
+    html {background: antiquewhite;}
+  {% endif %}
+  {% if hostname[0:8] == "sandbox." %}
+    html {background: lightcyan;}
+  {% endif %}
+</style>
+{% block css %}
+{% endblock %}
+
+<script>var _rrdb_productname = "{{ _rrdb_productname_text|safe }}";</script>
+{% for js in _rrdb_jsfiles %}
+  <script type="text/javascript" src="{{ js }}"></script>
+{% endfor %}
+{% if pagejsfiles %}
+  {% for js in pagejsfiles %}
+    <script type="text/javascript" src="{{ js }}"></script>
+  {% endfor %}
+{% endif %}
+{# needed for google sign-in, see https://developers.google.com/identity/sign-in/web/server-side-flow #}
+  <script src="https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+  <script>
+    function start() {
+      gapi.load('auth2', function() {
+        auth2 = gapi.auth2.init({
+          client_id: "{{ config.GOOGLE_OAUTH_CLIENT_ID }}",
+          // Scopes to request in addition to 'profile' and 'email' -- space separated string
+          scope: 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets'
+        });
+      });
+    }
+  </script>
+{% block scripts %}
+{% endblock %}
 </head>
 <body>
 {% if not printerfriendly %}
   <div class=heading>
     <h1>{{_rrdb_productname|safe}}
-    {% set urlparts = request.url.split('/') %}
-    {% set hostname = urlparts[2] %}
-    {% if hostname[0:9] == "127.0.0.1" %} (development){% endif %}
-    {% if hostname == "sandbox.steeplechasers.org" %} (sandbox){% endif %}
+    {% if hostname[0:9] == "127.0.0.1"  or hostname[0:9] == "localhost" or hostname[0:13] == "dev.localhost" %} (development){% endif %}
+    {% if hostname[0:8] == "sandbox." %} (sandbox){% endif %}
     </h1>
     <div class=pagename>{{self.pagename()}}</div>
     <div class=metanav>
         <a href="https://{{ hostname }}">{{ hostname }}</a> | 
-        <a href="{{ url_for('logout') }}">log out</a>
+        {% if not session._ga_google_email %}
+          <button id="signinButton" class="ui-button ui-widget ui-corner-all">Google Log In</button>
+        {% else %}
+          <a href="{{ url_for('logout') }}" class="ui-button">log out</a>
+        {% endif %}
     </div>
   </div>
   <div class=wrapper>
@@ -45,7 +96,7 @@
             <a href="{{url_for('terms') }}">Terms of Service</a>
             <a href="{{url_for('feedback')}}?next={{request.url}}">Questions/Feedback</a>
           </div>  #}
-          <span>&copy; 2017 loutilities (Lou King).   All rights reserved.</span>
+          <span>&copy; 2019 loutilities (Lou King).   All rights reserved.</span>
         </div>
 {#      {% endif %} #}
     </div>
@@ -55,38 +106,5 @@
     {{ self.body() }}
   </div>
 {% endif %}
-<script type="text/javascript">
-  var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
-</script>
-  
-{# see request.py for list of css, js files #}
-{% for css in _rrdb_cssfiles %}
-  <link rel=stylesheet type=text/css href="{{ css }}">
-{% endfor %}
-{% for css in pagecssfiles %}
-  <link rel=stylesheet type=text/css href="{{ css }}">
-{% endfor %}
-<style>
-  {% if hostname[0:9] == "127.0.0.1" %}
-    html {background: antiquewhite;}
-  {% endif %}
-  {% if hostname == "sandbox.steeplechasers.org" %}
-    html {background: lightcyan;}
-  {% endif %}
-</style>
-{% block css %}
-{% endblock %}
-
-<script>var _rrdb_productname = "{{ _rrdb_productname_text|safe }}";</script>
-{% for js in _rrdb_jsfiles %}
-  <script type="text/javascript" src="{{ js }}"></script>
-{% endfor %}
-{% if pagejsfiles %}
-  {% for js in pagejsfiles %}
-    <script type="text/javascript" src="{{ js }}"></script>
-  {% endfor %}
-{% endif %}
-{% block scripts %}
-{% endblock %}
 </body>
 </html>

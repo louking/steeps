@@ -67,3 +67,11 @@ import runningroutesadmin
 # NOTE: with app_context() was not sufficient to prevent runtime error
 with app.test_request_context():
     request.setscripts()
+
+debug = True
+
+if debug:
+    from loutilities.flask_helpers.blueprints import list_routes
+    with app.app_context():
+        print 'listing routes from runningroutes.__init__.py'
+        list_routes(app)

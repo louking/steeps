@@ -13,9 +13,10 @@ import httplib2
 from itertools import izip_longest
 from threading import RLock
 import traceback
+from copy import deepcopy
 
 # pypi
-from flask import render_template, redirect, session, request, url_for, jsonify
+from flask import render_template, redirect, session, request, url_for, jsonify, current_app
 from flask.views import MethodView, View
 from apiclient import discovery # google api
 from apiclient.errors import HttpError
@@ -26,7 +27,7 @@ import numpy
 # homegrown
 from app import app
 from loutilities.transform import Transform
-from loutilities.googleauth import GoogleAuth, get_credentials
+from loutilities.googleauth import GoogleAuth, get_credentials, get_email
 from loutilities.tables import CrudApi, CrudFiles, DataTablesEditor, dt_editor_response, _uploadmethod
 from loutilities.geo import LatLng, GeoDistance, elevation_gain, calculateBearing
 from request import addscripts
@@ -99,9 +100,9 @@ class RunningRoutesTable(CrudApi):
 
         # load credentials for us and for self.files instance
         credentials = get_credentials(APP_CRED_FOLDER)
-        if not credentials:
+        if not credentials or not get_email():
             if debug: print "url_for('authorize') = {}".format(url_for('authorize'))
-            return redirect('authorize')
+            return redirect(url_for('authorize'))
 
         # set up form mapping
         self.dte = DataTablesEditor(self.dbmapping, self.formmapping)
@@ -382,19 +383,15 @@ class RunningRoutesTable(CrudApi):
         # all arguments are made into attributes for self
         if debug: print 'RunningRoutesTable.render_template()'
 
+        args = deepcopy(kwargs)
         configfile = self.app.config['APP_JS_CONFIG']
-        args = dict(
-                    pagejsfiles = addscripts([
-                                              configfile,
-                                              'runningroute-admin.js',
-                                              'datatables.js', 
-                                              'buttons.colvis.js',     
-                                             ]),
-                    pagecssfiles = addscripts([
-                                               'runningroute-admin.css',
-                                              ])
-                   )
-        args.update(kwargs)        
+        args['pagejsfiles'] += addscripts([ configfile,
+                                           'runningroute-admin.js',
+                                           'datatables.js', 
+                                           'buttons.colvis.js',     
+                                          ]) 
+        args['pagecssfiles'] += addscripts([ 'runningroute-admin.css',
+                                           ]) 
 
         return render_template( 'datatables.html', **args )
 
@@ -586,13 +583,49 @@ class RunningRoutesFiles(CrudFiles):
             datafolder = self.sheets.spreadsheets().values().get(spreadsheetId=fid, range='datafolder').execute()
             self.datafolderid = datafolder['values'][0][0]
 
+#----------------------------------------------------------------------
+def do_login(email):
+#----------------------------------------------------------------------
+    # commented code comes out when flask-security added
+    # verify local user account for this user exists. We can log
+    # in that account as well, while we're at it.
+    # user = User.query.filter_by(email=email).first()
+
+    # if user exists, log them in
+    # if user:
+    if True:
+        # Log in the new local user account
+        # login_user(user)
+        # db.session.commit()
+        current_app.logger.info('successful log in for {}'.format(email))
+        return True
+
+    else:
+        flash("Your email {} was not found. If you this this is in error, please contact raceservices@steeplechasers.org".format(email), 'error')
+        current_app.logger.info('unsuccessful log in attempt for {}'.format(email))
+        # do_logout()
+        googleauth.clear_credentials()
+        return False
+
+#----------------------------------------------------------------------
+def do_logout(email):
+#----------------------------------------------------------------------
+    if email:
+        current_app.logger.info('user log out for {}'.format(email))
+    else:
+        current_app.logger.info('user log out')
+    # logout_user()
+    # db.session.commit()
+
 #############################################
 # google auth views
-appscopes = [ 'https://www.googleapis.com/auth/plus.me',
+appscopes = [ 'https://www.googleapis.com/auth/userinfo.email',
+              'https://www.googleapis.com/auth/userinfo.profile',
               'https://www.googleapis.com/auth/spreadsheets',
               'https://www.googleapis.com/auth/drive' ]
 googleauth = GoogleAuth(app, app.config['APP_CLIENT_SECRETS_FILE'], appscopes, 'admin', 
                         credfolder=APP_CRED_FOLDER, 
+                        logincallback=do_login, logoutcallback=do_logout,
                         loginfo=app.logger.info, logdebug=app.logger.debug, logerror=app.logger.error)
 
 #######################################################################
@@ -615,6 +648,29 @@ class Logout(View):
 # logout handling
 logout = Logout(app)
 
+
+#######################################################################
+class Authorize(MethodView):
+#######################################################################
+
+    #----------------------------------------------------------------------
+    def get( self ):
+    #----------------------------------------------------------------------
+        # googleauth.clear_credentials()
+        configfile = current_app.config['APP_JS_CONFIG']
+        args = dict(
+                    pagename = 'please sign in',
+                    pagejsfiles = addscripts([
+                                              configfile,
+                                             ]),
+                    pagecssfiles = addscripts([
+                                               'runningroute-admin.css',
+                                              ])
+                   )
+        return render_template('authorize.html', **args)
+
+app.add_url_rule('/authorize', view_func=Authorize.as_view('authorize'), methods=['GET',])
+
 #############################################
 # files handling
 rrfiles = RunningRoutesFiles(
@@ -624,6 +680,10 @@ rrfiles = RunningRoutesFiles(
 
 #############################################
 # admin views
+def jsconfigfile():
+    with app.app_context(): 
+        return current_app.config['APP_JS_CONFIG']
+
 admin_dbattrs = 'id,name,distance,start location,latlng,surface,elevation gain,map,fileid,description,active'.split(',')
 admin_formfields = 'rowid,name,distance,location,latlng,surface,elev,map,fileid,description,active'.split(',')
 admin_dbmapping = dict(zip(admin_dbattrs, admin_formfields))
