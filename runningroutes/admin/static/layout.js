@@ -30,7 +30,7 @@ function signInCallback(authResult) {
             // this should be window.location.href = result.redirect;
             // but the result.redirect value is giving the wrong URL
             // TODO: fix this, maybe in loutilities.tables
-            window.location.href = '/admin';
+            window.location.href = $SCRIPT_ROOT + '/admin';
         } else {
             // reload to show the error message
             location.reload();
