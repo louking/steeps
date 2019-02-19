@@ -16,7 +16,7 @@ function signInCallback(authResult) {
     // Send the code to the server
     $.ajax({
       type: 'POST',
-      url: '/_token',
+      url: $SCRIPT_ROOT + '/_token',
       // Always include an `X-Requested-With` header in every AJAX request,
       // to protect against CSRF attacks.
       headers: {
