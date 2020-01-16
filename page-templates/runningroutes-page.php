@@ -9,81 +9,12 @@
  * @package steeps
  */
 
-get_header(); ?>
-<?php 
-    $configmtime  = filemtime("wp-content/themes/steeps/js/runningroutes/runningroutes-config.js");
-    $cssmtime     = filemtime("wp-content/themes/steeps/js/runningroutes/runningroutes.css");
-    $jsmtime      = filemtime("wp-content/themes/steeps/js/runningroutes/runningroutes.js");
 ?>
-
-    <div id="primary" class="content-area">
-        <main id="main" class="site-main runningroutes-main" role="main">
-
-            <?php
-                // Include the Post-Format-specific template for the content.
-                // If you want to override this in a child theme, then include a file
-                // called content-___.php (where ___ is the Post Format name) and that will be used instead.
-                get_template_part( 'content', get_post_format() );
-            ?>
-
-            <?php  
-             // assumes jquery and dataTables are included by one plugin or another
-             // somehow if these are included page loses slide show            
-            ?>
-            <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.1/jquery.dataTables.yadcf.css"/>
-            <link rel="stylesheet" type="text/css" href="/wp-content/themes/steeps/js/runningroutes/runningroutes.css?v=<?= $cssmtime ?>"/>
-
-            <div class='external-filter filter-container'>
-                <div class='filter-item'>
-                    <span class='label'>Distance (miles)</span>
-                    <span id='external-filter-distance' class='filter'></span>
-                </div>
-
-                <div class='filter-item'>
-                    <span class='label'>Surface</span>
-                    <span id='external-filter-surface' class='filter'></span>
-                </div>
-            </div>
-            <div class='external-filter' style='display: none;'>
-                <span id='external-filter-bounds-lat' class='filter'></span>
-                <span id='external-filter-bounds-lng' class='filter'></span>
-            </div>
-
-            <div id='runningroutes-map'></div>
-
-            <table id="runningroutes-table">
-                <thead>
-                    <tr>
-                        <th>loc</th>
-                        <th>name</th>
-                        <th>miles</th>
-                        <th>surf</th>
-                        <th>elev gain</th>
-                        <th></th>
-                        <th>lat</th>
-                        <th>lng</th>
-                        <th>id</th>
-                    </tr>
-                </thead>
-            </table>
-
-            <a href='/runningroutes/admin'>Admin</a>
-            
-            <script src="https://d3js.org/d3.v4.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.8.0-alpha.1/d3-tip.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/yadcf/0.9.1/jquery.dataTables.yadcf.min.js"></script>
-            <script src="https://maps.google.com/maps/api/js?key=AIzaSyAhlpnT784sPYWtTigwbaZdZfyvHluOVHc"></script>
-
-            <?php 
-            // the next script is created locally, must be before import of runningroutes.js
-            // and must include definition of var runningroutesurl = 'full url of google sheets gas app' 
-            ?>
-            <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes-config.js?v=<?= $configmtime ?>"></script>
-
-            <script src="/wp-content/themes/steeps/js/runningroutes/runningroutes.js?v=<?= $jsmtime ?>"></script>
-
-        </main><!-- #main -->
-    </div><!-- #primary -->
-
-<?php get_sidebar('sidebar-3');  ?>
-<?php get_footer(); ?>
+<?php
+/**
+ * redirect to routes.loutilities.com routes
+ */
+?>
+<script>
+    window.location.replace('https://routes.loutilities.com/fsrc/routes');
+</script>
