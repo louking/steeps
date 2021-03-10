@@ -11,7 +11,7 @@ googlemaps==2.5.1
 httplib2==0.10.3
 idna==2.6
 itsdangerous==1.1.0
-Jinja2==2.10
+Jinja2==2.10.1
 loutilities==0.14.5
 MarkupSafe==1.1.0
 numpy==1.13.3
