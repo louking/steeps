@@ -1180,6 +1180,19 @@ img.page-icon-20pc {
     margin-top: 2px;
 }
 
+.grouped .ecs-date:first-child {
+    padding-top: 0;
+}
+
+.grouped .ecs-date {
+    font-size: 1.3em;
+    margin-bottom: 0.75em;
+    padding-top: 1.5em;
+ }
+
+ .grouped .ecs-event {
+    padding-left: 1.5em;
+ }
 /*--------------------------------------------------------------
 10.4.1 Article Pages
 --------------------------------------------------------------*/
